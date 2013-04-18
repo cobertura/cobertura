@@ -23,7 +23,10 @@ package net.sourceforge.cobertura.coveragedata;
 
 import java.util.TimerTask;
 
-public class SaveTimer extends TimerTask implements HasBeenInstrumented
+import net.sourceforge.cobertura.CoverageIgnore;
+
+@CoverageIgnore
+public class SaveTimer extends TimerTask
 {
 
 	public void run()

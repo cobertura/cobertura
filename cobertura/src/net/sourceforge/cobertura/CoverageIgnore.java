@@ -1,8 +1,11 @@
 /*
  * Cobertura - http://cobertura.sourceforge.net/
  *
- * Copyright (C) 2003 jcoverage ltd.
- * Copyright (C) 2005 Mark Doliner
+ * Copyright (C) 2011 Piotr Tabor
+ *
+ * Note: This file is dual licensed under the GPL and the Apache
+ * Source License (so that it can be used from both the main
+ * Cobertura classes and the ant tasks).
  *
  * Cobertura is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
@@ -20,18 +23,7 @@
  * USA
  */
 
-package net.sourceforge.cobertura.coveragedata;
+package net.sourceforge.cobertura;
 
-/**
- * Tag interface indicating that a particular class has already been
- * instrumented. This interface should also be implemented by those
- * classes that do not wish to be instrumented.
- */
-public interface HasBeenInstrumented
-{
-	/*
-	 * This class does not need any members.  If a given class implements
-	 * this class, it means the given class does not want to be instrumented
-	 * by Cobertura.
-	 */
-}
+// This identifier marks given class or method as ignored by cobertura.
+public @interface CoverageIgnore {}

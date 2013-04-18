@@ -69,7 +69,7 @@ public class ClassDataTest extends TestCase
 		assertTrue(b.hasBranch(2));
 
 		assertFalse(b.hasBranch(4));
-		b.addLineSwitch(4, 0, 1, 9);
+		b.addLineSwitch(4, 0, 1, 9, Integer.MAX_VALUE);
 		assertTrue(b.hasBranch(4));
 
 		Collection branches = b.getBranches();
@@ -93,8 +93,8 @@ public class ClassDataTest extends TestCase
 
 		c.addLineJump(1, 0);
 		c.addLineJump(2, 0);
-		c.addLineSwitch(3, 0, 1, 3);
-		c.addLineSwitch(4, 0, 1, 3);
+		c.addLineSwitch(3, 0, 1, 3, Integer.MAX_VALUE);
+		c.addLineSwitch(4, 0, 1, 3, Integer.MAX_VALUE);
 
 		assertEquals(12, c.getNumberOfValidBranches());
 		assertEquals(0, c.getNumberOfCoveredBranches());
@@ -212,7 +212,7 @@ public class ClassDataTest extends TestCase
 		assertEquals(4, b.getNumberOfValidLines());
 
 		c.addLineJump(2, 0);
-		c.addLineSwitch(3, 0, 1, 2);
+		c.addLineSwitch(3, 0, 1, 2, Integer.MAX_VALUE);
 		c.addLineJump(3, 0);
 		c.addLineJump(4, 0);
 		assertEquals(9, c.getNumberOfValidBranches());

@@ -25,7 +25,8 @@
 	<classpathentry kind="lib" path="lib/xerces/2.6.2/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="lib/xerces/2.6.2/xml-apis.jar"/>
 	<classpathentry kind="lib" path="lib/xerces/2.6.2/xmlParserAPIs.jar"/>
-	<classpathentry kind="lib" path="lib/asm-3.0.jar"/>
-	<classpathentry kind="lib" path="lib/asm-tree-3.0.jar"/>
+	<classpathentry kind="lib" path="lib/asm-3.3.1.jar"/>
+	<classpathentry kind="lib" path="lib/asm-tree-3.3.1.jar"/>
+	<classpathentry kind="lib" path="lib/asm-commons-3.3.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

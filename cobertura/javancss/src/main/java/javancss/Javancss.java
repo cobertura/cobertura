@@ -67,7 +67,7 @@ import javancss.test.JavancssTest;
  * invokes the Java parser.
  *
  * @author    Chr. Clemens Lee <clemens@kclee.com>
- *            , recursive feature by Pääkö Hannu
+ *            , recursive feature by PÃ¤Ã¤kÃ¶ Hannu
  *            , additional javadoc metrics by Emilio Gongora <emilio@sms.nl>
  *            , and Guillermo Rodriguez <guille@sms.nl>.
  * @version   $Id: Javancss.java 198 2009-09-07 21:43:19Z hboutemy $

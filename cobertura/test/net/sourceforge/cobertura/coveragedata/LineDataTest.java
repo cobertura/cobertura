@@ -176,7 +176,7 @@ public class LineDataTest extends TestCase
 			 */
 			Thread.yield(); 
 			
-			data.getSwitchData(i, new SwitchData(1));
+			data.getSwitchData(i, new SwitchData(1, Integer.MAX_VALUE));
 		}
 	}
 	

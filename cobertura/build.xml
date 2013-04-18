@@ -60,7 +60,7 @@
 	<target name="compile" depends="init">
 		<mkdir dir="${build.classes.dir}" />
 		<javac fork="true" srcdir="${src.dir}" destdir="${build.classes.dir}" debug="true" encoding="UTF-8"
-			target="${javac.target}">
+			target="${javac.target}" source="${javac.source}">
 			<compilerarg value="-Xlint:unchecked" compiler="javac1.5"/>
 			<classpath location="${build.classes.dir}" />
 			<classpath refid="base.path" />
@@ -68,7 +68,7 @@
 
 		<mkdir dir="${build.otherclasses.dir}" />
 		<javac fork="true" srcdir="${othersrc.dir}" destdir="${build.otherclasses.dir}" debug="true" encoding="UTF-8"
-			target="${javac.target}">
+			target="${javac.target}" source="${javac.source}">
 			<compilerarg value="-Xlint:unchecked" compiler="javac1.5"/>
 			<classpath location="${build.classes.dir}" />
 			<classpath refid="base.path" />
@@ -76,7 +76,7 @@
 
 		<mkdir dir="${build.functionalconditiontest.dir}" />
 		<javac fork="true" srcdir="${examples.functionalconditiontest.dir}" destdir="${build.functionalconditiontest.dir}" debug="true" encoding="UTF-8"
-			target="${javac.target}">
+			target="${javac.target}" source="${javac.source}">
 			<compilerarg value="-Xlint:unchecked" compiler="javac1.5"/>
 			<classpath location="${build.classes.dir}" />
 			<classpath refid="base.path" />
@@ -99,7 +99,7 @@
 			<classpath location="${build.otherclasses.dir}" />
 			<classpath location="${build.functionalconditiontest.dir}" />
 			<classpath path="${java.class.path}"/>
-			<javac debug="true" encoding="UTF-8" >
+			<javac debug="true" encoding="UTF-8">
 				<compilerarg value="-Xlint:unchecked" compiler="javac1.5"/>
 			</javac>
 		</cobertura:groovyc>

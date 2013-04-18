@@ -11,7 +11,8 @@
  * Copyright (C) 2006 John Lewis
  * Copyright (C) 2006 Jiri Mares 
  * Copyright (C) 2008 Scott Frederick
- * Copyright (C) 2010 Tad Smith 
+ * Copyright (C) 2010 Tad Smith
+ * Copyright (C) 2010 Piotr Tabor 
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -76,6 +77,7 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.Path;
 
+
 public class InstrumentTask extends CommonMatchingTask
 {
 
@@ -83,68 +85,63 @@ public class InstrumentTask extends CommonMatchingTask
 
 	private File toDir = null;
 
-	List ignoreRegexs = new ArrayList();
+	final List<Ignore> ignoreRegexs = new ArrayList<Ignore>();
 
-	List ignoreBranchesRegexs = new ArrayList();
+	final List<IgnoreBranches> ignoreBranchesRegexs = new ArrayList<IgnoreBranches>();
 	
-	List ignoreMethodAnnotations = new ArrayList();
+	final List<IgnoreMethodAnnotation> ignoreMethodAnnotations = new ArrayList<IgnoreMethodAnnotation>();
 
-	List includeClassesRegexs = new ArrayList();
+	final List<IncludeClasses> includeClassesRegexs = new ArrayList<IncludeClasses>();
 
-	List excludeClassesRegexs = new ArrayList();
+	final List<ExcludeClasses> excludeClassesRegexs = new ArrayList<ExcludeClasses>();
 
 	boolean ignoreTrivial = false;
 
 	private Integer forkedJVMDebugPort;
 	
 	private Path instrumentationClasspath = null;
+	
+	boolean threadsafeRigorous = false;
 
-	private HashMap fileSetMap = new HashMap();
+	final private HashMap<String, FileSet> fileSetMap = new HashMap<String, FileSet>();
 
-	public InstrumentTask()
-	{
-		super("net.sourceforge.cobertura.instrument.Main");
+	public InstrumentTask() {
+		super(net.sourceforge.cobertura.instrument.Main.class.getCanonicalName());
 	}
 
-	public Ignore createIgnore()
-	{
+	public Ignore createIgnore() {
 		Ignore ignoreRegex = new Ignore();
 		ignoreRegexs.add(ignoreRegex);
 		return ignoreRegex;
 	}
 
-	public IgnoreBranches createIgnoreBranches()
-	{
+	public IgnoreBranches createIgnoreBranches() {
 		IgnoreBranches ignoreBranchesRegex = new IgnoreBranches();
 		ignoreBranchesRegexs.add(ignoreBranchesRegex);
 		return ignoreBranchesRegex;
 	}
 
 	
-	public IgnoreMethodAnnotation createIgnoreMethodAnnotation()
-	{
+	public IgnoreMethodAnnotation createIgnoreMethodAnnotation() {
 		IgnoreMethodAnnotation ignoreAnnotation = new IgnoreMethodAnnotation();
 		ignoreMethodAnnotations.add(ignoreAnnotation);
 		return ignoreAnnotation;
 	}
 	
 	
-	public IncludeClasses createIncludeClasses()
-	{
+	public IncludeClasses createIncludeClasses() {
 		IncludeClasses includeClassesRegex = new IncludeClasses();
 		includeClassesRegexs.add(includeClassesRegex);
 		return includeClassesRegex;
 	}
 
-	public ExcludeClasses createExcludeClasses()
-	{
+	public ExcludeClasses createExcludeClasses() {
 		ExcludeClasses excludeClassesRegex = new ExcludeClasses();
 		excludeClassesRegexs.add(excludeClassesRegex);
 		return excludeClassesRegex;
 	}
 
-	public Path createInstrumentationClasspath()
-	{
+	public Path createInstrumentationClasspath() {
 		if (instrumentationClasspath == null) {
 			instrumentationClasspath = new Path(getProject());
 		}
@@ -162,8 +159,7 @@ public class InstrumentTask extends CommonMatchingTask
 	}
 	*/
 
-	public void execute() throws BuildException
-	{
+	public void execute() throws BuildException {
 		CommandLineBuilder builder = null;
 		try {
 			builder = new CommandLineBuilder();
@@ -200,6 +196,9 @@ public class InstrumentTask extends CommonMatchingTask
 			if (ignoreTrivial)
 				builder.addArg("--ignoreTrivial");
 			
+			if (threadsafeRigorous)
+				builder.addArg("--threadsafeRigorous");
+			
 			if (failOnError)
 				builder.addArg("--failOnError");
 
@@ -230,8 +229,7 @@ public class InstrumentTask extends CommonMatchingTask
 		builder.dispose();
 	}
 
-	private void processInstrumentationClasspath()
-	{
+	private void processInstrumentationClasspath() {
 		if (includeClassesRegexs.size() == 0)
 		{
 			throw new BuildException("'includeClasses' is required when 'instrumentationClasspath' is used");
@@ -240,8 +238,7 @@ public class InstrumentTask extends CommonMatchingTask
 		String[] sources = instrumentationClasspath.list();
 		for (int i = 0; i < sources.length; i++) {
 			File fileOrDir = new File(sources[i]);
-			if (fileOrDir.exists())
-			{
+			if (fileOrDir.exists())	{
 				if (fileOrDir.isDirectory()) {
 					createFilesetForDirectory(fileOrDir);
 				} else {
@@ -251,20 +248,17 @@ public class InstrumentTask extends CommonMatchingTask
 		}
 	}
 
-	private void addFileToFilesets(File file)
-	{
+	private void addFileToFilesets(File file) {
 		File dir = file.getParentFile();
 		String filename = file.getName();
 		FileSet fileSet = getFileSet(dir);
 		fileSet.createInclude().setName(filename);
 	}
 
-	private FileSet getFileSet(File dir)
-	{
+	private FileSet getFileSet(File dir) {
 		String key = dir.getAbsolutePath();
 		FileSet fileSet = (FileSet)fileSetMap.get(key);
-		if (fileSet == null)
-		{
+		if (fileSet == null) {
 	        fileSet = new FileSet();
 	        fileSet.setProject(getProject());
 	        fileSet.setDir(dir);
@@ -276,30 +270,28 @@ public class InstrumentTask extends CommonMatchingTask
 		return fileSet;
 	}
 
-	private void createFilesetForDirectory(File dir)
-	{
+	private void createFilesetForDirectory(File dir) {
 		FileSet fileSet = getFileSet(dir);
 		fileSet.createInclude().setName("**/*.class");
 	}
 
-	public void setDataFile(String dataFile)
-	{
+	public void setDataFile(String dataFile) {
 		this.dataFile = dataFile;
 	}
 
-	public void setToDir(File toDir)
-	{
+	public void setToDir(File toDir) {
 		this.toDir = toDir;
 	}
 
-	public void setIgnoreTrivial(boolean ignoreTrivial)
-	{
+	public void setIgnoreTrivial(boolean ignoreTrivial) {
 		this.ignoreTrivial = ignoreTrivial;
 	}
 	
-	public void setForkedJVMDebugPort(Integer forkedJVMDebugPort)
-	{
+	public void setThreadsafeRigorous(boolean threadsafeRigorous) {
+		this.threadsafeRigorous = threadsafeRigorous;
+	}
+	
+	public void setForkedJVMDebugPort(Integer forkedJVMDebugPort) {
 		this.forkedJVMDebugPort = forkedJVMDebugPort;
 	}
-
 }

@@ -25,8 +25,8 @@
 
 package net.sourceforge.cobertura.instrument;
 
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 import net.sourceforge.cobertura.util.RegexUtil;
 
@@ -43,12 +43,12 @@ import net.sourceforge.cobertura.util.RegexUtil;
 public class ClassPattern
 {
 
-	private Collection includeClassesRegexes = new HashSet();
+	private Set<String> includeClassesRegexes = new HashSet<String>();
 
-	private Collection excludeClassesRegexes = new HashSet();
+	private Set<String> excludeClassesRegexes = new HashSet<String>();
 
 	private static final String WEBINF_CLASSES = "WEB-INF/classes/";
-
+	
 	/**
 	 * Returns true if any regular expressions have been specified by calling the
 	 * add methods.  If none are specified, this class matches anything.

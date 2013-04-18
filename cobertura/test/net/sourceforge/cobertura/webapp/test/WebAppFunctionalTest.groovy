@@ -68,7 +68,7 @@ public class WebAppFunctionalTest {
 	/*
 	 * For the next two constants, it would be preferable to use saveGlobalProjectData
 	 * in class net.sourceforge.cobertura.coveragedata.ProjectData, but ProjectData is
-	 * not instrumented since it extends HasBeenInstrumented.   So, the best we can
+	 * not instrumented since it is annotated with CoberturaIgnore.   So, the best we can
 	 * do is make sure the doGet method in FlushCoberturaServlet is called.
 	 */
 	private static final SAVE_DATA_CLASSNAME = "net.sourceforge.cobertura.webapp.FlushCoberturaServlet"

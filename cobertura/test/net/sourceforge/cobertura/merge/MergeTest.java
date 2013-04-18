@@ -222,7 +222,7 @@ public class MergeTest extends TestCase {
 		firstClass.addLineJump(2, 1);
 		firstClass.addLine( 3, "helloWorld","()V");
 		firstClass.addLine( 4, "helloWorld","()V");
-		firstClass.addLineSwitch(4, 0, 0, 2);
+		firstClass.addLineSwitch(4, 0, 0, 2, Integer.MAX_VALUE);
 		firstClass.addLine( 5, "helloWorld","()V");
 		firstClass.addLine( 8, "helloWorld","()V");
 		greenProject.addClassData( firstClass);
@@ -231,7 +231,7 @@ public class MergeTest extends TestCase {
 		firstClassB.addLineJump(1, 0);
 		firstClassB.addLine( 2, "helloWorld","()V");
 		firstClassB.addLine( 3, "helloWorld","()V");
-		firstClassB.addLineSwitch(3, 0, 2, 4);
+		firstClassB.addLineSwitch(3, 0, 2, 4, Integer.MAX_VALUE);
 		firstClassB.addLine( 6, "helloWorld","()V");
 		firstClassB.addLineJump(6, 0);
 		firstClassB.addLine( 7, "helloWorld","()V");

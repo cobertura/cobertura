@@ -25,197 +25,120 @@
 
 package net.sourceforge.cobertura.coveragedata;
 
+import java.lang.reflect.Method;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import net.sourceforge.cobertura.coveragedata.countermaps.AtomicCounterMap;
-import net.sourceforge.cobertura.coveragedata.countermaps.CounterMap;
 
-public class TouchCollector implements HasBeenInstrumented{
-	
-	private static final CounterMap<LineTouchData> touchedLines=new AtomicCounterMap<LineTouchData>();	
-	private static final CounterMap<SwitchTouchData> switchTouchData=new AtomicCounterMap<SwitchTouchData>();	
-	private static final CounterMap<JumpTouchData> jumpTouchData=new AtomicCounterMap<JumpTouchData>();
-	
-	private static AtomicInteger lastClassId=new AtomicInteger(1);
-	private static final Map<String,Integer> class2classId=new ConcurrentHashMap<String, Integer>();
-	private static final Map<Integer,String> classId2class=new ConcurrentHashMap<Integer,String>();
+import net.sourceforge.cobertura.CoverageIgnore;
+import net.sourceforge.cobertura.instrument.pass3.AbstractCodeProvider;
 
-	static{
-		ProjectData.initialize();
+@CoverageIgnore
+public class TouchCollector {
+	private static final Logger logger = Logger.getLogger(TouchCollector.class.getCanonicalName());
+	/*In fact - concurrentHashset*/
+	private static Map<Class<?>,Integer> registeredClasses = new ConcurrentHashMap<Class<?>,Integer>();
+
+	static {
+		ProjectData.getGlobalProjectData(); // To call ProjectData.initialize();
 	}
 	
-	private static final int registerClassData(String name){		
-		Integer res=class2classId.get(name);
-		if (res==null){
-			int new_id=lastClassId.incrementAndGet();
-			class2classId.put(name, new_id);
-			classId2class.put(new_id, name);
-			return new_id;
+	public static synchronized void registerClass(Class<?> classa) {
+		registeredClasses.put(classa,0);
+	}
+
+	public static synchronized void applyTouchesOnProjectData(
+			ProjectData projectData) {
+		logger.fine("=================== START OF REPORT ======================== ");
+		for (Class<?> c : registeredClasses.keySet()) {
+			logger.fine("Report: "+c.getName());
+			ClassData cd=projectData.getOrCreateClassData(c.getName());
+			applyTouchesToSingleClassOnProjectData(cd, c);
 		}
-		return res;
+		logger.fine("===================  END OF REPORT  ======================== ");
 	}
-	
-	/**
-	 * This method is only called by code that has been instrumented.  It
-	 * is not called by any of the Cobertura code or ant tasks.
-	 */
-	public static final void touchSwitch(String classId,int lineNumber, int switchNumber, int branch) {
-		switchTouchData.incrementValue(new SwitchTouchData(registerClassData(classId),lineNumber, switchNumber, branch));
-	}
-	
-	/**
-	 * This method is only called by code that has been instrumented.  It
-	 * is not called by any of the Cobertura code or ant tasks.
-	 */
-	public static final void touch(String classId,int lineNumber) {
-		touchedLines.incrementValue(new LineTouchData(registerClassData(classId), lineNumber));
-	}
-	
-	/**
-	 * This method is only called by code that has been instrumented.  It
-	 * is not called by any of the Cobertura code or ant tasks.
-	 */
-	public static final void touchJump(String classId,int lineNumber, int branchNumber, boolean branch) {
-		jumpTouchData.incrementValue(new JumpTouchData(registerClassData(classId),lineNumber, branchNumber, branch));
-	}	
 
-	private static class LineTouchData implements HasBeenInstrumented{
-		int classId,lineNumber;
-		public LineTouchData(int classId,int lineNumber) {
-			this.classId=classId;
-			this.lineNumber=lineNumber;
+	private static void applyTouchesToSingleClassOnProjectData(final ClassData classData,final Class<?> c) {
+		logger.finer("----------- "+ c.getCanonicalName() + " ---------------- ");
+		try {
+			Method m0 = c.getDeclaredMethod(AbstractCodeProvider.COBERTURA_GET_AND_RESET_COUNTERS_METHOD_NAME);
+			m0.setAccessible(true);
+			final int[] res=(int[])m0.invoke(null, new Object[]{});
+			
+			LightClassmapListener lightClassmap=new ApplyToClassDataLightClassmapListener(classData,res);			
+			Method m = c.getDeclaredMethod(AbstractCodeProvider.COBERTURA_CLASSMAP_METHOD_NAME,LightClassmapListener.class);
+			m.setAccessible(true);
+			m.invoke(null, lightClassmap);
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, "Cannot apply touches", e);
 		}
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + classId;
-			result = prime * result + lineNumber;
-			return result;
-		}
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			LineTouchData other = (LineTouchData) obj;
-			if (classId != other.classId)
-				return false;
-			if (lineNumber != other.lineNumber)
-				return false;
-			return true;
+	}
+	
+	@CoverageIgnore
+	private static class ApplyToClassDataLightClassmapListener implements LightClassmapListener {
+		//private AtomicInteger idProvider=new AtomicInteger(0);
+		private final ClassData classData;
+		private final int[] res;
+		
+		private int currentLine=0;
+		private int jumpsInLine=0;
+		private int switchesInLine=0;
+		
+		private void updateLine(int new_line){
+			if(new_line!=currentLine){
+				currentLine=new_line;
+				jumpsInLine=0;
+				switchesInLine=0;
+			}
 		}		
-	}
-	
-	private static class SwitchTouchData extends LineTouchData implements HasBeenInstrumented{
-		int switchNumber, branch;
 		
-		public SwitchTouchData(int classId,int lineNumber, int switchNumber, int branch) {
-			super(classId,lineNumber);
-			this.switchNumber=switchNumber;
-			this.branch=branch;
+		public ApplyToClassDataLightClassmapListener(ClassData cd,int[] res) {
+			classData=cd;
+			this.res=res;
 		}
-
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = super.hashCode();
-			result = prime * result + branch;
-			result = prime * result + switchNumber;
-			return result;
+		
+		public void setSource(String source) {
+			logger.fine("source: "+source);
+			classData.setSourceFileName(source);
+			
 		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (!super.equals(obj))
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			SwitchTouchData other = (SwitchTouchData) obj;
-			if (branch != other.branch)
-				return false;
-			if (switchNumber != other.switchNumber)
-				return false;
-			return true;
-		}	
-	}
-	
-	private static class JumpTouchData extends LineTouchData implements HasBeenInstrumented{
-		int branchNumber;
-		boolean branch;
-		public JumpTouchData(int classId,int lineNumber, int branchNumber, boolean branch) {
-			super(classId, lineNumber);
-			this.branchNumber=branchNumber;
-			this.branch=branch;
+		
+		public void setClazz(Class<?> clazz) {					
 		}
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = super.hashCode();
-			result = prime * result + (branch ? 1231 : 1237);
-			result = prime * result + branchNumber;
-			return result;
+		
+		public void putLineTouchPoint(int classLine, int counterId, String methodName, String methodDescription) {
+			updateLine(classLine);				
+			LineData ld=classData.addLine(classLine, methodName,methodDescription);
+			ld.touch(res[counterId]);
 		}
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (!super.equals(obj))
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			JumpTouchData other = (JumpTouchData) obj;
-			if (branch != other.branch)
-				return false;
-			if (branchNumber != other.branchNumber)
-				return false;
-			return true;
+		
+		public void putSwitchTouchPoint(int classLine, int maxBranches, int... counterIds) {
+			updateLine(classLine);			
+			LineData ld=getOrCreateLine(classLine);
+			int switchId = switchesInLine++;
+			classData.addLineSwitch(classLine,switchId , 0, counterIds.length-2, maxBranches);
+			for(int i=0; i < counterIds.length; i++){
+				ld.touchSwitch(switchId, i-1, res[counterIds[i]]);
+			}
 		}		
-	}	
-	
-	
-	public static synchronized void applyTouchesOnProjectData(ProjectData projectData){
-		System.out.println("Flushing results...");
-		Map<LineTouchData,Integer> touches=touchedLines.getFinalStateAndCleanIt();
-		for(Entry<LineTouchData, Integer> touch:touches.entrySet()){
-			if(touch.getValue()>0){				
-				getClassFor(touch.getKey(),projectData).touch(touch.getKey().lineNumber,touch.getValue());
-			}
-		}
 		
-		Map<SwitchTouchData,Integer> switchTouches=switchTouchData.getFinalStateAndCleanIt();
-		for(Entry<SwitchTouchData, Integer> touch:switchTouches.entrySet()){
-			if(touch.getValue()>0){
-				getClassFor(touch.getKey(),projectData).touchSwitch(
-						touch.getKey().lineNumber,
-						touch.getKey().switchNumber,
-						touch.getKey().branch,touch.getValue());
-			}
+		public void putJumpTouchPoint(int classLine, int trueCounterId,	int falseCounterId) {
+			updateLine(classLine);					
+			LineData ld=getOrCreateLine(classLine);
+			int branchId=jumpsInLine++;
+			classData.addLineJump(classLine, branchId);
+			ld.touchJump(branchId, true, res[trueCounterId]);
+			ld.touchJump(branchId, false, res[falseCounterId]);
 		}
-		
-		Map<JumpTouchData,Integer> jumpTouches=jumpTouchData.getFinalStateAndCleanIt();
-		for(Entry<JumpTouchData, Integer> touch:jumpTouches.entrySet()){
-			if(touch.getValue()>0){
-				getClassFor(touch.getKey(),projectData).touchJump(
-						touch.getKey().lineNumber,
-						touch.getKey().branchNumber,
-						touch.getKey().branch,touch.getValue());
-			}
-		}
-		System.out.println("Flushing results done");
-	}
 
-	private static ClassData getClassFor(LineTouchData key,ProjectData projectData) {
-//		System.out.println("\nLooking for:"+key.classId+"\n");
-		return projectData.getOrCreateClassData(classId2class.get(key.classId));
-	}
-		
+		private LineData getOrCreateLine(int classLine) {
+			LineData ld=classData.getLineData(classLine);
+			if(ld==null){
+				ld=classData.addLine(classLine, null, null);
+			}
+			return ld;
+		}
+	};
 }

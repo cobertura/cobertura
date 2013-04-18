@@ -1,0 +1,12 @@
+cobertura/bin/
+cobertura/build/
+cobertura/cobertura.jar
+cobertura/examples/functionalconditiontest/classes/
+cobertura/examples/functionalconditiontest/cobertura.ser
+cobertura/examples/functionalconditiontest/instrumented/
+cobertura/examples/functionalconditiontest/reports/
+cobertura/examples/functionaltest1/classes/
+cobertura/examples/functionaltest1/cobertura.ser
+cobertura/examples/functionaltest1/instrumented/
+cobertura/examples/functionaltest1/reports/
+cobertura/examples/functionaltest1/tmp/

@@ -105,8 +105,7 @@ public class ConfigurationUtil
      */
     private void DEBUG(String msg)
     {
-        if(false)
-        {
+        if (false) {
             System.out.println("[Cobertura:ConfigurationUtil] " + msg);
         }
     }

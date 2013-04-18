@@ -27,15 +27,12 @@ import java.io.Serializable;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import net.sourceforge.cobertura.CoverageIgnore;
+
 /**
- * <p>
- * This class implements HasBeenInstrumented so that when cobertura instruments
- * itself, it will omit this class. It does this to avoid an infinite recursion
- * problem because instrumented classes make use of this class.
- * </p>
  */
-public class JumpData implements BranchCoverageData, Comparable, Serializable,
-		HasBeenInstrumented
+@CoverageIgnore
+public class JumpData implements BranchCoverageData, Comparable<Object>, Serializable
 {
 	private static final long serialVersionUID = 8;
 

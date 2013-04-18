@@ -1,7 +1,11 @@
 /*
  * Cobertura - http://cobertura.sourceforge.net/
  *
- * Copyright (C) 2006 Jiri Mares
+ * Copyright (C) 2011 Piotr Tabor
+ *
+ * Note: This file is dual licensed under the GPL and the Apache
+ * Source License (so that it can be used from both the main
+ * Cobertura classes and the ant tasks).
  *
  * Cobertura is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
@@ -19,22 +23,12 @@
  * USA
  */
 
-package net.sourceforge.cobertura.instrument;
-
-public class SwitchHolder extends JumpHolder {
-   protected int branch;
-
-   public SwitchHolder(int lineNumber, int switchNumber, int branch) {
-      super(lineNumber, switchNumber);
-      this.branch = branch;
-   }
-
-   public int getSwitchNumber() {
-      return jumpNumber;
-   }
-
-   public int getBranch() {
-      return branch;
-   }
-
-}
+/**
+ * There are cases when the same piece of java code generates multiple series of ASM instructions. 
+ * In particular the same line of code can be rendered in many places of destination code. See 
+ * {@link DetectDuplicatedCodeClassVisitor} for example. 
+ * 
+ * This package contains {@link DetectDuplicatedCodeClassVisitor} that is responsible for
+ * detecting such a duplicates. It does not change class but only provide analysis. 
+ */
+package net.sourceforge.cobertura.instrument.pass1;

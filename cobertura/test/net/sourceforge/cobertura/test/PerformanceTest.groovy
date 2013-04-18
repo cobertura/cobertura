@@ -119,7 +119,7 @@ public class Main extends Thread {
 			
 			testUtil.instrumentClasses(ant, srcDir, datafile, instrumentDir, [])
 			
-			print "Run with instrumentation:\n";
+			print "Run with instrumentation (not threadsafe-rigorous):\n";
 			ant.java(classname:'mypackage.Main', dir:srcDir, fork:true, failonerror:true) {
 				classpath {
 					dirset(dir:instrumentDir)
@@ -127,6 +127,20 @@ public class Main extends Thread {
 					dirset(dir:testUtil.coberturaClassDir)
 				}
 			}
+
+			testUtil.compileSource(ant, srcDir)
+
+			testUtil.instrumentClasses(ant, srcDir, datafile, instrumentDir, [threadsafeRigorous:true])
+			
+			print "Run with instrumentation (threadsafe-rigorous):\n";
+			ant.java(classname:'mypackage.Main', dir:srcDir, fork:true, failonerror:true) {
+				classpath {
+					dirset(dir:instrumentDir)
+					dirset(dir:srcDir)
+					dirset(dir:testUtil.coberturaClassDir)
+				}
+			}
+
 
 			/*
 			 * Now create a cobertura xml file and make sure the correct counts are in it.

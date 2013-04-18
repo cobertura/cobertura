@@ -1,7 +1,7 @@
 /*
  * Cobertura - http://cobertura.sourceforge.net/
  *
- * Copyright (C) 2010 Piotr Tabor
+ * Copyright (C) 2011 Piotr Tabor
  *
  * Note: This file is dual licensed under the GPL and the Apache
  * Source License (so that it can be used from both the main
@@ -23,13 +23,16 @@
  * USA
  */
 
-package net.sourceforge.cobertura.coveragedata.countermaps;
+package net.sourceforge.cobertura.coveragedata;
 
-import java.util.Map;
-
-public interface CounterMap<T> {
-	public void incrementValue(T key);
-	public void incrementValue(T key, int value);	
-	public int getValue(T key);
-	public Map<T,Integer> getFinalStateAndCleanIt();
+public interface LightClassmapListener {
+	public void setClazz(Class<?> clazz);
+	
+	public void setSource(String source);
+	
+	public void putLineTouchPoint(int classLine,int counterId, String methodName, String methodDescription);
+	
+	public void putJumpTouchPoint(int classLine,int trueCounterId,int falseCounterId);
+	
+	public void putSwitchTouchPoint(int classLine, int maxBranches, int... counterIds);
 }

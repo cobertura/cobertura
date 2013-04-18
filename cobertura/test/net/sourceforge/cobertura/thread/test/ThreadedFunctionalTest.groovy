@@ -266,7 +266,7 @@ class MyThreads extends Thread
 	
 	def instrumentClasses(srcDir, datafile)
 	{
-		ant.'cobertura-instrument'(datafile:datafile) {
+		ant.'cobertura-instrument'(datafile:datafile, threadsafeRigorous:true) {
 			includeClasses(regex:'mypackage.*')
 			fileset(dir:srcDir) {
 				include(name:'**/*.class')

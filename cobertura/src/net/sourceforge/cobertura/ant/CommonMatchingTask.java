@@ -10,6 +10,7 @@
  * Copyright (C) 2006 Srivathsan Varadarajan
  * Copyright (C) 2008 Matt Cordes
  * Copyright (C) 2008 John Lewis
+ * Copyright (C) 2010 Piotr Tabor
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -65,7 +66,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -88,7 +88,7 @@ public abstract class CommonMatchingTask extends MatchingTask
 {
 
 	final String className;
-	final List fileSets = new LinkedList();
+	final List<AbstractFileSet> fileSets = new LinkedList<AbstractFileSet>();
 
 	private Java java = null;
 	private String maxMemory = null;
@@ -154,22 +154,15 @@ public abstract class CommonMatchingTask extends MatchingTask
 	}
 
 	protected void createArgumentsForFilesets( CommandLineBuilder builder) throws IOException {
-		Iterator iter = fileSets.iterator();
 		boolean filesetFound = false;
-		while (iter.hasNext())
+		for (AbstractFileSet fileSet : fileSets)
 		{
-			AbstractFileSet fileSet = (AbstractFileSet)iter.next();
-
-			if (fileSet instanceof FileSet)
-			{
+			if (fileSet instanceof FileSet) {
 				filesetFound = true;
 				builder.addArg("--basedir", baseDir(fileSet));
 				createArgumentsForFilenames( builder, getFilenames(fileSet));
-			}
-			else
-			{
-				if (filesetFound)
-				{
+			} else {
+				if (filesetFound) {
 					/*
 					 * Once --basedir has been used, it cannot be undone without changes to the
 					 * Main methods.   So, any dirsets have to come before filesets.

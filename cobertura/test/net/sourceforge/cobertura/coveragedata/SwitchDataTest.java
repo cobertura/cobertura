@@ -21,16 +21,14 @@
 
 package net.sourceforge.cobertura.coveragedata;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 import junit.framework.TestCase;
 
 public class SwitchDataTest extends TestCase
 {
 
-	private final SwitchData a = new SwitchData(0, new int[] { 0, 1, 2, 3 });
+	private final SwitchData a = new SwitchData(0, new int[] { 0, 1, 2, 3 }, Integer.MAX_VALUE);
 
-	private final SwitchData b = new SwitchData(1, 1, 9);
+	private final SwitchData b = new SwitchData(1, 1, 9, Integer.MAX_VALUE);
 
 	public void testEquals()
 	{
@@ -40,7 +38,7 @@ public class SwitchDataTest extends TestCase
 		assertTrue(a.equals(a));
 		assertFalse(a.equals(b));
 
-		SwitchData aPrime = new SwitchData(0, new int[] { 0, 1, 2, 3 });
+		SwitchData aPrime = new SwitchData(0, new int[] { 0, 1, 2, 3 }, Integer.MAX_VALUE);
 		assertTrue(a.equals(aPrime));
 	}
 
@@ -48,7 +46,7 @@ public class SwitchDataTest extends TestCase
 	{
 		assertEquals(a.hashCode(), a.hashCode());
 
-		SwitchData aPrime = new SwitchData(0, new int[] { 0, 1, 2, 3 });
+		SwitchData aPrime = new SwitchData(0, new int[] { 0, 1, 2, 3 }, Integer.MAX_VALUE);
 		assertEquals(a.hashCode(), aPrime.hashCode());
 	}
 
@@ -127,7 +125,7 @@ public class SwitchDataTest extends TestCase
 		a.touchBranch(0,1);
 		a.touchBranch(2,1);
 		a.touchBranch(-1,1);
-		SwitchData x = new SwitchData(0);
+		SwitchData x = new SwitchData(0, Integer.MAX_VALUE);
 		x.touchBranch(3,1);
 		x.touchBranch(3,1);
 		a.merge(x);
@@ -137,7 +135,7 @@ public class SwitchDataTest extends TestCase
 		assertEquals(2, a.getHits(3));
 		assertEquals(1, a.getDefaultHits());
 
-		x = new SwitchData(0);
+		x = new SwitchData(0, Integer.MAX_VALUE);
 		x.touchBranch(5,1);
 		x.touchBranch(-1,1);
 		a.merge(x);
@@ -148,83 +146,5 @@ public class SwitchDataTest extends TestCase
 		assertEquals(0, a.getHits(4));
 		assertEquals(1, a.getHits(5));
 		assertEquals(2, a.getDefaultHits());
-	}
-	
-	private static void touchIteratively(SwitchData data, int num)
-	{
-		/*
-		 * When this test fails, it usually does so well before 2000 iterations.   If it
-		 * gets past 2000, it will usually pass, so there is not much need in going much
-		 * past 2000.
-		 */
-		for (int i=0; i<2000; i++)
-		{
-			/*
-			 * The following yield is needed to make sure the other thread gets
-			 * some CPU.  Otherwise, this thread will get too much of a jump ahead
-			 * of the other thread.
-			 */
-			Thread.yield(); 
-			
-			data.touchBranch(i,1);
-		}
-	}
-	
-	private void runTestWithTwoThreads() throws Throwable
-	{
-		final SwitchData data = new SwitchData(2);
-		final AtomicReference<Throwable> possibleThrowable = new AtomicReference<Throwable>();
-		
-		ThreadGroup threadGroup = new ThreadGroup("TestThreadGroup") {
-			public void uncaughtException(Thread thread, Throwable t)
-			{
-				/*
-				 * Save the Throwable for later use and interrupt this thread so it exits
-				 */
-				possibleThrowable.set(t);
-				thread.interrupt();
-			}
-		};
-		
-		/*
-		 * Create two threads using the above thread group
-		 */
-		Thread thread1 = new Thread(threadGroup, "1") {
-			public void run()
-			{
-				touchIteratively(data, 0);
-			}
-		};
-		Thread thread2 = new Thread(threadGroup, "2") {
-			public void run()
-			{
-				touchIteratively(data, 1);
-			}
-		};
-		thread1.start();
-		thread2.start();
-		/*
-		 * Wait for the threads to exit
-		 */
-		if (thread1.isAlive()) thread1.join();
-		if (thread2.isAlive()) thread2.join();
-		Throwable t = possibleThrowable.get();
-		if (t != null)
-		{
-			throw t;
-		}
-	}
-
-	public void testMultiThreaded() throws Throwable
-	{
-		/*
-		 * This test will often pass with only one iteration.
-		 * It passes once in a while with 4.   It never passes
-		 * with 10 (I hope).
-		 */
-		for (int i=0; i<10; i++)
-		{
-			runTestWithTwoThreads();
-		}
 	}
 }

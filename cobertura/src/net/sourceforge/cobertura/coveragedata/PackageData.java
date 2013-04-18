@@ -30,8 +30,11 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import net.sourceforge.cobertura.CoverageIgnore;
+
+@CoverageIgnore
 public class PackageData extends CoverageDataContainer
-		implements Comparable, HasBeenInstrumented
+		implements Comparable<Object>
 {
 
 	private static final long serialVersionUID = 7;

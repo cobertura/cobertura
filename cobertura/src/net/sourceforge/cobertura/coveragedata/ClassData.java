@@ -33,26 +33,21 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import net.sourceforge.cobertura.CoverageIgnore;
+
 /**
  * <p>
  * ProjectData information is typically serialized to a file. An
  * instance of this class records coverage information for a single
  * class that has been instrumented.
  * </p>
- *
- * <p>
- * This class implements HasBeenInstrumented so that when cobertura
- * instruments itself, it will omit this class.  It does this to
- * avoid an infinite recursion problem because instrumented classes
- * make use of this class.
- * </p>
  */
 
+@CoverageIgnore
 public class ClassData extends CoverageDataContainer
-	implements Comparable<ClassData>, HasBeenInstrumented 
-{
-
+	implements Comparable<ClassData> {
 	private static final long serialVersionUID = 5;
+
 
 	/**
 	 * Each key is a line number in this class, stored as an Integer object.
@@ -68,6 +63,8 @@ public class ClassData extends CoverageDataContainer
 
 	private String sourceFileName = null;
 
+	public ClassData() {}
+	
 	/**
 	 * @param name In the format "net.sourceforge.cobertura.coveragedata.ClassData"
 	 */
@@ -112,7 +109,9 @@ public class ClassData extends CoverageDataContainer
 	 */
 	public int compareTo(ClassData o)
 	{
-		return this.name.compareTo(o.name);
+		if (!o.getClass().equals(ClassData.class))
+			return Integer.MAX_VALUE;
+		return this.name.compareTo(((ClassData)o).name);
 	}
 
 	public boolean containsInstrumentationInfo()
@@ -264,8 +263,8 @@ public class ClassData extends CoverageDataContainer
 		}
 	}
 
-	private LineData getLineData(int lineNumber)
-	{
+	public LineData getLineData(int lineNumber)
+	{		
 		lock.lock();
 		try
 		{
@@ -347,7 +346,7 @@ public class ClassData extends CoverageDataContainer
 		{
 			for (Iterator<LineData> i = branches.values().iterator(); 
 				i.hasNext(); 
-				number += (i.next()).getNumberOfValidBranches())
+				number += ((LineData) i.next()).getNumberOfValidBranches())
 				;
 			return number;
 		}
@@ -368,7 +367,7 @@ public class ClassData extends CoverageDataContainer
 		{
 			for (Iterator<LineData> i = branches.values().iterator(); 
 				i.hasNext(); 
-				number += (i.next()).getNumberOfCoveredBranches())
+				number += ((LineData) i.next()).getNumberOfCoveredBranches())
 				;
 			return number;
 		}
@@ -485,7 +484,7 @@ public class ClassData extends CoverageDataContainer
 		}
 	}
 
-	public void addLineSwitch(int lineNumber, int switchNumber, int[] keys) 
+	public void addLineSwitch(int lineNumber, int switchNumber, int min, int max, int maxBranches) 
 	{
 		lock.lock();
 		try
@@ -493,25 +492,7 @@ public class ClassData extends CoverageDataContainer
 			LineData lineData = getLineData(lineNumber);
 			if (lineData != null) 
 			{
-				lineData.addSwitch(switchNumber, keys);
-				this.branches.put(Integer.valueOf(lineNumber), lineData);
-			}
-		}
-		finally
-		{
-			lock.unlock();
-		}
-	}
-
-	public void addLineSwitch(int lineNumber, int switchNumber, int min, int max) 
-	{
-		lock.lock();
-		try
-		{
-			LineData lineData = getLineData(lineNumber);
-			if (lineData != null) 
-			{
-				lineData.addSwitch(switchNumber, min, max);
+				lineData.addSwitch(switchNumber, min, max, maxBranches);
 				this.branches.put(Integer.valueOf(lineNumber), lineData);
 			}
 		}
@@ -660,7 +641,7 @@ public class ClassData extends CoverageDataContainer
 	 * 
 	 * @param lineNumber The line of code where the branch is
 	 * @param switchNumber  The switch on the line to change the hit counter
-	 * @param branch The hit counter 
+	 * @param branch The hit counter
 	 * @param hits how many times the piece was called  
 	 */
 	public void touchSwitch(int lineNumber, int switchNumber, int branch,int hits) {
@@ -677,5 +658,6 @@ public class ClassData extends CoverageDataContainer
 			lock.unlock();
 		}
 	}
+
 
 }

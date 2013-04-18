@@ -74,7 +74,7 @@ public class CheckTask extends CommonMatchingTask
 
 	private String dataFile = null;
 
-	final Set regexes = new HashSet();
+	final Set<Regex> regexes = new HashSet<Regex>();
 
 	private String branchRate = null;
 
@@ -98,51 +98,43 @@ public class CheckTask extends CommonMatchingTask
 	
 	public void execute() throws BuildException
 	{
-		if (dataFile != null)
-		{
+		if (dataFile != null) {
 			getJava().createArg().setValue("--datafile");
 			getJava().createArg().setValue(dataFile);
 		}
 
-		if (branchRate != null)
-		{
+		if (branchRate != null)	{
 			getJava().createArg().setValue("--branch");
 			getJava().createArg().setValue(branchRate);
 		}
 
-		if (lineRate != null)
-		{
+		if (lineRate != null) {
 			getJava().createArg().setValue("--line");
 			getJava().createArg().setValue(lineRate);
 		}
 
-		if (packageBranchRate != null)
-		{
+		if (packageBranchRate != null) {
 			getJava().createArg().setValue("--packagebranch");
 			getJava().createArg().setValue(packageBranchRate);
 		}
 
-		if (packageLineRate != null)
-		{
+		if (packageLineRate != null) {
 			getJava().createArg().setValue("--packageline");
 			getJava().createArg().setValue(packageLineRate);
 		}
 
-		if (totalBranchRate != null)
-		{
+		if (totalBranchRate != null) {
 			getJava().createArg().setValue("--totalbranch");
 			getJava().createArg().setValue(totalBranchRate);
 		}
 
-		if (totalLineRate != null)
-		{
+		if (totalLineRate != null) {
 			getJava().createArg().setValue("--totalline");
 			getJava().createArg().setValue(totalLineRate);
 		}
 
-		Iterator iter = regexes.iterator();
-		while (iter.hasNext())
-		{
+		Iterator<Regex> iter = regexes.iterator();
+		while (iter.hasNext()) {
 			getJava().createArg().setValue("--regex");
 			getJava().createArg().setValue(iter.next().toString());
 		}
@@ -151,12 +143,9 @@ public class CheckTask extends CommonMatchingTask
 		int returnCode = getJava().executeJava();
 
 		// Check the return code and print a message
-		if (returnCode == 0)
-		{
+		if (returnCode == 0) {
 			System.out.println("All checks passed.");
-		}
-		else
-		{
+		} else {
 			if (haltOnFailure)
 				throw new BuildException(
 						"Coverage check failed. See messages above.");

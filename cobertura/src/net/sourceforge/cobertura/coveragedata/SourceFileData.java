@@ -28,10 +28,12 @@ import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import net.sourceforge.cobertura.CoverageIgnore;
 import net.sourceforge.cobertura.util.StringUtil;
 
+@CoverageIgnore
 public class SourceFileData extends CoverageDataContainer
-		implements Comparable, HasBeenInstrumented
+		implements Comparable<Object>
 {
 
 	private static final long serialVersionUID = 3;

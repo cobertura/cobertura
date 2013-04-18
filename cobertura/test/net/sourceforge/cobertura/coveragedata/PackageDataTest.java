@@ -93,12 +93,11 @@ public class PackageDataTest extends TestCase
 		assertEquals(1.00d, packageData.getBranchCoverageRate(), 0d);
 
 		classData.addLineJump(1, 0);
-		classData.addLineSwitch(1, 1, new int[] {1,5});
 		classData.addLineJump(2, 0);
-		classData.addLineSwitch(3, 0, 1, 3);
+		classData.addLineSwitch(3, 0, 1, 3, 10);
 
 		assertEquals(0, packageData.getNumberOfCoveredBranches());
-		assertEquals(12, packageData.getNumberOfValidBranches());
+		assertEquals(8, packageData.getNumberOfValidBranches());
 		assertEquals(0.00d, packageData.getBranchCoverageRate(), 0d);
 
 		classData.touch(1,1);
@@ -110,8 +109,8 @@ public class PackageDataTest extends TestCase
 		classData.touchJump(2, 0, false,1);
       
 		assertEquals(4, packageData.getNumberOfCoveredBranches());
-		assertEquals(12, packageData.getNumberOfValidBranches());
-		assertEquals(0.33d, packageData.getBranchCoverageRate(), 0.01d);
+		assertEquals(11, packageData.getNumberOfValidBranches());
+		assertEquals(4.0d/11.0d, packageData.getBranchCoverageRate(), 0.01d);
 	}
 
 	public void testConstructor()
