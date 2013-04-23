@@ -434,7 +434,7 @@ TOKEN :
       | <OCTAL_LITERAL> (["l","L"])?
   >
 |
-  < #DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])* >
+  < #DECIMAL_LITERAL: ["1"-"9"] (["_", "0"-"9"])* >
 |
   < #HEX_LITERAL: "0" ["x","X"] (["0"-"9","a"-"f","A"-"F"])+ >
 |
@@ -2960,9 +2960,23 @@ void TryStatement() :
  */
 {}
 {
-  "try" Block()
-  ( "catch" "(" FormalParameter() ")" Block() { _ncss++;       Util.debug( "_ncss++" ); _cyc++; } )*
+  "try" TryWithResources() Block()
+  ( "catch" "(" CatchParameter() ")" Block() { _ncss++;       Util.debug( "_ncss++" ); _cyc++; } )*
   [ "finally" Block() { _ncss++;       Util.debug( "_ncss++" );} ]
+}
+
+/** Try-with-resource parameter with jdk 7**/
+void TryWithResources() :
+{}
+{
+ ["(" (Expression() [";"] )* ")"]
+}
+
+/** Multi-catch parameter with jdk 7 **/
+void CatchParameter() :
+{}
+{
+  Modifiers() ReferenceType() ("|" ReferenceType())* VariableDeclaratorId()
 }
 
 void Identifier() :
@@ -3391,7 +3405,7 @@ void TypeArguments():
 //    "<" TypeArgument() ( LOOKAHEAD(2) "," TypeArgument() )* [LOOKAHEAD(3)">"] [LOOKAHEAD(3)">>"] [LOOKAHEAD(3)">>>"] //Removed by REYNAUD Sebastien (LOGICA)
 
 //Added by REYNAUD Sebastien (LOGICA)
-	"<" TypeArgument() ( LOOKAHEAD(2) "," TypeArgument() )* ">"
+	"<" (TypeArgument() ( LOOKAHEAD(2) "," TypeArgument() )* )* ">"
 //
 
 }
