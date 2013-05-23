@@ -3,8 +3,7 @@
  *
  * Copyright (C) 2000-2002 The Apache Software Foundation.  All rights
  * reserved.
- * Copyright (C) 2008 Charlie Squires
- * Copyright (C) 2008 John Lewis
+ * Copyright (C) 2010 John Lewis
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -53,57 +52,34 @@
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package net.sourceforge.cobertura.util
 
-import junit.framework.TestCase
-import net.sourceforge.cobertura.test.util.TestUtil
-import net.sourceforge.cobertura.util.FileFinder
+package net.sourceforge.cobertura.test;
 
-public class FileFinder2Test extends TestCase {
-	
+import java.util.List;
 
-	/* (non-Javadoc)
-	 * @see junit.framework.TestCase#setUp()
-	 */
-	void setUp() throws Exception {
+import groovy.util.Node;
+import net.sourceforge.cobertura.test.util.TestUtils;
+
+import static org.junit.Assert.*;
+
+public class IgnoreUtil {
+	String className;
+	Node dom;
+	public IgnoreUtil(String classname, Node dom) {
+		this.className = classname;
+		this.dom = dom;
 	}
 	
-	public void testSearchJarsForSourceInJar() {
-		TestUtil.withTempDir { tempDir ->
-		
-			def zipFile = TestUtil.createSourceArchive(tempDir)
-			
-			//now test the FileFinder
-    		def fileFinder = new FileFinder();
-    		fileFinder.addSourceDirectory(zipFile.parentFile.absolutePath);
-    	
-    		def source = fileFinder.getSource(TestUtil.SIMPLE_SOURCE_PATHNAME)
-    		verifySource(source)
-    		
-    		/*
-    		 * Now make sure jar files are used.   Rename the zip file to be a jar file
-    		 */
-    		def jarFile = new File(zipFile.parentFile, "source.jar")
-    		assertTrue(zipFile.renameTo(jarFile))
-    		
-    		fileFinder = new FileFinder()
-    		fileFinder.addSourceDirectory(zipFile.parentFile.absolutePath)
-    		
-    		source = fileFinder.getSource(TestUtil.SIMPLE_SOURCE_PATHNAME)
-    		verifySource(source)
-		}
-    }
-	
-	def verifySource(source) {
-		assertNotNull(source)
-		assertNotNull(source.inputStream)
-		def sourceText = source.inputStream.text
-		assertEquals(TestUtil.SOURCE_TEXT, sourceText)
-		source.close()
+	public void assertIgnored(String methodName, String signature) {
+		List<Node> lines = TestUtils.getLineCounts(dom, className, methodName, signature);
+		String methodDesc = methodName + (signature != null ? "(" + signature + ")" : "");
+		assertEquals( methodDesc + " not ignored", 0, lines.size());
 	}
-    
-    public void testSearchJarsForSourceNotFound() {
-        def fileFinder = new FileFinder();
-    	assertNull(fileFinder.searchJarsForSource("doesnotexist"))
-   }
+
+	public void assertNotIgnored(String methodName, String signature) {
+		List<Node> lines = TestUtils.getLineCounts(dom, className, methodName, signature);
+		String methodDesc = methodName + (signature != null ? "(" + signature + ")" : "");
+		assertTrue(methodDesc + " should not be ignored", lines.size() > 0);
+		assertTrue(methodDesc + " should not be ignored", Integer.valueOf((String)lines.get(0).attribute("hits")) > 0);
+	}
 }

@@ -3,7 +3,8 @@
  *
  * Copyright (C) 2000-2002 The Apache Software Foundation.  All rights
  * reserved.
- * Copyright (C) 2010 Piotr Tabor
+ * Copyright (C) 2008 Charlie Squires
+ * Copyright (C) 2008 John Lewis
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -52,101 +53,65 @@
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
+package net.sourceforge.cobertura.util;
 
-package net.sourceforge.cobertura.test
+import java.io.File;
+import java.io.IOException;
+import java.io.StringWriter;
 
-import net.sourceforge.cobertura.test.util.TestUtil
+import org.apache.commons.io.IOUtils;
+import org.junit.Before;
+import org.junit.Test;
 
-import org.junit.Before
-import org.junit.Test
+import static org.junit.Assert.*;
 
-import static org.junit.Assert.*
+import junit.framework.TestCase;
+import net.sourceforge.cobertura.test.util.TestUtils;
+import net.sourceforge.cobertura.util.FileFinder;
 
-public class PerformanceTest {
-	def ant = TestUtil.getCoberturaAntBuilder(TestUtil.getCoberturaClassDir())
-	def testUtil = new TestUtil()
-	def dom
-	def ignoreUtil
-
+public class FileFinder2Test {
+	@Before
+	public void setUp(){
+	}
+	
 	@Test
-	void performanceTest() {
+	public void testSearchJarsForSourceInJar() throws IOException {
+		File tempDir = TestUtils.getTempDir();
+		
+		File zipFile = TestUtils.createSourceArchive(tempDir);
+			
+		//now test the FileFinder
+		FileFinder fileFinder = new FileFinder();
+		fileFinder.addSourceDirectory(zipFile.getParentFile().getAbsolutePath());
+		
+		Source source = fileFinder.getSource(TestUtils.SIMPLE_SOURCE_PATHNAME);
+		verifySource(source);
+		
 		/*
-		 * Use a temporary directory and create a Main.java source file that
-		 * has trivial methods such as .
+		 * Now make sure jar files are used.   Rename the zip file to be a jar file
 		 */
-		TestUtil.withTempDir { tempDir ->
-			def srcDir = new File(tempDir, "src")
-			def instrumentDir = new File(tempDir, "instrument")
-			
-			def mainSourceFile = new File(srcDir, "mypackage/Main.java")
-			def datafile = new File(srcDir, "cobertura.ser")
-			mainSourceFile.parentFile.mkdirs()
-			
-			
-			mainSourceFile.write """
-package mypackage;
-
-public class Main extends Thread {				
-	public static void main(String[] args) {
-		long start = System.nanoTime();
-		int j = 0;
-		for (int i = 0; i < 100000; i++) {
-		   if (i % 2 == 0) { j+=2; };
-		   switch (i % 4) {
-		      case 0 : 
-		      case 1 : j++;
-		      case 2 : j+=2;
-		      default: j+=3;
-		   } 
-		}
-		long stop = System.nanoTime();
-		System.out.println("Test took:" + (stop - start)/100000.0 + " milis"); 
+		File jarFile = new File(zipFile.getParentFile(), "source.jar");
+		assertTrue(zipFile.renameTo(jarFile));
+		
+		fileFinder = new FileFinder();
+		fileFinder.addSourceDirectory(zipFile.getParentFile().getAbsolutePath());
+		
+		source = fileFinder.getSource(TestUtils.SIMPLE_SOURCE_PATHNAME);
+		verifySource(source);
+    }
+	
+	public void verifySource(Source source) throws IOException {
+		assertNotNull(source);
+		assertNotNull(source.getInputStream());
+		StringWriter writer = new StringWriter();
+		IOUtils.copy(source.getInputStream(), writer);
+		assertEquals(TestUtils.SOURCE_TEXT, writer.toString());
+		source.close();
 	}
-}
-			"""
-
-			testUtil.compileSource(ant, srcDir)
-
-			/*
-			 * Kick off the Main (instrumented) class.
-			 */
-		    print "Run without instrumentation:\n";
-			ant.java(classname:'mypackage.Main', dir:srcDir, fork:true, failonerror:true) {
-				classpath {
-					dirset(dir:srcDir)
-				}
-			}
-			
-			testUtil.instrumentClasses(ant, srcDir, datafile, instrumentDir, [])
-			
-			print "Run with instrumentation (not threadsafe-rigorous):\n";
-			ant.java(classname:'mypackage.Main', dir:srcDir, fork:true, failonerror:true) {
-				classpath {
-					dirset(dir:instrumentDir)
-					dirset(dir:srcDir)
-					dirset(dir:testUtil.coberturaClassDir)
-				}
-			}
-
-			testUtil.compileSource(ant, srcDir)
-
-			testUtil.instrumentClasses(ant, srcDir, datafile, instrumentDir, [threadsafeRigorous:true])
-			
-			print "Run with instrumentation (threadsafe-rigorous):\n";
-			ant.java(classname:'mypackage.Main', dir:srcDir, fork:true, failonerror:true) {
-				classpath {
-					dirset(dir:instrumentDir)
-					dirset(dir:srcDir)
-					dirset(dir:testUtil.coberturaClassDir)
-				}
-			}
-
-
-			/*
-			 * Now create a cobertura xml file and make sure the correct counts are in it.
-			 */
-			ant.'cobertura-report'(datafile:datafile, format:'xml', destdir:srcDir)
-		}
-	}
-
+	
+    @Test
+    public void testSearchJarsForSourceNotFound() {
+        FileFinder fileFinder = new FileFinder();
+    	assertNull(fileFinder.getSource("doesnotexist"));
+   }
 }

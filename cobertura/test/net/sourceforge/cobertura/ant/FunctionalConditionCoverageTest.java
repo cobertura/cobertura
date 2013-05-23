@@ -35,11 +35,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import junit.framework.TestCase;
 import net.sourceforge.cobertura.reporting.JUnitXMLHelper;
+import net.sourceforge.cobertura.test.util.TestUtils;
 
 import org.apache.tools.ant.Project;
+import org.apache.tools.ant.launch.Launcher;
 import org.apache.tools.ant.taskdefs.Java;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.Path.PathElement;
@@ -49,6 +52,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.xpath.XPath;
+import org.junit.Test;
 
 import test.condition.ConditionCalls;
 
@@ -151,6 +155,7 @@ public class FunctionalConditionCoverageTest extends TestCase
 		}
 	}
 
+	@Test
 	public static void testConditionCoverage() throws Exception
 	{
 		runTestAntScript("condition-coverage", "test-condition-coverage");
@@ -401,35 +406,36 @@ public class FunctionalConditionCoverageTest extends TestCase
 	 */
 	private static void runTestAntScript(String testName, String target) throws IOException
 	{
-		Java task = new Java();
-		task.setTaskName("java");
-		task.setProject(new Project());
-		task.init();
-
+		Java java = new Java();
+		java.setProject(TestUtils.project);
+		java.init();
+		
 		// Call ant launcher.  Requires ant-lancher.jar.
-		task.setClassname("org.apache.tools.ant.launch.Launcher");
-		task.setFork(true);
+		java.setClassname("org.apache.tools.ant.launch.Launcher");
+		java.setFork(true);
+		
+		AntUtil.transferCoberturaDataFileProperty(java);
 
-		AntUtil.transferCoberturaDataFileProperty(task);
+		java.createArg().setValue("-f");
+		java.createArg().setValue(BASEDIR + "/build.xml");
+		java.createArg().setValue(target);
 
-		task.createArg().setValue("-f");
-		task.createArg().setValue(BASEDIR + "/build.xml");
-		task.createArg().setValue(target);
-
-		task.setFailonerror(true);
+		java.setFailonerror(true);
 
 		// Set output to go to a temp file
 		File outputFile = Util.createTemporaryTextFile("cobertura-test");
-		task.setOutput(outputFile);
+		java.setOutput(outputFile);
 
 		// Set the classpath to the same classpath as this JVM
-		Path classpath = task.createClasspath();
-		PathElement pathElement = classpath.createPathElement();
-		pathElement.setPath(System.getProperty("java.class.path"));
 
-		try
-		{
-			task.execute();
+		Path classpath = new Path(TestUtils.project);
+		PathElement pathElement = classpath.new PathElement();
+		pathElement.setPath(System.getProperty("java.class.path"));
+		classpath.add(pathElement);
+		java.setClasspath(classpath);
+		System.out.println(classpath);
+		try {
+			java.execute();
 		}
 		finally
 		{
@@ -443,5 +449,4 @@ public class FunctionalConditionCoverageTest extends TestCase
 			}
 		}
 	}
-
 }

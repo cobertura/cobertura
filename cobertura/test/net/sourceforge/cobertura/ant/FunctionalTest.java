@@ -37,6 +37,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import net.sourceforge.cobertura.reporting.JUnitXMLHelper;
+import net.sourceforge.cobertura.test.util.TestUtils;
 
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Java;
@@ -46,6 +47,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.xpath.XPath;
+import org.junit.Test;
 
 /**
  * These tests generally exec ant to run a test.xml file.  A different target is used for
@@ -62,24 +64,28 @@ public class FunctionalTest extends TestCase
 	private final static File BASEDIR = new File((System.getProperty("basedir") != null) ? System
 			.getProperty("basedir") : ".", "examples/functionaltest1");
 
+	@Test
 	public static void testInstrumentUsingDirSet() throws Exception
 	{
 		runTestAntScript("dirset", "test-dirset");
 		verify("dirset");
 	}
 
+	@Test
 	public static void testInstrumentUsingIncludesAndExcludes() throws Exception
 	{
 		runTestAntScript("includes-and-excludes", "test-includes-and-excludes");
 		verify("includes-and-excludes");
 	}
 
+	@Test
 	public static void testInstrumentUsingClassPath() throws Exception
 	{
 		runTestAntScript("classpath", "test-classpath");
 		verify("classpath");
 	}
 
+	@Test
 	public static void testInstrumentUsingWar() throws Exception
 	{
 		runTestAntScript("classpath", "test-war");
@@ -345,54 +351,77 @@ public class FunctionalTest extends TestCase
 	 */
 	private static void runTestAntScript(String testName, String target) throws IOException
 	{
-		Java task = new Java();
-		task.setTaskName("java");
-		task.setProject(new Project());
-		task.init();
-
-		// Call ant launcher.  Requires ant-lancher.jar.
-		task.setClassname("org.apache.tools.ant.launch.Launcher");
-		task.setFork(true);
-
-		AntUtil.transferCoberturaDataFileProperty(task);
-		
-		if (forkedJVMDebugPort > 0)
-		{
-			task.createJvmarg().setValue("-Xdebug");
-			task.createJvmarg().setValue("-Xrunjdwp:transport=dt_socket,address=" + forkedJVMDebugPort + ",server=y,suspend=y");
+//		Java task = new Java();
+		Java java = new Java();
+		java.setProject(TestUtils.project);
+		java.setTaskName("java");
+//		task.setTaskName("java");
+//		task.setProject(TestUtils.project);
+////		task.init();
+//
+//		// Call ant launcher.  Requires ant-lancher.jar.
+//		task.setClassname("org.apache.tools.ant.launch.Launcher");
+		java.setClassname("org.apache.tools.ant.launch.Launcher");
+//		task.setFork(true);
+		java.setFork(true);
+//
+//		AntUtil.transferCoberturaDataFileProperty(task);
+		AntUtil.transferCoberturaDataFileProperty(java);
+//		
+//		if (forkedJVMDebugPort > 0)
+//		{
+//			task.createJvmarg().setValue("-Xdebug");
+//			task.createJvmarg().setValue("-Xrunjdwp:transport=dt_socket,address=" + forkedJVMDebugPort + ",server=y,suspend=y");
+//		}
+		if (forkedJVMDebugPort > 0) {
+			java.createJvmarg().setValue("-Xdebug");
+			java.createJvmarg().setValue("-Xrunjdwp:transport=dt_socket,address=" + forkedJVMDebugPort + ",server=y,suspend=y");
 		}
-
-
-		task.createArg().setValue("-f");
-		task.createArg().setValue(BASEDIR + "/build.xml");
-		task.createArg().setValue(target);
-
-		task.setFailonerror(true);
-
-		// Set output to go to a temp file
-		File outputFile = Util.createTemporaryTextFile("cobertura-test");
-		task.setOutput(outputFile);
-
-		// Set the classpath to the same classpath as this JVM
-		Path classpath = task.createClasspath();
-		PathElement pathElement = classpath.createPathElement();
+		
+//
+//
+//		task.createArg().setValue("-f");
+		java.createArg().setValue("-f");
+//		task.createArg().setValue(BASEDIR + "/build.xml");
+		java.createArg().setValue(BASEDIR + "/build.xml");
+//		task.createArg().setValue(target);
+		java.createArg().setValue(target);
+//
+//		task.setFailonerror(true);
+		java.setFailonerror(true);
+//
+//		// Set output to go to a temp file
+//		File outputFile = Util.createTemporaryTextFile("cobertura-test");
+		File output = Util.createTemporaryTextFile("cobertura-test");
+//		task.setOutput(outputFile);
+		java.setOutput(output);
+//
+//		// Set the classpath to the same classpath as this JVM
+//		Path classpath = task.createClasspath();
+		Path classpath = new Path(TestUtils.project);
+		PathElement pathElement = classpath.new PathElement();
+//		PathElement pathElement = classpath.createPathElement();
 		pathElement.setPath(System.getProperty("java.class.path"));
-
+//		pathElement.setPath(System.getProperty("java.class.path"));
+//		task.setClasspath(classpath);
+		classpath.add(TestUtils.getCoberturaDefaultClasspath());
+		classpath.add(pathElement);
+		java.setClasspath(classpath);
+		
 		try
 		{
-			task.execute();
+			java.executeJava();
 		}
 		finally
 		{
-			if (outputFile.exists())
+			if (output.exists())
 			{
 				// Put the contents of the output file in the exception
 				System.out.println("\n\n\nOutput from Ant for " + testName
 						+ " test:\n----------------------------------------\n"
-						+ Util.getText(outputFile) + "----------------------------------------");
-				outputFile.delete();
+						+ Util.getText(output) + "----------------------------------------");
+				output.delete();
 			}
 		}
 	}
-
 }

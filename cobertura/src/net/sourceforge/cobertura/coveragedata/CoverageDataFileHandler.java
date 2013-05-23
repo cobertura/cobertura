@@ -66,7 +66,6 @@ public abstract class CoverageDataFileHandler  {
 	public static ProjectData loadCoverageData(File dataFile)
 	{
 		InputStream is = null;
-
 		try
 		{
 			is = new BufferedInputStream(new FileInputStream(dataFile), 16384);
