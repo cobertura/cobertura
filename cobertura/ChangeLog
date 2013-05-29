@@ -1,4 +1,4 @@
-version 1.9.5:
+version 2.0:
 	* New --ignoreTrivial switch that tells Cobertura to ignore the 
 	  following in the coverage report: Getter methods that simply 
 	  read a class field; Setter methods that set a class field;
