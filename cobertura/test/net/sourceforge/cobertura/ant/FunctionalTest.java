@@ -26,6 +26,8 @@
 
 package net.sourceforge.cobertura.ant;
 
+import static org.junit.Assert.*;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -37,6 +39,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import net.sourceforge.cobertura.reporting.JUnitXMLHelper;
+import net.sourceforge.cobertura.test.AbstractCoberturaTestCase;
 import net.sourceforge.cobertura.test.util.TestUtils;
 
 import org.apache.tools.ant.Project;
@@ -56,7 +59,7 @@ import org.junit.Test;
  * 
  * @author jwlewi
  */
-public class FunctionalTest extends TestCase
+public class FunctionalTest extends AbstractCoberturaTestCase
 {
 
 	private static int forkedJVMDebugPort = 0;
@@ -65,28 +68,28 @@ public class FunctionalTest extends TestCase
 			.getProperty("basedir") : ".", "examples/functionaltest1");
 
 	@Test
-	public static void testInstrumentUsingDirSet() throws Exception
+	public void testInstrumentUsingDirSet() throws Exception
 	{
 		runTestAntScript("dirset", "test-dirset");
 		verify("dirset");
 	}
 
 	@Test
-	public static void testInstrumentUsingIncludesAndExcludes() throws Exception
+	public void testInstrumentUsingIncludesAndExcludes() throws Exception
 	{
 		runTestAntScript("includes-and-excludes", "test-includes-and-excludes");
 		verify("includes-and-excludes");
 	}
 
 	@Test
-	public static void testInstrumentUsingClassPath() throws Exception
+	public void testInstrumentUsingClassPath() throws Exception
 	{
 		runTestAntScript("classpath", "test-classpath");
 		verify("classpath");
 	}
 
 	@Test
-	public static void testInstrumentUsingWar() throws Exception
+	public void testInstrumentUsingWar() throws Exception
 	{
 		runTestAntScript("classpath", "test-war");
 		verify("war");

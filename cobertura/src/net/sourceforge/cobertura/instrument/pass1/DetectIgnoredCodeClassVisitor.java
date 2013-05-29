@@ -31,11 +31,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import net.sourceforge.cobertura.instrument.AbstractFindTouchPointsClassInstrumenter;
 
-import org.objectweb.asm.ClassAdapter;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
-public class DetectIgnoredCodeClassVisitor extends ClassAdapter {
+public class DetectIgnoredCodeClassVisitor extends ClassVisitor {
 	/**
 	 *  set of ignored line IDs
 	 */ 
@@ -68,7 +68,7 @@ public class DetectIgnoredCodeClassVisitor extends ClassAdapter {
 		
 	public DetectIgnoredCodeClassVisitor(ClassVisitor cv, 
 			boolean ignoreTrivial, Set<String> ignoreAnnotations) {
-		super(cv);
+		super(Opcodes.ASM4, cv);
 		this.ignoreTrivial = ignoreTrivial;
 		this.ignoreAnnotations = ignoreAnnotations;
 	}

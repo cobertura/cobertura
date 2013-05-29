@@ -31,9 +31,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import net.sourceforge.cobertura.instrument.AbstractFindTouchPointsClassInstrumenter;
 
-import org.objectweb.asm.ClassAdapter;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 /**
  * The same line can cause generation of many byte-code blocks connected to the same line.
@@ -176,7 +176,7 @@ import org.objectweb.asm.MethodVisitor;
  * (line number -> (duplicated lineId -> origin lineId)).</p>    
  */
 
-public class DetectDuplicatedCodeClassVisitor extends ClassAdapter{
+public class DetectDuplicatedCodeClassVisitor extends ClassVisitor{
 	/**
 	 *  map of (line number -> (duplicated lineId -> origin lineId))
 	 */ 
@@ -195,7 +195,7 @@ public class DetectDuplicatedCodeClassVisitor extends ClassAdapter{
 	private final AtomicInteger lineIdGenerator = new AtomicInteger(0);
 		
 	public  DetectDuplicatedCodeClassVisitor(ClassVisitor cv) {
-		super(cv);
+		super(Opcodes.ASM4, cv);
 	}
 	
 	@Override

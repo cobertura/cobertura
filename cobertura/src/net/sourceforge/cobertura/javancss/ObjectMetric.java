@@ -63,7 +63,7 @@ package net.sourceforge.cobertura.javancss;
 /**
  * Basic data class to store all metrics attached to an object.
  *
- * @author  Hervé Boutemy
+ * @author  Hervï¿½ Boutemy
  * @version $Id: ObjectMetric.java 121 2009-01-17 22:19:45Z hboutemy $
  */
 public class ObjectMetric extends Metric

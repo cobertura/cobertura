@@ -28,8 +28,8 @@ package net.sourceforge.cobertura.instrument;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodAdapter;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 /**
  * Abstract implementation of {@link MethodAdapter} that:
@@ -41,7 +41,7 @@ import org.objectweb.asm.MethodVisitor;
  * @author ptab
  *
  */
-public abstract class ContextMethodAwareMethodAdapter extends MethodAdapter{
+public abstract class ContextMethodAwareMethodAdapter extends MethodVisitor{
     protected final String className;
 	protected final String methodName;
 	protected final String methodSignature;
@@ -59,7 +59,7 @@ public abstract class ContextMethodAwareMethodAdapter extends MethodAdapter{
 	protected final AtomicInteger lineIdGenerator; 
 	
 	public ContextMethodAwareMethodAdapter(MethodVisitor mv, String className, String methodName, String methodSignature,AtomicInteger lineIdGenerator) {
-		super(mv);
+		super(Opcodes.ASM4, mv);
 		this.className=className;
 		this.methodName=methodName;
 		this.methodSignature=methodSignature;

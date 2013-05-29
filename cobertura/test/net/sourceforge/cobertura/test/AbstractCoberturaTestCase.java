@@ -22,10 +22,10 @@ import org.junit.Before;
  *
  */
 public class AbstractCoberturaTestCase {
-	File tempDir;
-	File srcDir;
-	File reportDir;
-	File instrumentDir;
+	public static File tempDir;
+	public static File srcDir;
+	public static File reportDir;
+	public static File instrumentDir;
 	File mainSourceFile;
 	File datafile;
 
@@ -39,7 +39,11 @@ public class AbstractCoberturaTestCase {
 		reportDir = new File(tempDir, "report");
 		instrumentDir = new File(tempDir, "instrument");
 		mainSourceFile = new File(srcDir, "mypackage/Main.java");
-		datafile = new File(srcDir, "cobertura.ser");		
+		datafile = new File(srcDir, "cobertura.ser");
+		
+		srcDir.mkdirs();
+		reportDir.mkdirs();
+		instrumentDir.mkdirs();
 	}
 	
 	@After

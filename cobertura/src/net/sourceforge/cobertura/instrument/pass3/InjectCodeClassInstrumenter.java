@@ -35,7 +35,6 @@ import net.sourceforge.cobertura.instrument.FindTouchPointsMethodAdapter;
 import net.sourceforge.cobertura.instrument.tp.ClassMap;
 
 import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.MethodAdapter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
@@ -143,10 +142,10 @@ public class InjectCodeClassInstrumenter extends AbstractFindTouchPointsClassIns
 	 * 
 	 * @author piotr.tabor@gmail.com
 	 */
-	private class GenerateCallCoberturaInitMethodVisitor extends MethodAdapter {
+	private class GenerateCallCoberturaInitMethodVisitor extends MethodVisitor {
 		private String className;
 		public GenerateCallCoberturaInitMethodVisitor(MethodVisitor arg0,String className) {
-			super(arg0);
+			super(Opcodes.ASM4, arg0);
 			this.className = className;
 		}
 

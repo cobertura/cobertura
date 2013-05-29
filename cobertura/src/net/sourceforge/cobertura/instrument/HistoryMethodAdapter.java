@@ -30,8 +30,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodAdapter;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.FrameNode;
@@ -54,13 +54,13 @@ import org.objectweb.asm.tree.VarInsnNode;
  * 
  * @author piotr.tabor@gmail.com.
  */
-public class HistoryMethodAdapter extends MethodAdapter {
+public class HistoryMethodAdapter extends MethodVisitor {
 
 	private final LinkedList<AbstractInsnNode> backlog = new LinkedList<AbstractInsnNode>();
 	private final int eventsToTrace;
 	
 	public HistoryMethodAdapter(MethodVisitor mv, int eventsToTrace) {
-		super(mv);
+		super(Opcodes.ASM4, mv);
 		this.eventsToTrace = eventsToTrace; 
 	}
 	

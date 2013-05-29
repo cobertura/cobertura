@@ -32,8 +32,8 @@ import java.util.regex.Pattern;
 
 import net.sourceforge.cobertura.instrument.pass1.DetectDuplicatedCodeClassVisitor;
 
-import org.objectweb.asm.ClassAdapter;
 import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.Opcodes;
 
 
 /**
@@ -41,7 +41,7 @@ import org.objectweb.asm.ClassVisitor;
  * 
  * @author piotr.tabor@gmail.com
  */
-public class AbstractFindTouchPointsClassInstrumenter extends ClassAdapter{
+public class AbstractFindTouchPointsClassInstrumenter extends ClassVisitor{
 	/**
 	 * List of patterns to know that we don't want trace lines that are calls to some methods
 	 */
@@ -91,7 +91,7 @@ public class AbstractFindTouchPointsClassInstrumenter extends ClassAdapter{
 	 */
 	public AbstractFindTouchPointsClassInstrumenter(ClassVisitor cv,Collection<Pattern> ignoreRegexp,
 			Map<Integer, Map<Integer, Integer>> duplicatedLinesMap) {
-		super(cv);
+		super(Opcodes.ASM4, cv);
 		this.ignoreRegexp=ignoreRegexp;
 		this.duplicatedLinesMap=duplicatedLinesMap;
 	}
