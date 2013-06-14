@@ -24,11 +24,11 @@
  */
 package net.sourceforge.cobertura.util;
 
+import org.apache.log4j.Logger;
+
 import java.io.File;
 import java.io.InputStream;
 import java.util.zip.ZipFile;
-
-import org.apache.log4j.Logger;
 
 public class Source {
 	private InputStream is;

@@ -54,7 +54,7 @@
  * <http://www.apache.org/>.
  */
 -->
-<project name="cobertura-library" xmlns:cobertura="antlib:net.sourceforge.cobertura.ant">
+<project name="cobertura-library">
 
 	<macrodef name="cobertura-groovy-init">
 		<sequential>

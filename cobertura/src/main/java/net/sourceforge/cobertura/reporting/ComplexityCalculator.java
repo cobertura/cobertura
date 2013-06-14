@@ -24,12 +24,6 @@
  */
 package net.sourceforge.cobertura.reporting;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import net.sourceforge.cobertura.coveragedata.ClassData;
 import net.sourceforge.cobertura.coveragedata.PackageData;
 import net.sourceforge.cobertura.coveragedata.ProjectData;
@@ -38,8 +32,13 @@ import net.sourceforge.cobertura.javancss.FunctionMetric;
 import net.sourceforge.cobertura.javancss.Javancss;
 import net.sourceforge.cobertura.util.FileFinder;
 import net.sourceforge.cobertura.util.Source;
-
 import org.apache.log4j.Logger;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Allows complexity computing for source files, packages and a whole project. Average

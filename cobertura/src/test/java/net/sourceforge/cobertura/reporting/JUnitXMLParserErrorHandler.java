@@ -23,7 +23,6 @@
 package net.sourceforge.cobertura.reporting;
 
 import junit.framework.Assert;
-
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXParseException;
 

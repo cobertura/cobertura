@@ -21,17 +21,13 @@
  */
 package net.sourceforge.cobertura.merge;
 
+import junit.framework.TestCase;
+import net.sourceforge.cobertura.coveragedata.*;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
-import junit.framework.TestCase;
-import net.sourceforge.cobertura.coveragedata.ClassData;
-import net.sourceforge.cobertura.coveragedata.LineData;
-import net.sourceforge.cobertura.coveragedata.PackageData;
-import net.sourceforge.cobertura.coveragedata.ProjectData;
-import net.sourceforge.cobertura.coveragedata.SourceFileData;
 
 /**
  * Tests merge feature by calling directly ProjectData.merge method.

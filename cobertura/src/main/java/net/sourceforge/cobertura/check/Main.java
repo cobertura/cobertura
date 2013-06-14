@@ -24,23 +24,22 @@
 
 package net.sourceforge.cobertura.check;
 
+import net.sourceforge.cobertura.coveragedata.ClassData;
+import net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler;
+import net.sourceforge.cobertura.coveragedata.ProjectData;
+import net.sourceforge.cobertura.util.Header;
+import org.apache.log4j.Logger;
+import org.apache.oro.text.regex.MalformedPatternException;
+import org.apache.oro.text.regex.Pattern;
+import org.apache.oro.text.regex.Perl5Compiler;
+import org.apache.oro.text.regex.Perl5Matcher;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
-
-import net.sourceforge.cobertura.coveragedata.ClassData;
-import net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler;
-import net.sourceforge.cobertura.coveragedata.ProjectData;
-import net.sourceforge.cobertura.util.Header;
-
-import org.apache.log4j.Logger;
-import org.apache.oro.text.regex.MalformedPatternException;
-import org.apache.oro.text.regex.Pattern;
-import org.apache.oro.text.regex.Perl5Compiler;
-import org.apache.oro.text.regex.Perl5Matcher;
 
 public class Main {
 
@@ -117,7 +116,7 @@ public class Main {
 	public Main(String[] args) throws MalformedPatternException {
 		int exitStatus = 0;
 
-		Header.print(System.out);
+		Header.print();
 
 		File dataFile = CoverageDataFileHandler.getDefaultDataFile();
 		double branchCoverageRate = -1.0;

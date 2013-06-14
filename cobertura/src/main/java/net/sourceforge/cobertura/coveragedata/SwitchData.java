@@ -21,10 +21,10 @@
 
 package net.sourceforge.cobertura.coveragedata;
 
+import net.sourceforge.cobertura.CoverageIgnore;
+
 import java.io.Serializable;
 import java.util.Arrays;
-
-import net.sourceforge.cobertura.CoverageIgnore;
 
 @CoverageIgnore
 public class SwitchData

@@ -55,19 +55,16 @@
  */
 package net.sourceforge.cobertura.util;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
-
+import net.sourceforge.cobertura.test.util.TestUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.StringWriter;
 
-import junit.framework.TestCase;
-import net.sourceforge.cobertura.test.util.TestUtils;
-import net.sourceforge.cobertura.util.FileFinder;
+import static org.junit.Assert.*;
 
 public class FileFinder2Test {
 	@Before

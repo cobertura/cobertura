@@ -25,9 +25,9 @@
 
 package net.sourceforge.cobertura.instrument.tp;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import net.sourceforge.cobertura.coveragedata.LineData;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Class representing a touch-point connected to a single line of source-code

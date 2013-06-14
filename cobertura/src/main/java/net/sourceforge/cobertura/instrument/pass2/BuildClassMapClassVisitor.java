@@ -25,24 +25,18 @@
 
 package net.sourceforge.cobertura.instrument.pass2;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Pattern;
-
 import net.sourceforge.cobertura.CoverageIgnore;
 import net.sourceforge.cobertura.instrument.AbstractFindTouchPointsClassInstrumenter;
 import net.sourceforge.cobertura.instrument.FindTouchPointsMethodAdapter;
 import net.sourceforge.cobertura.instrument.HistoryMethodAdapter;
 import net.sourceforge.cobertura.instrument.pass3.CodeProvider;
 import net.sourceforge.cobertura.instrument.tp.ClassMap;
+import org.objectweb.asm.*;
 
-import org.objectweb.asm.AnnotationVisitor;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * <p>Analyzes given class. Builds {@link ClassMap} that represents any touch-points and other important information

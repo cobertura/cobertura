@@ -22,10 +22,10 @@
 
 package com.example.simple;
 
+import junit.framework.TestCase;
+
 import java.util.Collection;
 import java.util.LinkedList;
-
-import junit.framework.TestCase;
 
 public class SimpleTest extends TestCase
 {

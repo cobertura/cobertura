@@ -25,18 +25,13 @@
 
 package net.sourceforge.cobertura.instrument.pass1;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import net.sourceforge.cobertura.instrument.ContextMethodAwareMethodAdapter;
-
 import org.apache.log4j.Logger;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Detects duplicates in a single analyzed method of ASM code. Applies found information about

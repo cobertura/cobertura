@@ -55,12 +55,13 @@
 
 package net.sourceforge.cobertura.test;
 
-import java.util.List;
-
 import groovy.util.Node;
 import net.sourceforge.cobertura.test.util.TestUtils;
 
-import static org.junit.Assert.*;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class IgnoreUtil {
 	String className;

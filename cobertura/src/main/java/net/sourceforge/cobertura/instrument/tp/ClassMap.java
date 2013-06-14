@@ -25,23 +25,14 @@
 
 package net.sourceforge.cobertura.instrument.tp;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import net.sourceforge.cobertura.coveragedata.ClassData;
 import net.sourceforge.cobertura.coveragedata.ProjectData;
 import net.sourceforge.cobertura.instrument.pass2.BuildClassMapClassVisitor;
-
 import org.apache.log4j.Logger;
 import org.objectweb.asm.Label;
+
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * <p>This class is a container for informations gathered during class analyzing done by {@link BuildClassMapClassVisitor}.</p>
@@ -200,7 +191,6 @@ public class ClassMap {
 			getOrCreateLineTouchPoints(currentLine).add(swi);
 			getOrCreateSourcePoints(def).add(swi);
 			for (Label l : labels) {
-				//				System.out.println("Registering label to switch:"+l);
 				getOrCreateSourcePoints(l).add(swi);
 			}
 		}

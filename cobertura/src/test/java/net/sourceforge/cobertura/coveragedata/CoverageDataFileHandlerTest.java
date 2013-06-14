@@ -21,9 +21,9 @@
 
 package net.sourceforge.cobertura.coveragedata;
 
-import java.io.File;
-
 import junit.framework.TestCase;
+
+import java.io.File;
 
 public class CoverageDataFileHandlerTest extends TestCase {
 

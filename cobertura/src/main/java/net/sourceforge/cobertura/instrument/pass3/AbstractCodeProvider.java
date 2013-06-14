@@ -25,23 +25,14 @@
 
 package net.sourceforge.cobertura.instrument.pass3;
 
+import net.sourceforge.cobertura.coveragedata.LightClassmapListener;
+import net.sourceforge.cobertura.coveragedata.TouchCollector;
+import net.sourceforge.cobertura.instrument.tp.*;
+import org.objectweb.asm.*;
+
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-
-import net.sourceforge.cobertura.coveragedata.LightClassmapListener;
-import net.sourceforge.cobertura.coveragedata.TouchCollector;
-import net.sourceforge.cobertura.instrument.tp.ClassMap;
-import net.sourceforge.cobertura.instrument.tp.JumpTouchPointDescriptor;
-import net.sourceforge.cobertura.instrument.tp.LineTouchPointDescriptor;
-import net.sourceforge.cobertura.instrument.tp.SwitchTouchPointDescriptor;
-import net.sourceforge.cobertura.instrument.tp.TouchPointDescriptor;
-
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
 
 /**
  * Common method used by most of {@link AbstractCodeProvider} implementations.

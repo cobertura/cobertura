@@ -24,12 +24,12 @@
 
 package net.sourceforge.cobertura.coveragedata;
 
+import net.sourceforge.cobertura.CoverageIgnore;
+import net.sourceforge.cobertura.util.StringUtil;
+
 import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import net.sourceforge.cobertura.CoverageIgnore;
-import net.sourceforge.cobertura.util.StringUtil;
 
 @CoverageIgnore
 public class SourceFileData extends CoverageDataContainer

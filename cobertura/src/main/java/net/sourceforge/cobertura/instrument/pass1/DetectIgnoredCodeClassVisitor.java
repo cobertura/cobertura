@@ -25,15 +25,14 @@
 
 package net.sourceforge.cobertura.instrument.pass1;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import net.sourceforge.cobertura.instrument.AbstractFindTouchPointsClassInstrumenter;
-
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class DetectIgnoredCodeClassVisitor extends ClassVisitor {
 	/**

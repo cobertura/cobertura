@@ -23,9 +23,9 @@
 
 package net.sourceforge.cobertura.coveragedata;
 
-import java.util.Collection;
-
 import junit.framework.TestCase;
+
+import java.util.Collection;
 
 public class ClassDataTest extends TestCase {
 

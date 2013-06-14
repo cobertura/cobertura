@@ -25,10 +25,10 @@
 
 package net.sourceforge.cobertura.instrument;
 
+import net.sourceforge.cobertura.util.RegexUtil;
+
 import java.util.HashSet;
 import java.util.Set;
-
-import net.sourceforge.cobertura.util.RegexUtil;
 
 /**
  * This class represents a collection of regular expressions that will be used to see

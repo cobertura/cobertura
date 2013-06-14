@@ -39,43 +39,16 @@
 
 package net.sourceforge.cobertura.javancss;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import net.sourceforge.cobertura.javancss.ccl.Exitable;
-import net.sourceforge.cobertura.javancss.ccl.FileUtil;
 import net.sourceforge.cobertura.javancss.ccl.Init;
 import net.sourceforge.cobertura.javancss.ccl.Util;
-
-import net.sourceforge.cobertura.javancss.parser.JavaParser;
-import net.sourceforge.cobertura.javancss.parser.JavaParserInterface;
-import net.sourceforge.cobertura.javancss.parser.JavaParserTokenManager;
-import net.sourceforge.cobertura.javancss.parser.ParseException;
-import net.sourceforge.cobertura.javancss.parser.TokenMgrError;
+import net.sourceforge.cobertura.javancss.parser.*;
 import net.sourceforge.cobertura.javancss.parser.debug.JavaParserDebug;
 import net.sourceforge.cobertura.javancss.parser.java15.JavaParser15;
 import net.sourceforge.cobertura.javancss.parser.java15.debug.JavaParser15Debug;
-import net.sourceforge.cobertura.javancss.test.JavancssTest;
+
+import java.io.*;
+import java.util.*;
 
 /**
  * While the Java parser class might be the heart of JavaNCSS,

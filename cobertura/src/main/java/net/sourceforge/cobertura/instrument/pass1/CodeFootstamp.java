@@ -25,11 +25,11 @@
 
 package net.sourceforge.cobertura.instrument.pass1;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-
 import org.objectweb.asm.Label;
 import org.objectweb.asm.Opcodes;
+
+import java.util.Arrays;
+import java.util.LinkedList;
 
 /**
  * <p>Represents a single 'footprint' of some piece of ASM code. Is used to detect if two

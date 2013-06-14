@@ -55,22 +55,19 @@
 
 package net.sourceforge.cobertura.test;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
 import groovy.util.AntBuilder;
 import groovy.util.Node;
 import net.sourceforge.cobertura.ant.ReportTask;
 import net.sourceforge.cobertura.test.util.TestUtils;
-
 import org.apache.commons.io.FileUtils;
-import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Java;
-import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.io.File;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class SwitchFunctionalTest extends AbstractCoberturaTestCase {
 	AntBuilder ant = TestUtils.getCoberturaAntBuilder(TestUtils.getCoberturaClassDir());

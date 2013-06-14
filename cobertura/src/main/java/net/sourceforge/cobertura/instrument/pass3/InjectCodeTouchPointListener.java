@@ -25,14 +25,13 @@
 
 package net.sourceforge.cobertura.instrument.pass3;
 
-import java.util.Map;
-
 import net.sourceforge.cobertura.instrument.TouchPointListener;
 import net.sourceforge.cobertura.instrument.tp.ClassMap;
-
 import org.apache.log4j.Logger;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+
+import java.util.Map;
 
 /**
  * Inject code provided by {@link #codeProvider} into the instrumented method's body. Injects code that

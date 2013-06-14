@@ -25,11 +25,11 @@
 
 package net.sourceforge.cobertura.instrument;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Abstract implementation of {@link MethodVisitor} that:
@@ -40,13 +40,8 @@ import org.objectweb.asm.Opcodes;
  *
  * @author ptab
  */
-<<<<<<< HEAD:cobertura/src/net/sourceforge/cobertura/instrument/ContextMethodAwareMethodAdapter.java
-public abstract class ContextMethodAwareMethodAdapter extends MethodVisitor{
-    protected final String className;
-=======
 public abstract class ContextMethodAwareMethodAdapter extends MethodVisitor {
 	protected final String className;
->>>>>>> b5bd520fc9600fcd3d7687a85d24e8f60e204c04:cobertura/src/main/java/net/sourceforge/cobertura/instrument/ContextMethodAwareMethodAdapter.java
 	protected final String methodName;
 	protected final String methodSignature;
 
@@ -60,17 +55,6 @@ public abstract class ContextMethodAwareMethodAdapter extends MethodVisitor {
 	 * <p/>
 	 * <p>We will use this 'generator' to provide this identifiers. Remember to acquire identifiers using {@link AtomicInteger#incrementAndGet()} (not {@link AtomicInteger#getAndIncrement()}!!!)</p>
 	 */
-<<<<<<< HEAD:cobertura/src/net/sourceforge/cobertura/instrument/ContextMethodAwareMethodAdapter.java
-	protected final AtomicInteger lineIdGenerator; 
-	
-	public ContextMethodAwareMethodAdapter(MethodVisitor mv, String className, String methodName, String methodSignature,AtomicInteger lineIdGenerator) {
-		super(Opcodes.ASM4, mv);
-		this.className=className;
-		this.methodName=methodName;
-		this.methodSignature=methodSignature;
-		lastLineId=0;
-		this.lineIdGenerator=lineIdGenerator;
-=======
 	protected final AtomicInteger lineIdGenerator;
 
 	public ContextMethodAwareMethodAdapter(MethodVisitor mv, String className,
@@ -82,7 +66,6 @@ public abstract class ContextMethodAwareMethodAdapter extends MethodVisitor {
 		this.methodSignature = methodSignature;
 		lastLineId = 0;
 		this.lineIdGenerator = lineIdGenerator;
->>>>>>> b5bd520fc9600fcd3d7687a85d24e8f60e204c04:cobertura/src/main/java/net/sourceforge/cobertura/instrument/ContextMethodAwareMethodAdapter.java
 	}
 
 	@Override

@@ -54,17 +54,14 @@
  */
 package net.sourceforge.cobertura.reporting;
 
-import java.io.File;
-import java.io.IOException;
-
+import junit.framework.TestCase;
+import net.sourceforge.cobertura.coveragedata.SourceFileData;
+import net.sourceforge.cobertura.test.util.TestUtils;
+import net.sourceforge.cobertura.util.FileFinder;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
-import junit.framework.TestCase;
-import net.sourceforge.cobertura.test.util.TestUtils;
-import net.sourceforge.cobertura.util.FileFinder;
-import net.sourceforge.cobertura.coveragedata.SourceFileData;
-import net.sourceforge.cobertura.reporting.ComplexityCalculator;
+import java.io.File;
 
 public class ComplexityCalculator2Test extends TestCase {
 	@Test

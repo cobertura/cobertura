@@ -25,20 +25,19 @@
 
 package net.sourceforge.cobertura.instrument.pass3;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Pattern;
-
 import net.sourceforge.cobertura.instrument.AbstractFindTouchPointsClassInstrumenter;
 import net.sourceforge.cobertura.instrument.FindTouchPointsMethodAdapter;
 import net.sourceforge.cobertura.instrument.tp.ClassMap;
-
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.LocalVariablesSorter;
+
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * <p>This class is responsible for real instrumentation of the user's class.</p>
@@ -82,7 +81,7 @@ public class InjectCodeClassInstrumenter
 
 	/**
 	 * @param cv                 - a listener for code-instrumentation events
-	 * @param ignoreRegexp       - list of patters of method calls that should be ignored from line-coverage-measurement
+	 * @param ignoreRegexes       - list of patters of method calls that should be ignored from line-coverage-measurement
 	 * @param classMap           - map of all interesting places in the class. You should acquire it by {@link BuildClassMapClassVisitor} and remember to
 	 *                           prepare it using {@link ClassMap#assignCounterIds()} before using it with {@link InjectCodeClassInstrumenter}
 	 * @param duplicatedLinesMap - map of found duplicates in the class. You should use {@link DetectDuplicatedCodeClassVisitor} to find the duplicated lines.
@@ -156,12 +155,8 @@ public class InjectCodeClassInstrumenter
 	 */
 	private class GenerateCallCoberturaInitMethodVisitor extends MethodVisitor {
 		private String className;
-<<<<<<< HEAD:cobertura/src/net/sourceforge/cobertura/instrument/pass3/InjectCodeClassInstrumenter.java
-		public GenerateCallCoberturaInitMethodVisitor(MethodVisitor arg0,String className) {
-=======
 		public GenerateCallCoberturaInitMethodVisitor(MethodVisitor arg0,
 				String className) {
->>>>>>> b5bd520fc9600fcd3d7687a85d24e8f60e204c04:cobertura/src/main/java/net/sourceforge/cobertura/instrument/pass3/InjectCodeClassInstrumenter.java
 			super(Opcodes.ASM4, arg0);
 			this.className = className;
 		}

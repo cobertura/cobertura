@@ -37,11 +37,7 @@
 
 package net.sourceforge.cobertura.javancss.ccl;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Utility class for file operations.<p>

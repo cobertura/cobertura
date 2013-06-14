@@ -22,10 +22,10 @@
 
 package net.sourceforge.cobertura.coveragedata;
 
+import junit.framework.TestCase;
+
 import java.util.Iterator;
 import java.util.SortedSet;
-
-import junit.framework.TestCase;
 
 public class ProjectDataTest extends TestCase {
 

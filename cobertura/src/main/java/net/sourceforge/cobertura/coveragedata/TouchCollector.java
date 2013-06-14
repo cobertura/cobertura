@@ -25,14 +25,14 @@
 
 package net.sourceforge.cobertura.coveragedata;
 
+import net.sourceforge.cobertura.CoverageIgnore;
+import net.sourceforge.cobertura.instrument.pass3.AbstractCodeProvider;
+
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import net.sourceforge.cobertura.CoverageIgnore;
-import net.sourceforge.cobertura.instrument.pass3.AbstractCodeProvider;
 
 @CoverageIgnore
 public class TouchCollector {

@@ -22,10 +22,10 @@
 
 package com.example.simple;
 
+import org.apache.log4j.Logger;
+
 import java.util.Collection;
 import java.util.Iterator;
-
-import org.apache.log4j.Logger;
 
 public class Simple
 {

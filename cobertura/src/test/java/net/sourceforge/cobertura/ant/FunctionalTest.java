@@ -26,23 +26,9 @@
 
 package net.sourceforge.cobertura.ant;
 
-import static org.junit.Assert.*;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
-import junit.framework.TestCase;
 import net.sourceforge.cobertura.reporting.JUnitXMLHelper;
 import net.sourceforge.cobertura.test.AbstractCoberturaTestCase;
 import net.sourceforge.cobertura.test.util.TestUtils;
-
-import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Java;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.Path.PathElement;
@@ -52,6 +38,13 @@ import org.jdom.JDOMException;
 import org.jdom.xpath.XPath;
 import org.junit.Test;
 
+import java.io.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.junit.Assert.*;
+
 /**
  * These tests generally exec ant to run a test.xml file.  A different target is used for
  * each test.  The text.xml file sets up a test, instruments, runs junit, and generates a
@@ -59,58 +52,32 @@ import org.junit.Test;
  *
  * @author jwlewi
  */
-<<<<<<< HEAD:cobertura/test/net/sourceforge/cobertura/ant/FunctionalTest.java
-public class FunctionalTest extends AbstractCoberturaTestCase
-{
-
-=======
 public class FunctionalTest extends AbstractCoberturaTestCase {
->>>>>>> b5bd520fc9600fcd3d7687a85d24e8f60e204c04:cobertura/src/test/java/net/sourceforge/cobertura/ant/FunctionalTest.java
 	private static int forkedJVMDebugPort = 0;
 
 	private final static File BASEDIR = new File("src/main/resources/",
 			"examples/functionaltest1");
 
 	@Test
-<<<<<<< HEAD:cobertura/test/net/sourceforge/cobertura/ant/FunctionalTest.java
-	public void testInstrumentUsingDirSet() throws Exception
-	{
-=======
 	public void testInstrumentUsingDirSet() throws Exception {
->>>>>>> b5bd520fc9600fcd3d7687a85d24e8f60e204c04:cobertura/src/test/java/net/sourceforge/cobertura/ant/FunctionalTest.java
 		runTestAntScript("dirset", "test-dirset");
 		verify("dirset");
 	}
 
 	@Test
-<<<<<<< HEAD:cobertura/test/net/sourceforge/cobertura/ant/FunctionalTest.java
-	public void testInstrumentUsingIncludesAndExcludes() throws Exception
-	{
-=======
 	public void testInstrumentUsingIncludesAndExcludes() throws Exception {
->>>>>>> b5bd520fc9600fcd3d7687a85d24e8f60e204c04:cobertura/src/test/java/net/sourceforge/cobertura/ant/FunctionalTest.java
 		runTestAntScript("includes-and-excludes", "test-includes-and-excludes");
 		verify("includes-and-excludes");
 	}
 
 	@Test
-<<<<<<< HEAD:cobertura/test/net/sourceforge/cobertura/ant/FunctionalTest.java
-	public void testInstrumentUsingClassPath() throws Exception
-	{
-=======
 	public void testInstrumentUsingClassPath() throws Exception {
->>>>>>> b5bd520fc9600fcd3d7687a85d24e8f60e204c04:cobertura/src/test/java/net/sourceforge/cobertura/ant/FunctionalTest.java
 		runTestAntScript("classpath", "test-classpath");
 		verify("classpath");
 	}
 
 	@Test
-<<<<<<< HEAD:cobertura/test/net/sourceforge/cobertura/ant/FunctionalTest.java
-	public void testInstrumentUsingWar() throws Exception
-	{
-=======
 	public void testInstrumentUsingWar() throws Exception {
->>>>>>> b5bd520fc9600fcd3d7687a85d24e8f60e204c04:cobertura/src/test/java/net/sourceforge/cobertura/ant/FunctionalTest.java
 		runTestAntScript("classpath", "test-war");
 		verify("war");
 	}
@@ -360,79 +327,6 @@ public class FunctionalTest extends AbstractCoberturaTestCase {
 	 * Use the ant 'java' task to run the test.xml
 	 * file and the specified target.
 	 */
-<<<<<<< HEAD:cobertura/test/net/sourceforge/cobertura/ant/FunctionalTest.java
-	private static void runTestAntScript(String testName, String target) throws IOException
-	{
-//		Java task = new Java();
-		Java java = new Java();
-		java.setProject(TestUtils.project);
-		java.setTaskName("java");
-//		task.setTaskName("java");
-//		task.setProject(TestUtils.project);
-////		task.init();
-//
-//		// Call ant launcher.  Requires ant-lancher.jar.
-//		task.setClassname("org.apache.tools.ant.launch.Launcher");
-		java.setClassname("org.apache.tools.ant.launch.Launcher");
-//		task.setFork(true);
-		java.setFork(true);
-//
-//		AntUtil.transferCoberturaDataFileProperty(task);
-		AntUtil.transferCoberturaDataFileProperty(java);
-//		
-//		if (forkedJVMDebugPort > 0)
-//		{
-//			task.createJvmarg().setValue("-Xdebug");
-//			task.createJvmarg().setValue("-Xrunjdwp:transport=dt_socket,address=" + forkedJVMDebugPort + ",server=y,suspend=y");
-//		}
-		if (forkedJVMDebugPort > 0) {
-			java.createJvmarg().setValue("-Xdebug");
-			java.createJvmarg().setValue("-Xrunjdwp:transport=dt_socket,address=" + forkedJVMDebugPort + ",server=y,suspend=y");
-		}
-		
-//
-//
-//		task.createArg().setValue("-f");
-		java.createArg().setValue("-f");
-//		task.createArg().setValue(BASEDIR + "/build.xml");
-		java.createArg().setValue(BASEDIR + "/build.xml");
-//		task.createArg().setValue(target);
-		java.createArg().setValue(target);
-//
-//		task.setFailonerror(true);
-		java.setFailonerror(true);
-//
-//		// Set output to go to a temp file
-//		File outputFile = Util.createTemporaryTextFile("cobertura-test");
-		File output = Util.createTemporaryTextFile("cobertura-test");
-//		task.setOutput(outputFile);
-		java.setOutput(output);
-//
-//		// Set the classpath to the same classpath as this JVM
-//		Path classpath = task.createClasspath();
-		Path classpath = new Path(TestUtils.project);
-		PathElement pathElement = classpath.new PathElement();
-//		PathElement pathElement = classpath.createPathElement();
-		pathElement.setPath(System.getProperty("java.class.path"));
-//		pathElement.setPath(System.getProperty("java.class.path"));
-//		task.setClasspath(classpath);
-		classpath.add(TestUtils.getCoberturaDefaultClasspath());
-		classpath.add(pathElement);
-		java.setClasspath(classpath);
-		
-		try
-		{
-			java.executeJava();
-		}
-		finally
-		{
-			if (output.exists())
-			{
-				// Put the contents of the output file in the exception
-				System.out.println("\n\n\nOutput from Ant for " + testName
-						+ " test:\n----------------------------------------\n"
-						+ Util.getText(output) + "----------------------------------------");
-=======
 	private static void runTestAntScript(String testName, String target)
 			throws IOException {
 		Java java = new Java();
@@ -474,7 +368,6 @@ public class FunctionalTest extends AbstractCoberturaTestCase {
 						+ " test:\n----------------------------------------\n"
 						+ Util.getText(output)
 						+ "----------------------------------------");
->>>>>>> b5bd520fc9600fcd3d7687a85d24e8f60e204c04:cobertura/src/test/java/net/sourceforge/cobertura/ant/FunctionalTest.java
 				output.delete();
 			}
 		}

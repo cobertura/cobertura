@@ -21,13 +21,14 @@
 
 package net.sourceforge.cobertura.reporting;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-
+import org.apache.log4j.Logger;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 /**
  * <p>
@@ -46,6 +47,8 @@ import org.xml.sax.helpers.DefaultHandler;
  * </p>
  */
 public class JUnitXMLParserEntityResolver extends DefaultHandler {
+	private static final Logger log = Logger
+			.getLogger(JUnitXMLParserEntityResolver.class);
 
 	private final File DTD_DIRECTORY;
 
@@ -55,15 +58,15 @@ public class JUnitXMLParserEntityResolver extends DefaultHandler {
 
 	public InputSource resolveEntity(String publicId, String systemId)
 			throws SAXException {
-		System.out.println("systemId=" + systemId);
+		log.info(String.format("systemId=%s", systemId));
 		String systemIdBasename = systemId.substring(systemId.lastIndexOf('/'));
 		File localDtd = new File(this.DTD_DIRECTORY, systemIdBasename);
 		try {
 			return new InputSource(new FileInputStream(localDtd));
 		} catch (FileNotFoundException e) {
-			System.out.println("Unable to open local DTD file "
-					+ localDtd.getAbsolutePath() + ", using " + systemId
-					+ " instead.");
+			log.info(String.format(
+					"Unable to open local DTD file %s, using %s instead",
+					localDtd.getAbsolutePath(), systemId));
 		}
 
 		InputSource source = null;

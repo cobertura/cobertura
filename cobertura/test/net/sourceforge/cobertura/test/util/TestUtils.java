@@ -1,12 +1,25 @@
 package net.sourceforge.cobertura.test.util;
 
-import static org.junit.Assert.*;
 import groovy.util.AntBuilder;
 import groovy.util.Node;
-import groovy.util.NodeList;
 import groovy.util.XmlParser;
-import groovy.xml.QName;
+import net.sourceforge.cobertura.ant.InstrumentTask;
+import org.apache.tools.ant.DefaultLogger;
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.taskdefs.Javac;
+import org.apache.tools.ant.taskdefs.Zip;
+import org.apache.tools.ant.taskdefs.optional.junit.FormatterElement;
+import org.apache.tools.ant.taskdefs.optional.junit.FormatterElement.TypeAttribute;
+import org.apache.tools.ant.taskdefs.optional.junit.JUnitTask;
+import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest;
+import org.apache.tools.ant.types.DirSet;
+import org.apache.tools.ant.types.FileSet;
+import org.apache.tools.ant.types.Path;
+import org.apache.tools.ant.types.Path.PathElement;
+import org.codehaus.groovy.ant.Groovyc;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -14,37 +27,9 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import net.sourceforge.cobertura.ant.IgnoreMethodAnnotation;
-import net.sourceforge.cobertura.ant.InstrumentTask;
-
-import org.apache.tools.ant.DefaultLogger;
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.taskdefs.Echo;
-import org.apache.tools.ant.taskdefs.Javac;
-import org.apache.tools.ant.taskdefs.Taskdef;
-import org.apache.tools.ant.taskdefs.Zip;
-import org.apache.tools.ant.taskdefs.optional.junit.FormatterElement;
-import org.apache.tools.ant.taskdefs.optional.junit.JUnitTask;
-import org.apache.tools.ant.taskdefs.optional.junit.JUnitTask.ForkMode;
-import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest;
-import org.apache.tools.ant.taskdefs.optional.junit.FormatterElement.TypeAttribute;
-import org.apache.tools.ant.types.DirSet;
-import org.apache.tools.ant.types.FileSet;
-import org.apache.tools.ant.types.Path;
-import org.apache.tools.ant.types.Path.PathElement;
-import org.apache.xerces.parsers.DOMParser;
-import org.codehaus.groovy.ant.Groovyc;
-import org.codehaus.groovy.tools.xml.DomToGroovy;
-import org.hamcrest.core.Is;
-import org.xml.sax.SAXException;
+import static org.junit.Assert.*;
 
 public class TestUtils {
 	static File coberturaClassDir;

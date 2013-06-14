@@ -55,26 +55,23 @@
 
 package net.sourceforge.cobertura.webapp.test;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
 import groovy.lang.Closure;
 import groovy.util.AntBuilder;
 import groovy.util.Node;
 import net.sourceforge.cobertura.ant.ReportTask;
 import net.sourceforge.cobertura.test.AbstractCoberturaTestCase;
 import net.sourceforge.cobertura.test.util.TestUtils;
-import net.sourceforge.cobertura.test.util.TestUtils;
 import net.sourceforge.cobertura.test.util.WebappServer;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 

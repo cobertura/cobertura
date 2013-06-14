@@ -21,10 +21,10 @@
 
 package net.sourceforge.cobertura.reporting.html;
 
+import net.sourceforge.cobertura.coveragedata.SourceFileData;
+
 import java.io.Serializable;
 import java.util.Comparator;
-
-import net.sourceforge.cobertura.coveragedata.SourceFileData;
 
 public class SourceFileDataBaseNameComparator
 		implements

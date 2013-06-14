@@ -30,37 +30,18 @@
 
 package net.sourceforge.cobertura.instrument;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.Vector;
+import net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler;
+import net.sourceforge.cobertura.coveragedata.ProjectData;
+import net.sourceforge.cobertura.instrument.CoberturaInstrumenter.InstrumentationResult;
+import net.sourceforge.cobertura.util.*;
+import org.apache.log4j.Logger;
+
+import java.io.*;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
-
-import net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler;
-import net.sourceforge.cobertura.coveragedata.ProjectData;
-import net.sourceforge.cobertura.instrument.CoberturaInstrumenter.InstrumentationResult;
-import net.sourceforge.cobertura.util.ArchiveUtil;
-import net.sourceforge.cobertura.util.CommandLineBuilder;
-import net.sourceforge.cobertura.util.Header;
-import net.sourceforge.cobertura.util.IOUtil;
-import net.sourceforge.cobertura.util.RegexUtil;
-
-import org.apache.log4j.Logger;
 
 /**
  * <p>
@@ -82,6 +63,7 @@ import org.apache.log4j.Logger;
  * </ol>
  */
 public class Main {
+	private static final Logger log = Logger.getLogger(Main.class);
 	private static final LoggerWrapper logger = new LoggerWrapper();
 
 	private File destinationDirectory = null;
@@ -163,8 +145,9 @@ public class Main {
 								.instrumentClass(new ByteArrayInputStream(
 										entryBytes));
 						if (res != null) {
-							logger.debug("Putting instrumented entry: "
-									+ entry.getName());
+							logger.debug(String.format(
+									"Putting instrumented entry: %s", entry
+											.getName()));
 							entryBytes = res.getContent();
 							modified = true;
 							outputEntry.setTime(System.currentTimeMillis());
@@ -188,11 +171,11 @@ public class Main {
 				output.closeEntry();
 				archive.closeEntry();
 			} catch (Exception e) {
-				logger.warn("Problems with archive entry: " + entry.getName(),
-						e);
+				logger.warn(String.format("Problems with archive entry: %s",
+						entry.getName()), e);
 			} catch (Throwable t) {
-				logger.warn("Problems with archive entry: " + entry.getName(),
-						t);
+				logger.warn(String.format("Problems with archive entry: %s",
+						entry.getName()), t);
 			}
 			output.flush();
 		}
@@ -273,12 +256,12 @@ public class Main {
 		// instrumented one
 		if (modified && (destinationDirectory == null)) {
 			try {
-				logger.debug("Moving " + outputFile.getAbsolutePath() + " to "
-						+ archive.getAbsolutePath());
+				logger.debug(String.format("Moving %s to %s", outputFile
+						.getAbsolutePath(), archive.getAbsolutePath()));
 				IOUtil.moveFile(outputFile, archive);
 			} catch (IOException e) {
-				logger.warn("Cannot instrument archive: "
-						+ archive.getAbsolutePath(), e);
+				logger.warn(String.format("Cannot instrument archive: %s",
+						archive.getAbsolutePath()), e);
 				return;
 			}
 		}
@@ -398,7 +381,7 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		Header.print(System.out);
+		Header.print();
 
 		long startTime = System.currentTimeMillis();
 
@@ -407,14 +390,15 @@ public class Main {
 		try {
 			args = CommandLineBuilder.preprocessCommandLineArguments(args);
 		} catch (Exception ex) {
-			System.err.println("Error: Cannot process arguments: "
-					+ ex.getMessage());
+			log.error(String.format("Error: Cannot process arguments: %s", ex
+					.getMessage()));
 			System.exit(1);
 		}
 		main.parseArguments(args);
 
 		long stopTime = System.currentTimeMillis();
-		logger.info("Instrument time: " + (stopTime - startTime) + "ms");
+		logger.info(String.format("Instrument time: %s ms",
+				(stopTime - startTime)));
 	}
 
 	// TODO: Preserved current behaviour, but this code is failing on WARN, not error

@@ -55,38 +55,30 @@ package net.sourceforge.cobertura.thread.test;
  * <http://www.apache.org/>.
  */
 
+import groovy.util.AntBuilder;
+import groovy.util.Node;
 import net.sourceforge.cobertura.ant.InstrumentTask;
 import net.sourceforge.cobertura.ant.ReportTask;
-import net.sourceforge.cobertura.instrument.CoberturaInstrumenter;
 import net.sourceforge.cobertura.test.util.TestUtils;
-
 import org.apache.commons.io.FileUtils;
-import org.apache.tools.ant.Project;
+import org.apache.log4j.Logger;
 import org.apache.tools.ant.taskdefs.Echo;
 import org.apache.tools.ant.taskdefs.Java;
 import org.apache.tools.ant.taskdefs.Javac;
-import org.apache.tools.ant.taskdefs.PathConvert;
 import org.apache.tools.ant.types.DirSet;
 import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.Path;
-import org.apache.tools.ant.types.resources.AbstractClasspathResource;
-import org.apache.tools.ant.types.resources.JavaResource;
-import org.apache.tools.ant.util.ClasspathUtils;
-import org.apache.xerces.parsers.DOMParser;
 import org.codehaus.groovy.ant.Groovyc;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sun.org.apache.bcel.internal.util.ClassPath;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
-import groovy.util.AntBuilder;
-import groovy.util.Node;
-
-import java.io.*;
-import java.util.HashMap;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * This tests the thread safety of Cobertura.
@@ -119,6 +111,8 @@ import static org.junit.Assert.*;
  * out of bounds exception.
  */
 public class ThreadedFunctionalTest {
+	private static final Logger log = Logger
+			.getLogger(ThreadedFunctionalTest.class);
 	AntBuilder ant = TestUtils.getCoberturaAntBuilder(TestUtils
 			.getCoberturaClassDir());
 
@@ -302,7 +296,7 @@ public class ThreadedFunctionalTest {
 		p.addDirset(TestUtils.getCoberturaClassDirSet());
 
 		for (int i = 0; i < numberOfRetries; i++) {
-			System.out.println("Executing build: " + i);
+			log.info(String.format("Executing build: %s", i));
 			Java java = new Java();
 			java.setClassname("mypackage.MyThreads");
 			java.setDir(srcDir);
@@ -313,14 +307,14 @@ public class ThreadedFunctionalTest {
 			java.execute();
 		}
 
-		System.out.println("Starting reporting task.");
+		log.info("Starting reporting task.");
 		ReportTask reportTask = new ReportTask();
 		reportTask.setProject(TestUtils.project);
 		reportTask.setDataFile(datafile.getAbsolutePath());
 		reportTask.setFormat("xml");
 		reportTask.setDestDir(srcDir);
 		reportTask.execute();
-		System.out.println("Finish reporting task.");
+		log.info("Finish reporting task.");
 
 		Node dom = TestUtils.getXMLReportDOM(srcDir.getAbsolutePath()
 				+ "/coverage.xml");
@@ -333,8 +327,8 @@ public class ThreadedFunctionalTest {
 	}
 
 	public void compileSource(final File srcDir) {
-		System.out.println("Invoking groovyC command on "
-				+ srcDir.getAbsolutePath());
+		log.info(String.format("Invoking groovyC command on %s", srcDir
+				.getAbsolutePath()));
 		Javac javac = new Javac();
 		javac.setDebug(true);
 		javac.setProject(TestUtils.project);
@@ -347,11 +341,11 @@ public class ThreadedFunctionalTest {
 		groovyc.addConfiguredJavac(javac);
 		groovyc.execute();
 
-		System.out.println("Finish invoking groovyC command.");
+		log.info("Finish invoking groovyC command.");
 	}
 
 	public void instrumentClasses(File srcDir, File datafile) {
-		System.out.println("Start instrumenting classes.");
+		log.info("Start instrumenting classes.");
 		FileSet fileset = new FileSet();
 		fileset.setDir(srcDir);
 		fileset.setIncludes("**/*.class");
@@ -362,6 +356,6 @@ public class ThreadedFunctionalTest {
 		instrumentTask.setThreadsafeRigorous(true);
 		instrumentTask.addFileset(fileset);
 		instrumentTask.execute();
-		System.out.println("Finish instrumenting classes.");
+		log.info("Finish instrumenting classes.");
 	}
 }

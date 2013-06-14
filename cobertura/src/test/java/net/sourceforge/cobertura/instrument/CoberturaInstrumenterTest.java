@@ -25,9 +25,9 @@
 
 package net.sourceforge.cobertura.instrument;
 
-import java.io.File;
-
 import org.junit.Test;
+
+import java.io.File;
 
 public class CoberturaInstrumenterTest {
 	private final CoberturaInstrumenter coberturaInstrumenter = new CoberturaInstrumenter();

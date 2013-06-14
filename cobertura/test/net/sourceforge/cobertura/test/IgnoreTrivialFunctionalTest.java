@@ -55,26 +55,20 @@
 
 package net.sourceforge.cobertura.test;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import groovy.util.AntBuilder;
 import groovy.util.Node;
 import net.sourceforge.cobertura.ant.ReportTask;
 import net.sourceforge.cobertura.test.util.TestUtils;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.tools.ant.taskdefs.Java;
 import org.apache.tools.ant.types.DirSet;
 import org.apache.tools.ant.types.Path;
-import org.junit.Before;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
-import static org.junit.Assert.*;
+import java.io.File;
+import java.util.HashMap;
+
+import static org.junit.Assert.assertTrue;
 
 public class IgnoreTrivialFunctionalTest extends AbstractCoberturaTestCase {
 	AntBuilder ant = TestUtils.getCoberturaAntBuilder(TestUtils.getCoberturaClassDir());

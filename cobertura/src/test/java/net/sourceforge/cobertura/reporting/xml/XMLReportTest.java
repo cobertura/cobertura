@@ -21,14 +21,14 @@
 
 package net.sourceforge.cobertura.reporting.xml;
 
-import java.io.File;
-
 import junit.framework.TestCase;
 import net.sourceforge.cobertura.coveragedata.ClassData;
 import net.sourceforge.cobertura.coveragedata.ProjectData;
 import net.sourceforge.cobertura.reporting.ComplexityCalculator;
 import net.sourceforge.cobertura.reporting.JUnitXMLHelper;
 import net.sourceforge.cobertura.util.FileFinder;
+
+import java.io.File;
 
 public class XMLReportTest extends TestCase {
 

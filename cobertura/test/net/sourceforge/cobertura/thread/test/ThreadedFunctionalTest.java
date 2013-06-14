@@ -55,38 +55,29 @@ package net.sourceforge.cobertura.thread.test;
  * <http://www.apache.org/>.
  */
 
+import groovy.util.AntBuilder;
+import groovy.util.Node;
 import net.sourceforge.cobertura.ant.InstrumentTask;
 import net.sourceforge.cobertura.ant.ReportTask;
-import net.sourceforge.cobertura.instrument.CoberturaInstrumenter;
 import net.sourceforge.cobertura.test.util.TestUtils;
-
 import org.apache.commons.io.FileUtils;
-import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Echo;
 import org.apache.tools.ant.taskdefs.Java;
 import org.apache.tools.ant.taskdefs.Javac;
-import org.apache.tools.ant.taskdefs.PathConvert;
 import org.apache.tools.ant.types.DirSet;
 import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.Path;
-import org.apache.tools.ant.types.resources.AbstractClasspathResource;
-import org.apache.tools.ant.types.resources.JavaResource;
-import org.apache.tools.ant.util.ClasspathUtils;
-import org.apache.xerces.parsers.DOMParser;
 import org.codehaus.groovy.ant.Groovyc;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sun.org.apache.bcel.internal.util.ClassPath;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
-import groovy.util.AntBuilder;
-import groovy.util.Node;
-
-import java.io.*;
-import java.util.HashMap;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * This tests the thread safety of Cobertura.

@@ -25,15 +25,14 @@
 
 package net.sourceforge.cobertura.instrument.pass1;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import net.sourceforge.cobertura.instrument.AbstractFindTouchPointsClassInstrumenter;
-
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * The same line can cause generation of many byte-code blocks connected to the same line.
@@ -175,13 +174,8 @@ import org.objectweb.asm.Opcodes;
  * <p>The goal of this class is to provide {@link #duplicatedLinesCollector} that is map of:
  * (line number -> (duplicated lineId -> origin lineId)).</p>
  */
-
-<<<<<<< HEAD:cobertura/src/net/sourceforge/cobertura/instrument/pass1/DetectDuplicatedCodeClassVisitor.java
-public class DetectDuplicatedCodeClassVisitor extends ClassVisitor{
-=======
 public class DetectDuplicatedCodeClassVisitor extends ClassVisitor {
 
->>>>>>> b5bd520fc9600fcd3d7687a85d24e8f60e204c04:cobertura/src/main/java/net/sourceforge/cobertura/instrument/pass1/DetectDuplicatedCodeClassVisitor.java
 	/**
 	 * map of (line number -> (duplicated lineId -> origin lineId))
 	 */
@@ -199,13 +193,8 @@ public class DetectDuplicatedCodeClassVisitor extends ClassVisitor {
 	 * ( {@link AbstractFindTouchPointsClassInstrumenter#lineIdGenerator} )
 	 */
 	private final AtomicInteger lineIdGenerator = new AtomicInteger(0);
-<<<<<<< HEAD:cobertura/src/net/sourceforge/cobertura/instrument/pass1/DetectDuplicatedCodeClassVisitor.java
-		
-	public  DetectDuplicatedCodeClassVisitor(ClassVisitor cv) {
-=======
 
 	public DetectDuplicatedCodeClassVisitor(ClassVisitor cv) {
->>>>>>> b5bd520fc9600fcd3d7687a85d24e8f60e204c04:cobertura/src/main/java/net/sourceforge/cobertura/instrument/pass1/DetectDuplicatedCodeClassVisitor.java
 		super(Opcodes.ASM4, cv);
 	}
 

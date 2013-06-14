@@ -25,15 +25,15 @@
 
 package net.sourceforge.cobertura.merge;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler;
 import net.sourceforge.cobertura.coveragedata.ProjectData;
 import net.sourceforge.cobertura.util.CommandLineBuilder;
 import net.sourceforge.cobertura.util.Header;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class Main {
 
@@ -79,7 +79,7 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		Header.print(System.out);
+		Header.print();
 
 		try {
 			args = CommandLineBuilder.preprocessCommandLineArguments(args);

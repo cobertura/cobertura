@@ -20,13 +20,13 @@
  */
 package net.sourceforge.cobertura.reporting;
 
+import junit.framework.TestCase;
 import net.sourceforge.cobertura.coveragedata.ClassData;
 import net.sourceforge.cobertura.coveragedata.PackageData;
 import net.sourceforge.cobertura.coveragedata.ProjectData;
 import net.sourceforge.cobertura.coveragedata.SourceFileData;
 import net.sourceforge.cobertura.util.FileFinder;
 import net.sourceforge.cobertura.util.FileFixture;
-import junit.framework.TestCase;
 
 public class ComplexityCalculatorTest extends TestCase {
 	private FileFixture fileFixture;

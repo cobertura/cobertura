@@ -25,29 +25,19 @@
 
 package net.sourceforge.cobertura.instrument;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.Vector;
-import java.util.regex.Pattern;
-
 import net.sourceforge.cobertura.coveragedata.ProjectData;
 import net.sourceforge.cobertura.instrument.pass1.DetectDuplicatedCodeClassVisitor;
 import net.sourceforge.cobertura.instrument.pass1.DetectIgnoredCodeClassVisitor;
 import net.sourceforge.cobertura.instrument.pass2.BuildClassMapClassVisitor;
 import net.sourceforge.cobertura.instrument.pass3.InjectCodeClassInstrumenter;
 import net.sourceforge.cobertura.util.IOUtil;
-
 import org.apache.log4j.Logger;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
+
+import java.io.*;
+import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * Class that is responsible for the whole process of instrumentation of a single class.

@@ -64,18 +64,17 @@
 
 package net.sourceforge.cobertura.ant;
 
+import net.sourceforge.cobertura.util.CommandLineBuilder;
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.types.FileSet;
+import org.apache.tools.ant.types.Path;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import net.sourceforge.cobertura.util.CommandLineBuilder;
-
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.types.FileSet;
-import org.apache.tools.ant.types.Path;
 
 public class InstrumentTask extends CommonMatchingTask {
 

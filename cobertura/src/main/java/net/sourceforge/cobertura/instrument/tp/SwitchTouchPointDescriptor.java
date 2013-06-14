@@ -25,17 +25,11 @@
 
 package net.sourceforge.cobertura.instrument.tp;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import net.sourceforge.cobertura.coveragedata.LineData;
-
 import org.objectweb.asm.Label;
+
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Class representing a touch-point connected to a a SWITCH instruction in a source-code

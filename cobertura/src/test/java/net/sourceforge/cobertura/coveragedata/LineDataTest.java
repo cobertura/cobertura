@@ -22,9 +22,9 @@
 
 package net.sourceforge.cobertura.coveragedata;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 import junit.framework.TestCase;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 public class LineDataTest extends TestCase {
 

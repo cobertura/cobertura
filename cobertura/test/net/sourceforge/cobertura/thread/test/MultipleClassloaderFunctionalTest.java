@@ -55,33 +55,28 @@
 
 package net.sourceforge.cobertura.thread.test;
 
+import groovy.util.AntBuilder;
+import groovy.util.Node;
+import net.sourceforge.cobertura.ant.ReportTask;
+import net.sourceforge.cobertura.test.util.TestUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.tools.ant.taskdefs.Echo;
+import org.apache.tools.ant.taskdefs.Java;
+import org.apache.tools.ant.types.DirSet;
+import org.apache.tools.ant.types.Path;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import groovy.util.AntBuilder;
-import groovy.util.Node;
-import net.sourceforge.cobertura.ant.ReportTask;
-import net.sourceforge.cobertura.test.util.TestUtils;
-
-import org.apache.bcel.util.ClassPath;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.tools.ant.taskdefs.Echo;
-import org.apache.tools.ant.taskdefs.Java;
-import org.apache.tools.ant.types.DirSet;
-import org.apache.tools.ant.types.FileSet;
-import org.apache.tools.ant.types.Path;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.xml.sax.SAXException;
-
-import static org.junit.Assert.*; 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class MultipleClassloaderFunctionalTest {
 	

@@ -23,14 +23,9 @@
 
 package net.sourceforge.cobertura.coveragedata;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.SortedMap;
-import java.util.SortedSet;
-import java.util.TreeMap;
-import java.util.TreeSet;
-
 import net.sourceforge.cobertura.CoverageIgnore;
+
+import java.util.*;
 
 @CoverageIgnore
 public class PackageData extends CoverageDataContainer

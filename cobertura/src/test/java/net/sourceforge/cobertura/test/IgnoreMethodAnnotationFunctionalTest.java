@@ -55,25 +55,19 @@
 
 package net.sourceforge.cobertura.test;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import groovy.util.AntBuilder;
 import groovy.util.Node;
 import net.sourceforge.cobertura.ant.ReportTask;
 import net.sourceforge.cobertura.test.util.TestUtils;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.tools.ant.taskdefs.Java;
-import org.apache.tools.ant.types.DirSet;
-import org.apache.tools.ant.types.Path;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class IgnoreMethodAnnotationFunctionalTest {
 	AntBuilder ant = TestUtils.getCoberturaAntBuilder(TestUtils

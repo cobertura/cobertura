@@ -26,14 +26,14 @@
 
 package net.sourceforge.cobertura.util;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 import org.apache.log4j.Logger;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
+
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Abstract, not to be instantiated utility class for Regex functions.

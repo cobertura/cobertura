@@ -25,9 +25,9 @@
 
 package net.sourceforge.cobertura.instrument;
 
-import java.io.File;
-
 import net.sourceforge.cobertura.util.ArchiveUtil;
+
+import java.io.File;
 
 /**
  * This represents a regular File, but unlike java.io.File, the baseDir and

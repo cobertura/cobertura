@@ -25,29 +25,18 @@
 
 package net.sourceforge.cobertura.reporting.xml;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import net.sourceforge.cobertura.coveragedata.ClassData;
-import net.sourceforge.cobertura.coveragedata.JumpData;
-import net.sourceforge.cobertura.coveragedata.LineData;
-import net.sourceforge.cobertura.coveragedata.PackageData;
-import net.sourceforge.cobertura.coveragedata.ProjectData;
-import net.sourceforge.cobertura.coveragedata.SourceFileData;
-import net.sourceforge.cobertura.coveragedata.SwitchData;
+import net.sourceforge.cobertura.coveragedata.*;
 import net.sourceforge.cobertura.reporting.ComplexityCalculator;
 import net.sourceforge.cobertura.util.FileFinder;
 import net.sourceforge.cobertura.util.Header;
 import net.sourceforge.cobertura.util.IOUtil;
 import net.sourceforge.cobertura.util.StringUtil;
-
 import org.apache.log4j.Logger;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
 
 public class XMLReport {
 

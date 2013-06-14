@@ -25,11 +25,7 @@
 
 package net.sourceforge.cobertura.instrument.pass3;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.FieldVisitor;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.*;
 
 /**
  * <p>The {@link CodeProvider} uses int[] to store counters.</p>

@@ -20,15 +20,15 @@
  */
 package net.sourceforge.cobertura.merge;
 
-import java.util.List;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
 import junit.framework.TestCase;
 import net.sourceforge.cobertura.coveragedata.ClassData;
 import net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler;
 import net.sourceforge.cobertura.coveragedata.ProjectData;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Tests merging feature by launching Main class.

@@ -44,38 +44,6 @@ package net.sourceforge.cobertura.javancss;
  * @author  Chr. Clemens Lee <clemens@kclee.com>
  * @version $Id: PackageMetric.java 121 2009-01-17 22:19:45Z hboutemy $
  */
-<<<<<<< HEAD:cobertura/src/net/sourceforge/cobertura/javancss/PackageMetric.java
-public class PackageMetric extends Metric
-{
-    public int classes    = 0;
-    public int functions  = 0;
-
-    public PackageMetric()
-    {
-        super();
-    }
-
-    public void clear()
-    {
-        super.clear();
-        classes   = 0;
-        functions = 0;
-    }
-
-    public void add(PackageMetric pPackageMetric_) {
-        if (pPackageMetric_ == null) {
-            return;
-        }
-        classes    += pPackageMetric_.classes;
-        functions  += pPackageMetric_.functions;
-        ncss       += pPackageMetric_.ncss;
-
-        javadocs   += pPackageMetric_.javadocs;
-        javadocsLn += pPackageMetric_.javadocsLn;
-        singleLn   += pPackageMetric_.singleLn;
-        multiLn    += pPackageMetric_.multiLn;
-    }
-=======
 public class PackageMetric extends Metric {
 	public int classes = 0;
 	public int functions = 0;
@@ -103,5 +71,4 @@ public class PackageMetric extends Metric {
 		singleLn += pPackageMetric_.singleLn;
 		multiLn += pPackageMetric_.multiLn;
 	}
->>>>>>> b5bd520fc9600fcd3d7687a85d24e8f60e204c04:cobertura/src/main/java/net/sourceforge/cobertura/javancss/PackageMetric.java
 }

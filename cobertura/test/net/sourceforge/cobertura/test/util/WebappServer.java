@@ -55,41 +55,21 @@
 
 package net.sourceforge.cobertura.test.util;
 
-import static org.junit.Assert.*;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.ServerSocket;
-import java.util.HashMap;
-import java.util.Map;
-
+import groovy.lang.Closure;
+import groovy.util.AntBuilder;
 import net.sourceforge.cobertura.ant.InstrumentTask;
-import net.sourceforge.cobertura.ant.ReportTask;
-
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.log4j.net.SocketServer;
-import org.apache.tools.ant.DefaultLogger;
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.taskdefs.Copy;
-import org.apache.tools.ant.taskdefs.Delete;
-import org.apache.tools.ant.taskdefs.Echo;
-import org.apache.tools.ant.taskdefs.Java;
-import org.apache.tools.ant.taskdefs.Javac;
-import org.apache.tools.ant.taskdefs.Mkdir;
-import org.apache.tools.ant.taskdefs.War;
-import org.apache.tools.ant.taskdefs.Zip;
+import org.apache.tools.ant.taskdefs.*;
 import org.apache.tools.ant.types.Environment.Variable;
 import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.ZipFileSet;
 
-import groovy.lang.Binding;
-import groovy.lang.Closure;
-import groovy.util.AntBuilder;
-import groovy.util.GroovyScriptEngine;
-import groovy.util.Node;
+import java.io.File;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class WebappServer

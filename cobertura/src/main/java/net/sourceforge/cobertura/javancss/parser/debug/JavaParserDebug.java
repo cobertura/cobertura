@@ -40,15 +40,13 @@
 //cobertura - put the import on its own line - otherwise, it messes up the script that changes the package.
 package net.sourceforge.cobertura.javancss.parser.debug;
 
-import net.sourceforge.cobertura.javancss.parser.JavaParserInterface;
-
-import java.util.*;
-
-import net.sourceforge.cobertura.javancss.ccl.Util;
-
 import net.sourceforge.cobertura.javancss.FunctionMetric;
 import net.sourceforge.cobertura.javancss.ObjectMetric;
 import net.sourceforge.cobertura.javancss.PackageMetric;
+import net.sourceforge.cobertura.javancss.ccl.Util;
+import net.sourceforge.cobertura.javancss.parser.JavaParserInterface;
+
+import java.util.*;
 
 /**
  * Java source code parser based on a grammar compiled by

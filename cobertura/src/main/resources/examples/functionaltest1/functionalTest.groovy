@@ -52,10 +52,11 @@
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
- 
+
+
 import org.apache.tools.ant.BuildException
 
-import static org.junit.Assert.*
+import static org.junit.Assert.assertEquals
 
 //load testUtil definitions
 evaluate(new File("${ant.project.baseDir}/../../testUtil.groovy"))

@@ -38,52 +38,9 @@
  */
 package net.sourceforge.cobertura.javancss.parser;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
-<<<<<<< HEAD:cobertura/src/net/sourceforge/cobertura/javancss/parser/JavaParserInterface.java
-public interface JavaParserInterface
-{
-    public void parse() throws Exception;
-    public void parseImportUnit() throws Exception;
-
-    public int getNcss();
-    
-    public int getLOC();
-
-    // added by SMS
-    public int getJvdc();
-
-    /*public int getTopLevelClasses() {
-      return _topLevelClasses;
-      }*/
-    
-    public List/*<FunctionMetric>*/ getFunction();
-    
-    /**
-     * @return Top level classes in sorted order
-     */
-    public List/*<ObjectMetric>*/ getObject();
-    
-    /**
-     * @return The empty package consists of the name ".".
-     */
-    public Map/*<String,PackageMetric>*/ getPackage();
-    
-    public List getImports();
-
-    /**
-     * name, beginLine, ...
-     */
-    public Object[] getPackageObjects();
-
-    /**
-     * if javancss is used with cat *.java a long
-     * input stream might get generated, so line
-     * number information in case of an parse exception
-     * is not very useful.
-     */
-    public String getLastFunction();
-=======
 public interface JavaParserInterface {
 	public void parse() throws Exception;
 	public void parseImportUnit() throws Exception;
@@ -125,5 +82,4 @@ public interface JavaParserInterface {
 	 * is not very useful.
 	 */
 	public String getLastFunction();
->>>>>>> b5bd520fc9600fcd3d7687a85d24e8f60e204c04:cobertura/src/main/java/net/sourceforge/cobertura/javancss/parser/JavaParserInterface.java
 }

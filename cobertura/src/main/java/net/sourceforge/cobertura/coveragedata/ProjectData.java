@@ -29,20 +29,14 @@
 
 package net.sourceforge.cobertura.coveragedata;
 
-import java.io.File;
+import net.sourceforge.cobertura.CoverageIgnore;
+import net.sourceforge.cobertura.util.FileLocker;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.io.File;
+import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
-
-import net.sourceforge.cobertura.CoverageIgnore;
-import net.sourceforge.cobertura.util.FileLocker;
 
 @CoverageIgnore
 public class ProjectData extends CoverageDataContainer {

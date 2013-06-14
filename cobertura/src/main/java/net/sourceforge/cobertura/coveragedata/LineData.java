@@ -24,12 +24,12 @@
 
 package net.sourceforge.cobertura.coveragedata;
 
+import net.sourceforge.cobertura.CoverageIgnore;
+import net.sourceforge.cobertura.util.StringUtil;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import net.sourceforge.cobertura.CoverageIgnore;
-import net.sourceforge.cobertura.util.StringUtil;
 
 @CoverageIgnore
 public class LineData implements Comparable<Object>, CoverageData, Serializable {

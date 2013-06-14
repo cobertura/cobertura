@@ -27,15 +27,7 @@ package net.sourceforge.cobertura.coveragedata;
 import net.sourceforge.cobertura.CoverageIgnore;
 import net.sourceforge.cobertura.util.ConfigurationUtil;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -64,12 +56,7 @@ public abstract class CoverageDataFileHandler {
 
 	public static ProjectData loadCoverageData(File dataFile) {
 		InputStream is = null;
-<<<<<<< HEAD:cobertura/src/net/sourceforge/cobertura/coveragedata/CoverageDataFileHandler.java
-		try
-		{
-=======
 		try {
->>>>>>> b5bd520fc9600fcd3d7687a85d24e8f60e204c04:cobertura/src/main/java/net/sourceforge/cobertura/coveragedata/CoverageDataFileHandler.java
 			is = new BufferedInputStream(new FileInputStream(dataFile), 16384);
 			return loadCoverageData(is);
 		} catch (IOException e) {

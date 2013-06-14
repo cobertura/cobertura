@@ -26,7 +26,6 @@
 package net.sourceforge.cobertura.instrument.pass3;
 
 import net.sourceforge.cobertura.instrument.tp.ClassMap;
-
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 

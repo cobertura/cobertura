@@ -3,19 +3,18 @@
  */
 package net.sourceforge.cobertura.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import groovy.util.Node;
+import net.sourceforge.cobertura.test.util.TestUtils;
+import org.apache.commons.io.FileUtils;
+import org.junit.After;
+import org.junit.Before;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import net.sourceforge.cobertura.test.util.TestUtils;
-
-import org.apache.commons.io.FileUtils;
-import org.junit.After;
-import org.junit.Before;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author schristou88

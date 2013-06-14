@@ -26,35 +26,22 @@
 
 package net.sourceforge.cobertura.ant;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
 import junit.framework.TestCase;
 import net.sourceforge.cobertura.reporting.JUnitXMLHelper;
 import net.sourceforge.cobertura.test.util.TestUtils;
-
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.launch.Launcher;
+import org.apache.log4j.Logger;
 import org.apache.tools.ant.taskdefs.Java;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.Path.PathElement;
-import org.jdom.Attribute;
-import org.jdom.DataConversionException;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
+import org.jdom.*;
 import org.jdom.xpath.XPath;
 import org.junit.Test;
-
 import test.condition.ConditionCalls;
+
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * These tests generally exec ant to run a test.xml file.  A different target is used for
@@ -64,10 +51,9 @@ import test.condition.ConditionCalls;
  * @author jwlewi
  */
 public class FunctionalConditionCoverageTest extends TestCase {
-
-	private final static File BASEDIR = new File(
-			(System.getProperty("basedir") != null) ? System
-					.getProperty("basedir") : ".",
+	private static final Logger log = Logger
+			.getLogger(FunctionalConditionCoverageTest.class);
+	private final static File BASEDIR = new File(".",
 			"examples/functionalconditiontest");
 
 	private final static String CONDITION_MISSING_TRUE = "50%";
@@ -164,12 +150,7 @@ public class FunctionalConditionCoverageTest extends TestCase {
 	}
 
 	@Test
-<<<<<<< HEAD:cobertura/test/net/sourceforge/cobertura/ant/FunctionalConditionCoverageTest.java
-	public static void testConditionCoverage() throws Exception
-	{
-=======
 	public static void testConditionCoverage() throws Exception {
->>>>>>> b5bd520fc9600fcd3d7687a85d24e8f60e204c04:cobertura/src/test/java/net/sourceforge/cobertura/ant/FunctionalConditionCoverageTest.java
 		runTestAntScript("condition-coverage", "test-condition-coverage");
 		verify("condition-coverage");
 	}
@@ -424,18 +405,6 @@ public class FunctionalConditionCoverageTest extends TestCase {
 	 * Use the ant 'java' task to run the test.xml
 	 * file and the specified target.
 	 */
-<<<<<<< HEAD:cobertura/test/net/sourceforge/cobertura/ant/FunctionalConditionCoverageTest.java
-	private static void runTestAntScript(String testName, String target) throws IOException
-	{
-		Java java = new Java();
-		java.setProject(TestUtils.project);
-		java.init();
-		
-		// Call ant launcher.  Requires ant-lancher.jar.
-		java.setClassname("org.apache.tools.ant.launch.Launcher");
-		java.setFork(true);
-		
-=======
 	private static void runTestAntScript(String testName, String target)
 			throws IOException {
 		Java java = new Java();
@@ -445,8 +414,6 @@ public class FunctionalConditionCoverageTest extends TestCase {
 		// Call ant launcher.  Requires ant-lancher.jar.
 		java.setClassname("org.apache.tools.ant.launch.Launcher");
 		java.setFork(true);
-
->>>>>>> b5bd520fc9600fcd3d7687a85d24e8f60e204c04:cobertura/src/test/java/net/sourceforge/cobertura/ant/FunctionalConditionCoverageTest.java
 		AntUtil.transferCoberturaDataFileProperty(java);
 
 		java.createArg().setValue("-f");
@@ -466,24 +433,16 @@ public class FunctionalConditionCoverageTest extends TestCase {
 		pathElement.setPath(System.getProperty("java.class.path"));
 		classpath.add(pathElement);
 		java.setClasspath(classpath);
-		System.out.println(classpath);
+		log.info(classpath);
 		try {
 			java.execute();
-<<<<<<< HEAD:cobertura/test/net/sourceforge/cobertura/ant/FunctionalConditionCoverageTest.java
-		}
-		finally
-		{
-			if (outputFile.exists())
-			{
-=======
 		} finally {
 			if (outputFile.exists()) {
->>>>>>> b5bd520fc9600fcd3d7687a85d24e8f60e204c04:cobertura/src/test/java/net/sourceforge/cobertura/ant/FunctionalConditionCoverageTest.java
 				// Put the contents of the output file in the exception
-				System.out.println("\n\n\nOutput from Ant for " + testName
-						+ " test:\n----------------------------------------\n"
-						+ Util.getText(outputFile)
-						+ "----------------------------------------");
+				log.info(String.format("\n\n\nOutput from Ant for %s test:"
+						+ "\n----------------------------------------"
+						+ "\n%s----------------------------------------",
+						testName, Util.getText(outputFile)));
 				outputFile.delete();
 			}
 		}

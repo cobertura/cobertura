@@ -58,11 +58,11 @@
 
 package net.sourceforge.cobertura.ant;
 
+import org.apache.tools.ant.BuildException;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
-import org.apache.tools.ant.BuildException;
 
 /**
  * An ant task that can be used to optionally fail an ant build if

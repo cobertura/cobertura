@@ -21,9 +21,9 @@
 
 package net.sourceforge.cobertura.coveragedata;
 
-import java.util.TimerTask;
-
 import net.sourceforge.cobertura.CoverageIgnore;
+
+import java.util.TimerTask;
 
 @CoverageIgnore
 public class SaveTimer extends TimerTask {
