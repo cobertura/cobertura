@@ -27,7 +27,9 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 General Public License for more details.
 
 ## CONVENTIONS
-When contributing consider using the provided xsl for code formatting.
+Before committing
+* check all tests pass
+* build the project, so that all code gets uniformly indented. A Maven plugin ensures this.
 
 ## CONTRIBUTORS
 List of all contributors to Cobertura listed alphabetically by last name
@@ -61,7 +63,8 @@ List of all contributors to Cobertura listed alphabetically by last name
 * Copyright (C) 2005 Alexei Yudichev    <sflexus a.t users d.o.t sourceforge d.o.t net>
 
 ## MAVEN MIGRATION NOTES
-* How do we get a good blame while all files were moved? 
+* *How do we get a good blame while all files were moved?*
+
 Use "git blame --follow" nameOfFile.java
 
 
@@ -350,3 +353,9 @@ Copyright (C) 2000 Chr. Clemens Lee   <clemens a.t kclee d.o.t com>
 	  would fail to instrument classes if you attempted to instrument a
 	  very large number of classes (in the hundreds).
 	* Rewrote the HTML reporting and included code complexity in the output.
+
+# RELATED PROJECTS
+## Cobertura Maven Plugin
+Adds Maven goals to run Cobertura. Documentation and details can be found [here](http://mojo.codehaus.org/cobertura-maven-plugin/)
+## Cobertura Jenkins Plugin
+Runs Cobertura on Jenkins CI jobs. Check it [here](https://github.com/jenkinsci/cobertura-plugin)
