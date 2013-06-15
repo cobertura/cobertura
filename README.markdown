@@ -354,8 +354,8 @@ Copyright (C) 2000 Chr. Clemens Lee   <clemens a.t kclee d.o.t com>
 	  very large number of classes (in the hundreds).
 	* Rewrote the HTML reporting and included code complexity in the output.
 
-# RELATED PROJECTS
-## Cobertura Maven Plugin
+## RELATED PROJECTS
+### Cobertura Maven Plugin
 Adds Maven goals to run Cobertura. Documentation and details can be found [here](http://mojo.codehaus.org/cobertura-maven-plugin/)
-## Cobertura Jenkins Plugin
+### Cobertura Jenkins Plugin
 Runs Cobertura on Jenkins CI jobs. Check it [here](https://github.com/jenkinsci/cobertura-plugin)
