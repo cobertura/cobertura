@@ -29,7 +29,6 @@ package net.sourceforge.cobertura.ant;
 import junit.framework.TestCase;
 import net.sourceforge.cobertura.reporting.JUnitXMLHelper;
 import net.sourceforge.cobertura.test.util.TestUtils;
-import org.apache.log4j.Logger;
 import org.apache.tools.ant.taskdefs.Java;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.Path.PathElement;
@@ -51,10 +50,11 @@ import java.util.*;
  * @author jwlewi
  */
 public class FunctionalConditionCoverageTest extends TestCase {
-	private static final Logger log = Logger
-			.getLogger(FunctionalConditionCoverageTest.class);
-	private final static File BASEDIR = new File(".",
-			"examples/functionalconditiontest");
+
+	private final static File BASEDIR = new File(
+			(System.getProperty("basedir") != null) ? System
+					.getProperty("basedir") : ".",
+			"src/test/resources/examples/functionalconditiontest");
 
 	private final static String CONDITION_MISSING_TRUE = "50%";
 	private final static String CONDITION_MISSING_FALSE = "50%";
@@ -433,16 +433,16 @@ public class FunctionalConditionCoverageTest extends TestCase {
 		pathElement.setPath(System.getProperty("java.class.path"));
 		classpath.add(pathElement);
 		java.setClasspath(classpath);
-		log.info(classpath);
+		System.out.println(classpath);
 		try {
 			java.execute();
 		} finally {
 			if (outputFile.exists()) {
 				// Put the contents of the output file in the exception
-				log.info(String.format("\n\n\nOutput from Ant for %s test:"
-						+ "\n----------------------------------------"
-						+ "\n%s----------------------------------------",
-						testName, Util.getText(outputFile)));
+				System.out.println("\n\n\nOutput from Ant for " + testName
+						+ " test:\n----------------------------------------\n"
+						+ Util.getText(outputFile)
+						+ "----------------------------------------");
 				outputFile.delete();
 			}
 		}

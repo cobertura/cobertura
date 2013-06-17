@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="cobertura.examples.functionalconditiontest" basedir="." default="help">
+
+	<description>
+    Cobertura - http://cobertura.sourceforge.net/
+    Copyright (C) 2003 jcoverage ltd.
+    Copyright (C) 2005 Mark Doliner
+	Copyright (C) 2006 John Lewis
+    Cobertura is licensed under the GNU General Public License
+    Cobertura comes with ABSOLUTELY NO WARRANTY
+    </description>
+
+	<property file="build.properties" />
+
+	<path id="project.classpath">
+		<path path="${java.class.path}" />
+		<!-- 
+		The next two should only come into play when running this script directly as
+		opposed to being called by a functional test.
+		-->
+		<pathelement location="../../etc" />
+		<pathelement location="../../target/classes" />
+	</path>
+
+	<taskdef resource="tasks.properties" classpathref="project.classpath"/>
+
+	<target name="help">
+		<echo>This example is only used for testing, and is not meant</echo>
+		<echo>to be run from the command line.  It requires certain </echo>
+		<echo>classes to be on the class path to work correctly.</echo>
+	</target>
+
+	<target name="compile">
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true" />
+	</target>
+
+	<target name="instrument-condition-coverage" depends="compile">
+		<mkdir dir="${instrumented.dir}" />
+		<cobertura-instrument datafile="${basedir}/cobertura.ser" todir="${instrumented.dir}">
+			<ignore regex="org.apache.log4j.*" />
+			<fileset dir="${classes.dir}">
+				<include name="**/*.class" />
+				<exclude name="**/*Test*" />
+			</fileset>
+		</cobertura-instrument>
+
+		<path id="test.classpath">
+			<path location="${instrumented.dir}" />
+		</path>
+	</target>
+
+	<target name="test" depends="compile">
+		<junit fork="true" dir="${basedir}" haltonfailure="true">
+			<classpath refid="test.classpath" />
+			<classpath location="${classes.dir}" />
+			<classpath path="${java.class.path}" />
+			<classpath refid="project.classpath" />
+
+			<formatter type="plain" usefile="false" />
+			<test name="test.condition.Test" />
+		</junit>
+	</target>
+
+	<target name="coverage-reports">
+		<mkdir dir="${coverage.xml.dir}" />
+		<cobertura-report datafile="${basedir}/cobertura.ser" srcdir="${src.dir}" destdir="${coverage.xml.dir}" format="xml" />
+
+		<mkdir dir="${coverage.html.dir}" />
+		<!-- maxmemory is only specified to test the attribute -->
+		<cobertura-report datafile="${basedir}/cobertura.ser" destdir="${coverage.html.dir}" maxmemory="512M">
+			<fileset dir="${src.dir}">
+				<include name="**/*.java" />
+			</fileset>
+		</cobertura-report>
+	</target>
+
+	<target name="coverage-check">
+		<cobertura-check branchrate="34" totallinerate="100" />
+	</target>
+
+	<target name="clean">
+		<delete dir="${classes.dir}" />
+		<delete dir="${instrumented.dir}" />
+		<delete dir="${reports.dir}" failonerror="false"/>
+		<delete file="cobertura.log" />
+		<delete file="cobertura.ser" />
+		<delete file="cobertura.ser.lock" />
+	</target>
+
+	<target name="test-condition-coverage" depends="clean,compile,instrument-condition-coverage,test,coverage-reports" />
+	<target name="all" depends="test-condition-coverage" />
+
+</project>

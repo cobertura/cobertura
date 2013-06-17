@@ -70,22 +70,19 @@ public class ConfigurationUtil {
 	public String getProperty(String key, String defvalue) {
 		String value = System.getProperty(key);
 		if (value != null) {
-			DEBUG(String
-					.format("Using system property value [%s] for key [%s]",
-							value, key));
+			DEBUG("Using system property value [" + value + "] for key [" + key
+					+ "]");
 			return value;
 		}
 
 		value = props.getProperty(key);
 		if (value != null) {
-			DEBUG(String.format(
-					"Using cobertura.properties value [%s] for key [%s]",
-					value, key));
+			DEBUG("Using cobertura.properties value [" + value + "] for key ["
+					+ key + "]");
 			return value;
 		}
 
-		DEBUG(String.format("Using default value [%s] for key [%s]", defvalue,
-				key));
+		DEBUG("Using default value [" + defvalue + "] for key [" + key + "]");
 		return defvalue;
 	}
 
@@ -100,8 +97,7 @@ public class ConfigurationUtil {
 	 */
 	private void DEBUG(String msg) {
 		if (false) {
-			System.out.println(String.format(
-					"[Cobertura:ConfigurationUtil] %s", msg));
+			System.out.println("[Cobertura:ConfigurationUtil] " + msg);
 		}
 	}
 }

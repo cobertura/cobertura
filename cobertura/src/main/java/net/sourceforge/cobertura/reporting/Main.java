@@ -38,7 +38,8 @@ import org.apache.log4j.Logger;
 import java.io.File;
 
 public class Main {
-	private static final Logger log = Logger.getLogger(Main.class);
+
+	private static final Logger LOGGER = Logger.getLogger(Main.class);
 
 	private String format = "html";
 	private File dataFile = null;
@@ -72,7 +73,7 @@ public class Main {
 			dataFile = CoverageDataFileHandler.getDefaultDataFile();
 
 		if (destinationDir == null) {
-			log.error("Error: destination directory must be set");
+			System.err.println("Error: destination directory must be set");
 			System.exit(1);
 		}
 
@@ -81,18 +82,19 @@ public class Main {
 			System.exit(1);
 		}
 
-		if (log.isDebugEnabled()) {
-			log.debug("format is " + format + " encoding is " + encoding);
-			log.debug("dataFile is " + dataFile.getAbsolutePath());
-			log.debug("destinationDir is " + destinationDir.getAbsolutePath());
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("format is " + format + " encoding is " + encoding);
+			LOGGER.debug("dataFile is " + dataFile.getAbsolutePath());
+			LOGGER.debug("destinationDir is "
+					+ destinationDir.getAbsolutePath());
 		}
 
 		ProjectData projectData = CoverageDataFileHandler
 				.loadCoverageData(dataFile);
 
 		if (projectData == null) {
-			log.error(String.format("Error: Unable to read from data file %s",
-					dataFile.getAbsolutePath()));
+			System.err.println("Error: Unable to read from data file "
+					+ dataFile.getAbsolutePath());
 			System.exit(1);
 		}
 
@@ -112,8 +114,8 @@ public class Main {
 		format = value;
 		if (!format.equalsIgnoreCase("html") && !format.equalsIgnoreCase("xml")
 				&& !format.equalsIgnoreCase("summaryXml")) {
-			log
-					.error(""
+			System.err
+					.println(""
 							+ "Error: format \""
 							+ format
 							+ "\" is invalid. Must be either html or xml or summaryXml");
@@ -124,14 +126,13 @@ public class Main {
 	private void setDataFile(String value) {
 		dataFile = new File(value);
 		if (!dataFile.exists()) {
-			log.error(String.format("Error: data file %s does not exist",
-					dataFile.getAbsolutePath()));
+			System.err.println("Error: data file " + dataFile.getAbsolutePath()
+					+ " does not exist");
 			System.exit(1);
 		}
 		if (!dataFile.isFile()) {
-			log.error(String.format(
-					"Error: data file %s must be a regular file", dataFile
-							.getAbsolutePath()));
+			System.err.println("Error: data file " + dataFile.getAbsolutePath()
+					+ " must be a regular file");
 			System.exit(1);
 		}
 	}
@@ -139,11 +140,8 @@ public class Main {
 	private void setDestination(String value) {
 		destinationDir = new File(value);
 		if (destinationDir.exists() && !destinationDir.isDirectory()) {
-			log
-					.error(String
-							.format(
-									"Error: destination directory %s already exists but is not a directory",
-									destinationDir));
+			System.err.println("Error: destination directory " + destinationDir
+					+ " already exists but is not a directory");
 			System.exit(1);
 		}
 		destinationDir.mkdirs();
@@ -154,7 +152,7 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws Exception {
-		Header.print();
+		Header.print(System.out);
 
 		long startTime = System.currentTimeMillis();
 
@@ -163,15 +161,15 @@ public class Main {
 		try {
 			args = CommandLineBuilder.preprocessCommandLineArguments(args);
 		} catch (Exception ex) {
-			log.error(String.format("Error: Cannot process arguments: %s", ex
-					.getMessage()));
+			System.err.println("Error: Cannot process arguments: "
+					+ ex.getMessage());
 			System.exit(1);
 		}
 
 		main.parseArguments(args);
 
 		long stopTime = System.currentTimeMillis();
-		log.info(String.format("Report time: %s ms", (stopTime - startTime)));
+		System.out.println("Report time: " + (stopTime - startTime) + "ms");
 	}
 
 }

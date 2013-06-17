@@ -23,10 +23,9 @@
 
 package net.sourceforge.cobertura.util;
 
-import org.apache.log4j.Logger;
+import java.io.PrintStream;
 
 public abstract class Header {
-	private static final Logger log = Logger.getLogger(Header.class);
 
 	public static String version() {
 		Package thisPackage = Header.class.getPackage();
@@ -35,11 +34,8 @@ public abstract class Header {
 				: "cvs");
 	}
 
-	public static void print() {
-		log
-				.info(String
-						.format(
-								"Cobertura %s - GNU GPL License (NO WARRANTY) - See COPYRIGHT file",
-								version()));
+	public static void print(PrintStream out) {
+		out.println("Cobertura " + version()
+				+ " - GNU GPL License (NO WARRANTY) - See COPYRIGHT file");
 	}
 }

@@ -61,7 +61,6 @@ import net.sourceforge.cobertura.ant.InstrumentTask;
 import net.sourceforge.cobertura.ant.ReportTask;
 import net.sourceforge.cobertura.test.util.TestUtils;
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
 import org.apache.tools.ant.taskdefs.Echo;
 import org.apache.tools.ant.taskdefs.Java;
 import org.apache.tools.ant.taskdefs.Javac;
@@ -111,8 +110,6 @@ import static org.junit.Assert.assertEquals;
  * out of bounds exception.
  */
 public class ThreadedFunctionalTest {
-	private static final Logger log = Logger
-			.getLogger(ThreadedFunctionalTest.class);
 	AntBuilder ant = TestUtils.getCoberturaAntBuilder(TestUtils
 			.getCoberturaClassDir());
 
@@ -296,7 +293,7 @@ public class ThreadedFunctionalTest {
 		p.addDirset(TestUtils.getCoberturaClassDirSet());
 
 		for (int i = 0; i < numberOfRetries; i++) {
-			log.info(String.format("Executing build: %s", i));
+			System.out.println("Executing build: " + i);
 			Java java = new Java();
 			java.setClassname("mypackage.MyThreads");
 			java.setDir(srcDir);
@@ -307,14 +304,14 @@ public class ThreadedFunctionalTest {
 			java.execute();
 		}
 
-		log.info("Starting reporting task.");
+		System.out.println("Starting reporting task.");
 		ReportTask reportTask = new ReportTask();
 		reportTask.setProject(TestUtils.project);
 		reportTask.setDataFile(datafile.getAbsolutePath());
 		reportTask.setFormat("xml");
 		reportTask.setDestDir(srcDir);
 		reportTask.execute();
-		log.info("Finish reporting task.");
+		System.out.println("Finish reporting task.");
 
 		Node dom = TestUtils.getXMLReportDOM(srcDir.getAbsolutePath()
 				+ "/coverage.xml");
@@ -327,8 +324,8 @@ public class ThreadedFunctionalTest {
 	}
 
 	public void compileSource(final File srcDir) {
-		log.info(String.format("Invoking groovyC command on %s", srcDir
-				.getAbsolutePath()));
+		System.out.println("Invoking groovyC command on "
+				+ srcDir.getAbsolutePath());
 		Javac javac = new Javac();
 		javac.setDebug(true);
 		javac.setProject(TestUtils.project);
@@ -341,11 +338,11 @@ public class ThreadedFunctionalTest {
 		groovyc.addConfiguredJavac(javac);
 		groovyc.execute();
 
-		log.info("Finish invoking groovyC command.");
+		System.out.println("Finish invoking groovyC command.");
 	}
 
 	public void instrumentClasses(File srcDir, File datafile) {
-		log.info("Start instrumenting classes.");
+		System.out.println("Start instrumenting classes.");
 		FileSet fileset = new FileSet();
 		fileset.setDir(srcDir);
 		fileset.setIncludes("**/*.class");
@@ -356,6 +353,6 @@ public class ThreadedFunctionalTest {
 		instrumentTask.setThreadsafeRigorous(true);
 		instrumentTask.addFileset(fileset);
 		instrumentTask.execute();
-		log.info("Finish instrumenting classes.");
+		System.out.println("Finish instrumenting classes.");
 	}
 }

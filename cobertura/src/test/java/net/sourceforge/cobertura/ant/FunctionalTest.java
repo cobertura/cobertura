@@ -55,7 +55,7 @@ import static org.junit.Assert.*;
 public class FunctionalTest extends AbstractCoberturaTestCase {
 	private static int forkedJVMDebugPort = 0;
 
-	private final static File BASEDIR = new File("src/main/resources/",
+	private final static File BASEDIR = new File("src/test/resources/",
 			"examples/functionaltest1");
 
 	@Test
@@ -350,6 +350,7 @@ public class FunctionalTest extends AbstractCoberturaTestCase {
 		java.setFailonerror(true);
 		File output = Util.createTemporaryTextFile("cobertura-test");
 		java.setOutput(output);
+		java.setFailonerror(true);
 
 		//Set the classpath to the same classpath as this JVM
 		Path classpath = new Path(TestUtils.project);

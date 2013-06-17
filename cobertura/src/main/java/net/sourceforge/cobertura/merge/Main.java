@@ -79,7 +79,7 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		Header.print();
+		Header.print(System.out);
 
 		try {
 			args = CommandLineBuilder.preprocessCommandLineArguments(args);

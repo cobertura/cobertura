@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin
+  name="%pluginName"
+  id="net.sourceforge.cobertura"
+  version="@product.version@"
+  provider-name="%providerName">
+
+  <runtime>
+    <!--
+      the runtime library must not contain the actual ant task
+      definitions otherwise eclipse gets rather upset.
+    -->
+    <library name="cobertura-main.jar"/>
+  </runtime>
+
+  <extension point="org.eclipse.ant.core.antTasks">
+    <antTask name="instrument" class="net.sourceforge.cobertura.ant.InstrumentTask" library="cobertura.jar"/>
+    <antTask name="merge" class="net.sourceforge.cobertura.ant.MergeTask" library="cobertura.jar"/>
+    <antTask name="report" class="net.sourceforge.cobertura.ant.ReportTask" library="cobertura.jar"/>
+    <antTask name="check" class="net.sourceforge.cobertura.ant.CheckTask" library="cobertura.jar"/>
+  </extension>
+</plugin>

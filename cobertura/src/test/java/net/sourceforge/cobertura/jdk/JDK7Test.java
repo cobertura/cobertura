@@ -19,7 +19,6 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 
 public class JDK7Test {
-	private static final Logger log = Logger.getLogger(JDK7Test.class);
 	static AntBuilder ant = TestUtils.getCoberturaAntBuilder(TestUtils
 			.getCoberturaClassDir());
 	static Node dom;
@@ -79,7 +78,7 @@ public class JDK7Test {
 		/*
 		 * 
 		 */
-		log.info(srcDir.getAbsolutePath());
+		System.out.println(srcDir.getAbsolutePath());
 		dom = TestUtils.getXMLReportDOM(srcDir.getAbsolutePath()
 				+ "/coverage.xml");
 	}

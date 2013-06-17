@@ -64,7 +64,6 @@ import net.sourceforge.cobertura.test.util.TestUtils;
 import net.sourceforge.cobertura.test.util.WebappServer;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -77,8 +76,7 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 public class WebAppFunctionalTest extends AbstractCoberturaTestCase {
-	private static final Logger log = Logger
-			.getLogger(WebAppFunctionalTest.class);
+
 	private static final String SRC_DIR = "src/main/java";
 
 	/*
@@ -408,13 +406,13 @@ public class WebAppFunctionalTest extends AbstractCoberturaTestCase {
 		int hitCountBefore = TestUtils.getHitCount(dom,
 				WebappServer.SIMPLE_SERVLET_CLASSNAME, "doGet");
 		assertEquals(0, hitCountBefore);
-		String url = String.format(
-				"http://%s:%s/coberturaFlush/flushCobertura", data
-						.get("hostname"), data.get("webappPort"));
-		log.info(url);
+		System.out.println("http://" + data.get("hostname") + ":"
+				+ data.get("webappPort") + "/coberturaFlush/flushCobertura");
 		//flush the cobertura data by doing an HTTP get
-		String flushing = IOUtils.toString(new java.net.URL(url)
-				.openConnection().getInputStream());
+		String flushing = IOUtils.toString(new java.net.URL("http://"
+				+ data.get("hostname") + ":" + data.get("webappPort")
+				+ "/coberturaFlush/flushCobertura").openConnection()
+				.getInputStream());
 
 		assertEquals("", flushing);
 

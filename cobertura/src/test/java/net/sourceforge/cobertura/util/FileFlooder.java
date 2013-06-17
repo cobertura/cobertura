@@ -36,7 +36,7 @@ import java.io.IOException;
  */
 public class FileFlooder {
 
-	private static final Logger log = Logger.getLogger(FileFlooder.class);
+	private static final Logger LOGGER = Logger.getLogger(FileFlooder.class);
 
 	public static void flood(String directory, String fileName, String fileExt,
 			int numOfFiles, int linesPerFile) {
@@ -47,14 +47,14 @@ public class FileFlooder {
 				try {
 					File file = new File(directory + "/" + fileName + i + "."
 							+ fileExt);
-					log.info("Writing file: " + file.getAbsolutePath());
+					LOGGER.info("Writing file: " + file.getAbsolutePath());
 					writer = new FileWriter(file);
 					for (int l = 1; l <= linesPerFile; l++) {
 						writer
 								.write("This is a test file. blah.... blah.... blah....\n");
 					}
 				} catch (IOException ioe) {
-					log.error("Error while writing file.", ioe);
+					LOGGER.error("Error while writing file.", ioe);
 				} finally {
 					if (writer != null)
 						try {
@@ -69,7 +69,7 @@ public class FileFlooder {
 
 	public static void main(String[] args) {
 		FileFlooder.flood(".", "file", "txt", 100, 1000);
-		log.info("done");
+		System.out.println("done");
 	}
 
 }

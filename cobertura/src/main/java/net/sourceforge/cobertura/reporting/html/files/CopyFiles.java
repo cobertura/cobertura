@@ -28,8 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public abstract class CopyFiles {
-	private static final String REPORT_RESOURCES_DIR = "report/";
-
+	
 	public static void copy(File destinationDir) throws IOException {
 		File cssOutputDir = new File(destinationDir, "css");
 		File imagesOutputDir = new File(destinationDir, "images");
@@ -78,8 +77,7 @@ public abstract class CopyFiles {
 		FileOutputStream out = null;
 		directory.mkdirs();
 		try {
-			in = Thread.currentThread().getContextClassLoader()
-					.getResourceAsStream(REPORT_RESOURCES_DIR + resourceName);
+			in = CopyFiles.class.getResourceAsStream(resourceName);
 			if (in == null) {
 				throw new IllegalArgumentException("Resource " + resourceName
 						+ " does not exist in this package.");

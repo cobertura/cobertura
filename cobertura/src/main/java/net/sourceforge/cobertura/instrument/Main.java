@@ -63,7 +63,6 @@ import java.util.zip.ZipOutputStream;
  * </ol>
  */
 public class Main {
-	private static final Logger log = Logger.getLogger(Main.class);
 	private static final LoggerWrapper logger = new LoggerWrapper();
 
 	private File destinationDirectory = null;
@@ -145,9 +144,8 @@ public class Main {
 								.instrumentClass(new ByteArrayInputStream(
 										entryBytes));
 						if (res != null) {
-							logger.debug(String.format(
-									"Putting instrumented entry: %s", entry
-											.getName()));
+							logger.debug("Putting instrumented entry: "
+									+ entry.getName());
 							entryBytes = res.getContent();
 							modified = true;
 							outputEntry.setTime(System.currentTimeMillis());
@@ -171,11 +169,11 @@ public class Main {
 				output.closeEntry();
 				archive.closeEntry();
 			} catch (Exception e) {
-				logger.warn(String.format("Problems with archive entry: %s",
-						entry.getName()), e);
+				logger.warn("Problems with archive entry: " + entry.getName(),
+						e);
 			} catch (Throwable t) {
-				logger.warn(String.format("Problems with archive entry: %s",
-						entry.getName()), t);
+				logger.warn("Problems with archive entry: " + entry.getName(),
+						t);
 			}
 			output.flush();
 		}
@@ -256,12 +254,12 @@ public class Main {
 		// instrumented one
 		if (modified && (destinationDirectory == null)) {
 			try {
-				logger.debug(String.format("Moving %s to %s", outputFile
-						.getAbsolutePath(), archive.getAbsolutePath()));
+				logger.debug("Moving " + outputFile.getAbsolutePath() + " to "
+						+ archive.getAbsolutePath());
 				IOUtil.moveFile(outputFile, archive);
 			} catch (IOException e) {
-				logger.warn(String.format("Cannot instrument archive: %s",
-						archive.getAbsolutePath()), e);
+				logger.warn("Cannot instrument archive: "
+						+ archive.getAbsolutePath(), e);
 				return;
 			}
 		}
@@ -381,7 +379,7 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		Header.print();
+		Header.print(System.out);
 
 		long startTime = System.currentTimeMillis();
 
@@ -390,15 +388,14 @@ public class Main {
 		try {
 			args = CommandLineBuilder.preprocessCommandLineArguments(args);
 		} catch (Exception ex) {
-			log.error(String.format("Error: Cannot process arguments: %s", ex
-					.getMessage()));
+			System.err.println("Error: Cannot process arguments: "
+					+ ex.getMessage());
 			System.exit(1);
 		}
 		main.parseArguments(args);
 
 		long stopTime = System.currentTimeMillis();
-		logger.info(String.format("Instrument time: %s ms",
-				(stopTime - startTime)));
+		logger.info("Instrument time: " + (stopTime - startTime) + "ms");
 	}
 
 	// TODO: Preserved current behaviour, but this code is failing on WARN, not error
