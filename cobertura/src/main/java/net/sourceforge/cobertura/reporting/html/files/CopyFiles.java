@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public abstract class CopyFiles {
-	
+
 	public static void copy(File destinationDir) throws IOException {
 		File cssOutputDir = new File(destinationDir, "css");
 		File imagesOutputDir = new File(destinationDir, "images");
