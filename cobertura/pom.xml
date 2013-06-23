@@ -197,10 +197,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${surefireVersion}</version>
         <configuration>
-	  <redirectTestOutputToFile>true</redirectTestOutputToFile>
-          <excludes>
-            <exclude>**/test/**</exclude>
-          </excludes>
+	  <redirectTestOutputToFile>true</redirectTestOutputToFile>       
         </configuration>
       </plugin>
     </plugins>
