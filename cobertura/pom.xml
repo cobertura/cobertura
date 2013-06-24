@@ -59,11 +59,13 @@
       <groupId>xerces</groupId>
       <artifactId>xercesImpl</artifactId>
       <version>${xercesVersion}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>xalan</groupId>
       <artifactId>xalan</artifactId>
       <version>${xalanVersion}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>oro</groupId>
@@ -79,6 +81,7 @@
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <version>${commonsioVersion}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.ant</groupId>
@@ -89,6 +92,7 @@
       <groupId>org.apache.ant</groupId>
       <artifactId>ant-junit</artifactId>
       <version>${antVersion}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
@@ -96,29 +100,16 @@
       <version>${jettyVersion}</version>
     </dependency>
     <dependency>
-      <groupId>org.simpleframework</groupId>
-      <artifactId>simple-xml</artifactId>
-      <version>${simplexmlVersion}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>${guavaVersion}</version>
-    </dependency>
-    <dependency>
-      <groupId>net.sourceforge.findbugs</groupId>
-      <artifactId>jsr305</artifactId>
-      <version>${jsr305Version}</version>
-    </dependency>
-    <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
       <version>${groovyVersion}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.java.dev.javacc</groupId>
       <artifactId>javacc</artifactId>
       <version>${javaccVersion}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.sun</groupId>
@@ -192,7 +183,8 @@
           </execution>
         </executions>
       </plugin>
-
+      
+      <!-- Cobertura requires custom jdk version for providing the support for the latest jdk. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -202,6 +194,7 @@
           <target>${jdkVersion}</target>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -213,6 +206,55 @@
 	    <exclude>**/examples/functionaltest1/**</exclude>
           </excludes>
         </configuration>
+      </plugin>
+
+
+      <!-- This is required to assemble all of the binary files. -->
+      <!-- The descriptor has more detailed information about what is included/excluded. -->
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.2.1</version>
+        <configuration>
+          <descriptors>
+            <descriptor>src/main/assembly/assembly.xml</descriptor>
+          </descriptors>
+        </configuration>
+        <executions>
+          <execution>
+            <id>packageBins</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <!-- This is to build the coberturaFlush.war file necessary for servlets. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <warName>coberturaFlush</warName>
+          <webXml>src/main/resources/net/sourceforge/cobertura/webapp/web.xml</webXml>
+          <packagingIncludes>WEB-INF/classes/net/sourceforge/cobertura/webapp/FlushCoberturaServlet.class</packagingIncludes>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <classpathPrefix>lib/</classpathPrefix>
+            </manifest>
+          </archive>
+        </configuration>
+        <executions>
+          <execution>
+            <id>prepare-war</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>war</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
