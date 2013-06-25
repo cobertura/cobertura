@@ -5,7 +5,8 @@
 Cobertura is a free Java code coverage reporting tool.  It is
 based on jcoverage 1.0.5.  See the [Cobertura web page](http://cobertura.sourceforge.net/) for more
 details.
-Cobertura versions follow the [Semantic versioning](http://semver.org/) guidelines.
+
+Since 2.0.0, Cobertura versions follow the [Semantic versioning](http://semver.org/) guidelines.
 
 ## COPYRIGHT
 See the included file "LICENSE.txt"
