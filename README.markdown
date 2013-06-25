@@ -72,7 +72,7 @@ Use "git blame --follow" nameOfFile.java
 Code in the net.sourceforge.cobertura.javancss package is
 Copyright (C) 2000 Chr. Clemens Lee   <clemens a.t kclee d.o.t com>
 
-### version 2.0:
+### version 2.0.0:
 	* New --ignoreTrivial switch that tells Cobertura to ignore the 
 	  following in the coverage report: Getter methods that simply 
 	  read a class field; Setter methods that set a class field;
