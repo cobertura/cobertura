@@ -363,3 +363,5 @@ Copyright (C) 2000 Chr. Clemens Lee   <clemens a.t kclee d.o.t com>
 Adds Maven goals to run Cobertura. Documentation and details can be found [here](http://mojo.codehaus.org/cobertura-maven-plugin/)
 ### Cobertura Jenkins Plugin
 Runs Cobertura on Jenkins CI jobs. Check it [here](https://github.com/jenkinsci/cobertura-plugin)
+### eCobertura - Eclipse Plugin for Cobertura
+Allows to launch applications or tests in Cobertura covered mode within Eclipse. Displays coverage data on Eclipse IDE code. Check [the website](http://ecobertura.johoop.de/)
