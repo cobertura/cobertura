@@ -75,7 +75,6 @@ public class LargeFileTest {
 	AntBuilder ant = TestUtils.getCoberturaAntBuilder(TestUtils
 			.getCoberturaClassDir());
 	Node dom;
-	IgnoreUtil ignoreUtil;
 
 	@Test
 	public void largeFileTest() throws Exception {
@@ -84,6 +83,8 @@ public class LargeFileTest {
 		 * has trivial methods such as .
 		 */
 		File tempDir = TestUtils.getTempDir();
+		FileUtils.deleteDirectory(tempDir);
+
 		File srcDir = new File(tempDir, "src");
 		File reportDir = new File(tempDir, "report");
 		File instrumentDir = new File(tempDir, "instrument");

@@ -88,7 +88,6 @@ public class FunctionalTest extends AbstractCoberturaTestCase {
 		 */
 		File tempDir = TestUtils.getTempDir();
 		File srcDir = new File(tempDir, "src");
-		File reportDir = new File(tempDir, "report");
 		File instrumentDir = new File(tempDir, "instrument");
 
 		File mainSourceFile = new File(srcDir, "mypackage/Main.java");
@@ -155,7 +154,6 @@ public class FunctionalTest extends AbstractCoberturaTestCase {
 		 */
 		File tempDir = TestUtils.getTempDir();
 		File srcDir = new File(tempDir, "src");
-		File reportDir = new File(tempDir, "report");
 		File instrumentDir = new File(tempDir, "instrument");
 
 		File mainSourceFile = new File(srcDir, "mypackage/Main.java");
@@ -302,6 +300,8 @@ public class FunctionalTest extends AbstractCoberturaTestCase {
 				break;
 			}
 		}
+
+		assertNotNull(aStaticMethodLine);
 		assertEquals(1, Integer.valueOf(
 				aStaticMethodLine.attribute("hits").toString()).intValue());
 	}
@@ -313,7 +313,6 @@ public class FunctionalTest extends AbstractCoberturaTestCase {
 		 */
 		File tempDir = TestUtils.getTempDir();
 		File srcDir = new File(tempDir, "src");
-		File reportDir = new File(tempDir, "report");
 		File instrumentDir = new File(tempDir, "instrument");
 
 		File mainSourceFile = new File(srcDir, "mypackage/Main.java");

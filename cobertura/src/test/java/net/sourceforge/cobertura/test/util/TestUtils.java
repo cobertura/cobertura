@@ -50,7 +50,7 @@ public class TestUtils {
 		project.addBuildListener(consoleLogger);
 	}
 
-	public static File getCoberturaClassDir() {
+	public synchronized static File getCoberturaClassDir() {
 		if (coberturaClassDir == null) {
 			coberturaClassDir = new File("target/test/cobertura_classes");
 			coberturaClassDir.mkdirs();
@@ -83,7 +83,12 @@ public class TestUtils {
 	}
 
 	public static File getTempDir() {
-		return new File("/tmp", "cobertura");
+		return new File("target/tmp", "cobertura");
+	}
+
+	public static Node getXMLReportDOM(File xmlReport)
+			throws ParserConfigurationException, SAXException, IOException {
+		return getXMLReportDOM(xmlReport.getAbsolutePath());
 	}
 
 	public static Node getXMLReportDOM(String xmlReport)
@@ -648,7 +653,7 @@ public class TestUtils {
 		} catch (Throwable e) {
 			e.printStackTrace();
 		} finally {
-			if (socket != null || !socket.isClosed()) {
+			if (socket != null && !socket.isClosed()) {
 				try {
 					socket.close();
 				} catch (IOException e) {

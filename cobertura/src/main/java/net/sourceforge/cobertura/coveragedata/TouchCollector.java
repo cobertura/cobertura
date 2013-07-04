@@ -75,6 +75,7 @@ public class TouchCollector {
 			// will then call Thread.currentThread.getContextClassLoader() which gets the current threads classloader and
 			// checks to see if cobertura code is in there. This is here because there are situations where multiple
 			// classloaders might be invoked and it requires the check of multiple classloaders.
+
 			boolean found = false;
 			Class<?> clazz = Class.forName(classa.replace("/", "."), false,
 					Thread.currentThread().getContextClassLoader());

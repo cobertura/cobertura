@@ -55,10 +55,12 @@
 
 package net.sourceforge.cobertura.test.util;
 
+import static org.junit.Assert.*;
+
 import groovy.lang.Closure;
-import groovy.util.AntBuilder;
 import net.sourceforge.cobertura.ant.InstrumentTask;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.tools.ant.taskdefs.*;
 import org.apache.tools.ant.types.Environment.Variable;
 import org.apache.tools.ant.types.FileSet;
@@ -67,7 +69,9 @@ import org.apache.tools.ant.types.ZipFileSet;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.ServerSocket;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -112,70 +116,91 @@ public class WebappServer {
 			+ "\n   <url-pattern>/SimpleServlet</url-pattern>"
 			+ "\n  </servlet-mapping>" + "\n </web-app>";
 
-	private static final AntBuilder ant = TestUtils
-			.getCoberturaAntBuilder(TestUtils.getTempDir());
 	private static final String LOCALHOST = "127.0.0.1";
 	private static final String WEB_XML = "src/main/java/net/sourceforge/cobertura/webapp/web.xml";
 	private static final String SRC_DIR = "src/main/java";
+	private static final String appName = "simple";
+	private int webappPort;
+	private int stopPort;
 
 	File dir = new File(TestUtils.getTempDir(), "webserver");
-	int msecNeededToStop = 10000;
 	boolean modifyMainCoberturaDataFile;
 	boolean tomcat;
 
 	public WebappServer(File webappServerDir, boolean tomcat) {
 		this.tomcat = tomcat;
+		ServerSocket s;
+		try {
+			s = new ServerSocket(0);
+			webappPort = s.getLocalPort();
+			s.close();
+
+			s = new ServerSocket(0);
+			stopPort = s.getLocalPort();
+			s.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
-	/**
-	 * Copies a web server installation into dir and deploys a webapp to it.
-	 * @throws Exception 
-	 * 
-	 */
-	public void deployApp(Map map) throws Exception {
-		modifyMainCoberturaDataFile = (map
-				.containsKey("modifyMainCoberturaDataFile")) ? (Boolean) map
-				.get("modifyMainCoberturaDataFile") : false;
+	public void deployApp(File srcDir, boolean instrumentCobertura,
+			boolean deployCoberturaFlush, boolean modifyMainCoberturaDataFile,
+			String instrumentRegEx) throws Exception {
+		this.modifyMainCoberturaDataFile = modifyMainCoberturaDataFile;
 
 		File extractedDir = new File(dir, "extracted");
 		File webInfDir = new File(extractedDir, "WEB-INF");
 		File classesDir = new File(webInfDir, "classes");
 
-		File webInfFile = writeWebInfFile(webInfDir, (String) map
-				.get("webInfText"));
+		File webInfFile = writeWebInfFile(webInfDir,
+				SIMPLE_SERVLET_WEB_XML_TEXT);
 
-		compileSourceFiles((File) map.get("srcDir"), classesDir);
+		compileSourceFiles(srcDir, classesDir);
 
 		copyJettyFiles(dir);
 
-		File war = makeWarFile((String) map.get("appName"), webInfFile,
-				classesDir);
+		File war = makeWarFile(appName, webInfFile, classesDir);
 
-		Delete delete = new Delete();
-		delete.setProject(TestUtils.project);
-		delete.setDir(extractedDir);
-		delete.execute();
+		FileUtils.deleteDirectory(extractedDir);
 
 		File coberturaJar = createCoberturaJar();
 
-		if (map.get("instrumentRegEx") != null) {
-			instrumentWar(war, (String) map.get("instrumentRegEx"));
+		if (instrumentRegEx != null) {
+			instrumentWar(war, instrumentRegEx);
 		}
 
-		if (map.get("instrumentCobertura") != null) {
+		if (instrumentCobertura != false) {
 			instrumentCoberturaJar(coberturaJar);
 		}
 
-		if (map.get("deployCoberturaFlush") != null) {
-			deployCoberturaFlush((map.containsKey("instrumentCobertura"))
-					? (Boolean) map.get("instrumentCobertura")
-					: false);
+		if (deployCoberturaFlush != false) {
+			deployCoberturaFlush(deployCoberturaFlush);
 		}
+	}
+
+	public void deployApp(File srcDir, boolean instrumentCobertura,
+			boolean deployCoberturaFlush, boolean modifyMainCoberturaDataFile)
+			throws Exception {
+		deployApp(srcDir, instrumentCobertura, deployCoberturaFlush,
+				modifyMainCoberturaDataFile, "");
+	}
+
+	public void deployApp(File srcDir, boolean deployCoberturaFlush,
+			String instrumentRegEx) throws Exception {
+		deployApp(srcDir, false, deployCoberturaFlush, false, instrumentRegEx);
+	}
+
+	public void deployApp(File srcDir, String instrumentRegEx) throws Exception {
+		deployApp(srcDir, false, instrumentRegEx);
+	}
+
+	public void deployApp(File srcDir) throws Exception {
+		deployApp(srcDir, "");
 	}
 
 	private File writeWebInfFile(File webInfDir, String text)
 			throws IOException {
-		webInfDir.mkdirs();
+		assertTrue(webInfDir.mkdirs());
 		File webInfFile = new File(webInfDir, "web.xml");
 
 		FileUtils.writeStringToFile(webInfFile, text);
@@ -238,7 +263,8 @@ public class WebappServer {
 		File war = new File(webappsDir, "coberturaFlush.war");
 
 		File classesDir = new File("target/build/warClasses");
-		classesDir.mkdirs();
+		if (!classesDir.exists())
+			classesDir.mkdirs();
 		Javac javac = new Javac();
 		javac.setProject(TestUtils.project);
 		javac.setSrcdir(new Path(TestUtils.project, SRC_DIR));
@@ -300,7 +326,7 @@ public class WebappServer {
 		fileSet.setIncludes(coberturaJar.getName());
 
 		instrumentTask.addFileset(fileSet);
-		//		instrumentTask.execute();
+		instrumentTask.execute();
 	}
 
 	/**
@@ -309,19 +335,14 @@ public class WebappServer {
 	 * @throws Exception 
 	 * 
 	 */
-	Map<String, Integer> freePorts = null;
-
-	public Map withRunningServer(Closure closure) throws Exception {
-		freePorts = findFreePorts();
-		new File(dir, "logs").mkdirs();
-
-		startWebServer(freePorts);
-		Map data = new HashMap();
+	public void withRunningServer() throws Exception {
+		startWebServer();
+		Map<String, Object> data = new HashMap<String, Object>();
 		try {
 			data.put("xmlReport", new File(dir.getAbsolutePath()
 					+ "/coverage.xml"));
 			data.put("hostname", LOCALHOST);
-			data.put("webappPort", freePorts.get("webapp"));
+			data.put("webappPort", webappPort);
 			data.put("coberturaAnt", TestUtils.getCoberturaAntBuilder(TestUtils
 					.getTempDir()));
 
@@ -330,16 +351,21 @@ public class WebappServer {
 			/*
 			 * add a closure that can be called to flush the cobertura data
 			 */
+			Closure closure = new Closure(null) {
+				private static final long serialVersionUID = 1L;
 
-			closure.call(data);
+				@SuppressWarnings("unused")
+				public void doCall(HashMap<String, Object> values) {
+				}
+			};
+
+			System.err.println(closure.call(data));
 		} finally {
 		}
-
-		return data;
 	}
 
 	public void killServer() {
-		stopWebServer("" + freePorts.get("stop"));
+		stopWebServer();
 	}
 
 	private File getDatafileToUse() {
@@ -364,52 +390,8 @@ public class WebappServer {
 		return datafile;
 	}
 
-	/**
-	 * Find two port numbers that can be used to start a webapp server (one port for
-	 * http connections; one port for a stop command).
-	 * @throws IOException 
-	 */
-	private Map findFreePorts() throws IOException {
-		Map freePorts = new HashMap<String, Integer>() {
-			{
-				put("webapp", null);
-				put("stop", null);
-			}
-		};
-
-		ServerSocket webappSocket = null;
-		ServerSocket stopSocket = null;
-
-		try {
-			webappSocket = new ServerSocket(0, 1, null);
-			stopSocket = new ServerSocket(0, 1, null);
-
-			freePorts.put("webapp", webappSocket.getLocalPort());
-
-			freePorts.put("stop", stopSocket.getLocalPort());
-		} finally {
-			closeSocket(webappSocket);
-			closeSocket(stopSocket);
-		}
-		return freePorts;
-	}
-
-	private void closeSocket(ServerSocket socket) {
-		try {
-			if (socket != null || socket.isClosed()) {
-				socket.close();
-			}
-		} catch (Throwable t) {
-			t.printStackTrace(System.err);
-		}
-	}
-
-	private void startWebServer(final Map<String, Integer> freePorts) {
-		Echo echo = new Echo();
-		echo.setProject(TestUtils.project);
-		echo.setMessage("Starting Jetty webapp server on "
-				+ freePorts.get("webapp"));
-		echo.execute();
+	private void startWebServer() {
+		System.out.println("Starting Jetty webapp server on " + webappPort);
 
 		Thread t = new Thread() {
 			@Override
@@ -422,13 +404,13 @@ public class WebappServer {
 
 				Variable jettyPort = new Variable();
 				jettyPort.setKey("jetty.port");
-				jettyPort.setValue(freePorts.get("webapp").toString());
+				jettyPort.setValue(String.valueOf(webappPort));
 				java.addSysproperty(jettyPort);
 
-				Variable stopPort = new Variable();
-				stopPort.setKey("STOP.PORT");
-				stopPort.setValue(freePorts.get("stop").toString());
-				java.addSysproperty(stopPort);
+				Variable stopPortVariable = new Variable();
+				stopPortVariable.setKey("STOP.PORT");
+				stopPortVariable.setValue(String.valueOf(stopPort));
+				java.addSysproperty(stopPortVariable);
 
 				Variable stopKey = new Variable();
 				stopKey.setKey("STOP.KEY");
@@ -461,26 +443,35 @@ public class WebappServer {
 		}
 	}
 
-	private void stopWebServer(final String stopPort) {
-		Java java = new Java();
-		java.setProject(TestUtils.project);
-		java.setJar(new File("/tmp/cobertura/webserver/start.jar"));
-		java.setDir(dir);
-		java.setFork(true);
-		java.setArgs("--stop");
-		Variable stopPortVariable = new Variable();
-		Variable stopKeyVariable = new Variable();
+	private void stopWebServer() {
+		Thread t = new Thread() {
+			@Override
+			public void run() {
+				Java java = new Java();
+				java.setProject(TestUtils.project);
+				java.setJar(new File(TestUtils.getTempDir(),
+						"webserver/start.jar"));
+				java.setDir(dir);
+				java.setFork(true);
+				java.setArgs("--stop");
+				Variable stopPortVariable = new Variable();
+				Variable stopKeyVariable = new Variable();
 
-		stopPortVariable.setKey("STOP.PORT");
-		stopPortVariable.setValue(stopPort);
+				stopPortVariable.setKey("STOP.PORT");
+				stopPortVariable.setValue(String.valueOf(stopPort));
 
-		stopKeyVariable.setKey("STOP.KEY");
-		stopKeyVariable.setValue("cobertura");
+				stopKeyVariable.setKey("STOP.KEY");
+				stopKeyVariable.setValue("cobertura");
 
-		java.addSysproperty(stopPortVariable);
-		java.addSysproperty(stopKeyVariable);
+				java.addSysproperty(stopPortVariable);
+				java.addSysproperty(stopKeyVariable);
 
-		java.execute();
+				java.execute();
+
+				java.execute();
+			}
+		};
+		t.start();
 	}
 
 	private File createCoberturaJar() {
@@ -503,8 +494,51 @@ public class WebappServer {
 	public static void writeSimpleServletSource(File srcDir) throws IOException {
 		File servletSourceFile = new File(srcDir,
 				"com/acme/servlet/SimpleServlet.java");
-		servletSourceFile.getParentFile().mkdirs();
+		assertTrue(servletSourceFile.getParentFile().mkdirs());
 
 		FileUtils.write(servletSourceFile, SIMPLE_SERVLET_TEXT);
+	}
+
+	public void pingServer() {
+		String webappResponse = null;
+		try {
+			webappResponse = IOUtils.toString(new URL("http://localhost:"
+					+ webappPort + "/" + appName + "/SimpleServlet")
+					.openConnection().getInputStream());
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		} catch (IOException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+
+		assertNotNull(webappResponse);
+		assertEquals("Webapp response was incorrect", "Hi", webappResponse
+				.trim());
+	}
+
+	public void pingCoberturaServer() {
+		//flush the cobertura data by doing an HTTP get
+		String flushing = null;
+		try {
+			flushing = IOUtils.toString(new java.net.URL("http://localhost:"
+					+ webappPort + "/coberturaFlush/flushCobertura")
+					.openConnection().getInputStream());
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		} catch (IOException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+
+		assertNotNull(flushing);
+		assertEquals("", flushing.trim());
+
+	}
+
+	public File getXmlReport() {
+		return new File(dir.getAbsolutePath(), "coverage.xml");
 	}
 }
