@@ -60,11 +60,6 @@
   </properties>
 
   <dependencies>
-<dependency>
-    <groupId>org.httpunit</groupId>
-    <artifactId>httpunit</artifactId>
-    <version>1.7.2</version>
-</dependency>
     <dependency>
       <groupId>org.ow2.asm</groupId>
       <artifactId>asm</artifactId>

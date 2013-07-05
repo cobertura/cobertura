@@ -78,6 +78,8 @@ public class PerformanceTest {
 		 * has trivial methods such as .
 		 */
 		File tempDir = TestUtils.getTempDir();
+
+		FileUtils.deleteDirectory(tempDir);
 		File srcDir = new File(tempDir, "src");
 		File instrumentDir = new File(tempDir, "instrument");
 

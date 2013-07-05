@@ -53,9 +53,10 @@ public class WebAppFunctionalTest {
 	public void setUp() throws Exception {
 		FileUtils.deleteDirectory(tempDir);
 		FileUtils.deleteQuietly(new File("cobertura.ser"));
-		FileUtils.deleteQuietly(new File(tempDir.getAbsolutePath(), "coverage.xml"));
+		FileUtils.deleteQuietly(new File(tempDir.getAbsolutePath(),
+				"coverage.xml"));
 	}
-	
+
 	@After
 	public void tearDown() throws Exception {
 		if (tester != null)
@@ -73,7 +74,7 @@ public class WebAppFunctionalTest {
 		startUpServlet();
 		pingCoberturaServer();
 	}
-	
+
 	@Test
 	public void testFlushCoberturaData() throws Exception {
 		createSimpleWar();
@@ -109,94 +110,106 @@ public class WebAppFunctionalTest {
 				SIMPLE_SERVLET_CLASSNAME, SAVE_DATA_METHOD_NAME);
 
 		tester.stop();
-		
+
 		assertEquals("Hit count should have increased by one",
 				hitCountBefore + 1, hitCountAfter);
 	}
-	
+
 	@Test
 	public void testFlushCoberturaData2() throws Exception {
 		createSimpleWar();
-		
+
 		createCoberturaServlet();
-		
+
 		createCoberturaJar();
-		
+
 		instrumentWar();
-		
+
 		startUpServlet();
-		
+
 		pingServer();
-		
+
 		generateReportFile();
-		
-		Node dom = TestUtils.getXMLReportDOM(new File(tempDir.getAbsolutePath(), "coverage.xml"));
-		
-		int hitCountBefore = TestUtils.getHitCount(dom, SIMPLE_SERVLET_CLASSNAME, SAVE_DATA_METHOD_NAME);
-		
+
+		Node dom = TestUtils.getXMLReportDOM(new File(
+				tempDir.getAbsolutePath(), "coverage.xml"));
+
+		int hitCountBefore = TestUtils.getHitCount(dom,
+				SIMPLE_SERVLET_CLASSNAME, SAVE_DATA_METHOD_NAME);
+
 		assertEquals(0, hitCountBefore);
-		
+
 		pingCoberturaServer();
-		
+
 		generateReportFile();
-		
-		dom = TestUtils.getXMLReportDOM(new File(tempDir.getAbsolutePath(), "coverage.xml"));
-		
-		int hitCountAfter = TestUtils.getHitCount(dom, SIMPLE_SERVLET_CLASSNAME, SAVE_DATA_METHOD_NAME);
-		
+
+		dom = TestUtils.getXMLReportDOM(new File(tempDir.getAbsolutePath(),
+				"coverage.xml"));
+
+		int hitCountAfter = TestUtils.getHitCount(dom,
+				SIMPLE_SERVLET_CLASSNAME, SAVE_DATA_METHOD_NAME);
+
 		assertEquals(2, hitCountAfter);
-		
+
 		tester.stop();
-		
+
 		generateReportFile();
-		
-		dom = TestUtils.getXMLReportDOM(new File(tempDir.getAbsolutePath(), "coverage.xml"));
-		
-		int hitCountFinal = TestUtils.getHitCount(dom, SIMPLE_SERVLET_CLASSNAME, SAVE_DATA_METHOD_NAME);
-		
+
+		dom = TestUtils.getXMLReportDOM(new File(tempDir.getAbsolutePath(),
+				"coverage.xml"));
+
+		int hitCountFinal = TestUtils.getHitCount(dom,
+				SIMPLE_SERVLET_CLASSNAME, SAVE_DATA_METHOD_NAME);
+
 		assertEquals(hitCountAfter, hitCountFinal);
 	}
-	
+
 	@Test
 	public void testFlushCoberturaDataOnly() throws Exception {
 		createSimpleWar();
-		
+
 		createCoberturaServlet();
-		
+
 		createCoberturaJar();
-		
+
 		instrumentWar();
-		
+
 		startUpServlet();
-				
+
 		generateReportFile();
-		
-		Node dom = TestUtils.getXMLReportDOM(new File(tempDir.getAbsolutePath(), "coverage.xml"));
-		
-		int hitCountBefore = TestUtils.getHitCount(dom, SIMPLE_SERVLET_CLASSNAME, SAVE_DATA_METHOD_NAME);
-		
+
+		Node dom = TestUtils.getXMLReportDOM(new File(
+				tempDir.getAbsolutePath(), "coverage.xml"));
+
+		int hitCountBefore = TestUtils.getHitCount(dom,
+				SIMPLE_SERVLET_CLASSNAME, SAVE_DATA_METHOD_NAME);
+
 		assertEquals(0, hitCountBefore);
-		
+
 		generateReportFile();
-		
-		dom = TestUtils.getXMLReportDOM(new File(tempDir.getAbsolutePath(), "coverage.xml"));
-		
-		int hitCountAfter = TestUtils.getHitCount(dom, SIMPLE_SERVLET_CLASSNAME, SAVE_DATA_METHOD_NAME);
-		
+
+		dom = TestUtils.getXMLReportDOM(new File(tempDir.getAbsolutePath(),
+				"coverage.xml"));
+
+		int hitCountAfter = TestUtils.getHitCount(dom,
+				SIMPLE_SERVLET_CLASSNAME, SAVE_DATA_METHOD_NAME);
+
 		assertEquals(0, hitCountAfter);
-		
+
 		tester.stop();
-		
+
 		generateReportFile();
-		
-		dom = TestUtils.getXMLReportDOM(new File(tempDir.getAbsolutePath(), "coverage.xml"));
-		
-		int finalCount = TestUtils.getHitCount(dom, SIMPLE_SERVLET_CLASSNAME, SAVE_DATA_METHOD_NAME);
-		
+
+		dom = TestUtils.getXMLReportDOM(new File(tempDir.getAbsolutePath(),
+				"coverage.xml"));
+
+		int finalCount = TestUtils.getHitCount(dom, SIMPLE_SERVLET_CLASSNAME,
+				SAVE_DATA_METHOD_NAME);
+
 		assertEquals(0, finalCount);
-		
+
 	}
-	
+
 	public void startUpServlet() throws Exception {
 		tester = new ServletTester();
 		request = new HttpTester();
@@ -204,16 +217,18 @@ public class WebAppFunctionalTest {
 
 		ClassLoader loader = createClassLoader();
 		tester.setClassLoader(loader);
-		
-		tester.addServlet("com.acme.servlet.SimpleServlet", "/simple/SimpleServlet");
-		tester.addServlet(FlushCoberturaServlet.class, "/coberturaFlush/flushCobertura");
+
+		tester.addServlet("com.acme.servlet.SimpleServlet",
+				"/simple/SimpleServlet");
+		tester.addServlet(FlushCoberturaServlet.class,
+				"/coberturaFlush/flushCobertura");
 		tester.start();
 
 		request.setMethod("GET");
 		request.setHeader("host", "tester");
 		request.setVersion("HTTP/1.0");
 	}
-	
+
 	public void pingServer() throws Exception {
 		request.setURI("/simple/SimpleServlet");
 		response.parse(tester.getResponses(request.generate()));
@@ -296,11 +311,8 @@ public class WebAppFunctionalTest {
 		File coberturaJar = new File(tempDir, "lib/cobertura.jar");
 
 		@SuppressWarnings("deprecation")
-		URL[] urls = new URL[]{
-					simplewar.toURL(),
-					coberturawar.toURL(),
-					coberturaJar.toURL()
-				};
+		URL[] urls = new URL[]{simplewar.toURL(), coberturawar.toURL(),
+				coberturaJar.toURL()};
 
 		System.out.println(Arrays.toString(urls));
 
@@ -330,9 +342,10 @@ public class WebAppFunctionalTest {
 		// When specify the instrumented .war file it still prefers to use the
 		// target/test-classes/**/*.class files instead. In this situation we instrument the
 		// classes directly but a better solution should be provided for this.
-		instrumentClasses(new File("target/test-classes/com/acme/servlet/SimpleServlet.class"));
+		instrumentClasses(new File(
+				"target/test-classes/com/acme/servlet/SimpleServlet.class"));
 	}
-	
+
 	private void instrumentClasses(File classesDir) {
 		InstrumentTask instrumentTask = new InstrumentTask();
 		instrumentTask.setProject(TestUtils.project);
@@ -340,7 +353,7 @@ public class WebAppFunctionalTest {
 		FileSet fileSet = new FileSet();
 		fileSet.setDir(classesDir.getParentFile());
 		fileSet.setIncludes("**/*.class");
-		
+
 		instrumentTask.addFileset(fileSet);
 		instrumentTask.execute();
 	}
