@@ -9,10 +9,10 @@
  * Copyright (C) 2005 Grzegorz Lukasik
  * Copyright (C) 2005 Alexei Yudichev
  * Copyright (C) 2006 John Lewis
- * Copyright (C) 2006 Jiri Mares 
+ * Copyright (C) 2006 Jiri Mares
  * Copyright (C) 2008 Scott Frederick
  * Copyright (C) 2010 Tad Smith
- * Copyright (C) 2010 Piotr Tabor 
+ * Copyright (C) 2010 Piotr Tabor
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -64,17 +64,19 @@
 
 package net.sourceforge.cobertura.ant;
 
-import net.sourceforge.cobertura.util.CommandLineBuilder;
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.types.FileSet;
-import org.apache.tools.ant.types.Path;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import net.sourceforge.cobertura.util.CommandLineBuilder;
+
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.types.AbstractFileSet;
+import org.apache.tools.ant.types.FileSet;
+import org.apache.tools.ant.types.Path;
 
 public class InstrumentTask extends CommonMatchingTask {
 
@@ -91,6 +93,8 @@ public class InstrumentTask extends CommonMatchingTask {
 	final List<IncludeClasses> includeClassesRegexs = new ArrayList<IncludeClasses>();
 
 	final List<ExcludeClasses> excludeClassesRegexs = new ArrayList<ExcludeClasses>();
+
+	Path auxClasspath = null;
 
 	boolean ignoreTrivial = false;
 
@@ -155,56 +159,62 @@ public class InstrumentTask extends CommonMatchingTask {
 	}
 	 */
 
+	@Override
 	public void execute() throws BuildException {
 		CommandLineBuilder builder = null;
 		try {
 			builder = new CommandLineBuilder();
-			if (dataFile != null)
+			if (dataFile != null) {
 				builder.addArg("--datafile", dataFile);
-			if (toDir != null)
+			}
+			if (toDir != null) {
 				builder.addArg("--destination", toDir.getAbsolutePath());
+			}
 
 			for (int i = 0; i < ignoreRegexs.size(); i++) {
-				Ignore ignoreRegex = (Ignore) ignoreRegexs.get(i);
+				Ignore ignoreRegex = ignoreRegexs.get(i);
 				builder.addArg("--ignore", ignoreRegex.getRegex());
 			}
 
 			for (int i = 0; i < ignoreBranchesRegexs.size(); i++) {
-				IgnoreBranches ignoreBranchesRegex = (IgnoreBranches) ignoreBranchesRegexs
+				IgnoreBranches ignoreBranchesRegex = ignoreBranchesRegexs
 						.get(i);
 				builder.addArg("--ignoreBranches", ignoreBranchesRegex
 						.getRegex());
 			}
 
 			for (int i = 0; i < ignoreMethodAnnotations.size(); i++) {
-				IgnoreMethodAnnotation ignoreMethodAnn = (IgnoreMethodAnnotation) ignoreMethodAnnotations
+				IgnoreMethodAnnotation ignoreMethodAnn = ignoreMethodAnnotations
 						.get(i);
 				builder.addArg("--ignoreMethodAnnotation", ignoreMethodAnn
 						.getAnnotationName());
 			}
 
 			for (int i = 0; i < includeClassesRegexs.size(); i++) {
-				IncludeClasses includeClassesRegex = (IncludeClasses) includeClassesRegexs
+				IncludeClasses includeClassesRegex = includeClassesRegexs
 						.get(i);
 				builder.addArg("--includeClasses", includeClassesRegex
 						.getRegex());
 			}
 
 			for (int i = 0; i < excludeClassesRegexs.size(); i++) {
-				ExcludeClasses excludeClassesRegex = (ExcludeClasses) excludeClassesRegexs
+				ExcludeClasses excludeClassesRegex = excludeClassesRegexs
 						.get(i);
 				builder.addArg("--excludeClasses", excludeClassesRegex
 						.getRegex());
 			}
 
-			if (ignoreTrivial)
+			if (ignoreTrivial) {
 				builder.addArg("--ignoreTrivial");
+			}
 
-			if (threadsafeRigorous)
+			if (threadsafeRigorous) {
 				builder.addArg("--threadsafeRigorous");
+			}
 
-			if (failOnError)
+			if (failOnError) {
 				builder.addArg("--failOnError");
+			}
 
 			if (instrumentationClasspath != null) {
 				processInstrumentationClasspath();
@@ -226,6 +236,9 @@ public class InstrumentTask extends CommonMatchingTask {
 					"-Xrunjdwp:transport=dt_socket,address="
 							+ forkedJVMDebugPort + ",server=y,suspend=y");
 		}
+
+		getJava().setClasspath(createClasspathForInstrumenter());
+
 		AntUtil.transferCoberturaDataFileProperty(getJava());
 		if (getJava().executeJava() != 0) {
 			throw new BuildException(
@@ -233,6 +246,24 @@ public class InstrumentTask extends CommonMatchingTask {
 		}
 
 		builder.dispose();
+	}
+
+	/**
+	 * Creates a classpath to be used by the instrumenter because
+	 * asm uses Class.forName() in its own classpath to determine common super classes.
+	 */
+	private Path createClasspathForInstrumenter() {
+		Path path = (Path) createInstrumentationClasspath().clone();
+		path = path.concatSystemClasspath();
+		for (AbstractFileSet fileSet : fileSets) {
+			if (fileSet instanceof FileSet) {
+				path.add(new Path(getProject(), baseDir(fileSet)));
+			}
+		}
+		if (auxClasspath != null) {
+			path.add(auxClasspath);
+		}
+		return path;
 	}
 
 	private void processInstrumentationClasspath() {
@@ -263,7 +294,7 @@ public class InstrumentTask extends CommonMatchingTask {
 
 	private FileSet getFileSet(File dir) {
 		String key = dir.getAbsolutePath();
-		FileSet fileSet = (FileSet) fileSetMap.get(key);
+		FileSet fileSet = fileSetMap.get(key);
 		if (fileSet == null) {
 			fileSet = new FileSet();
 			fileSet.setProject(getProject());
@@ -300,4 +331,20 @@ public class InstrumentTask extends CommonMatchingTask {
 	public void setForkedJVMDebugPort(Integer forkedJVMDebugPort) {
 		this.forkedJVMDebugPort = forkedJVMDebugPort;
 	}
+
+	public void setAuxClasspath(Path path) {
+		if (auxClasspath == null) {
+			auxClasspath = path;
+		} else {
+			auxClasspath.append(path);
+		}
+	}
+
+	public Path createAuxClasspath() {
+		if (auxClasspath == null) {
+			auxClasspath = new Path(getProject());
+		}
+		return auxClasspath.createPath();
+	}
+
 }
