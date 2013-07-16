@@ -12,7 +12,7 @@ import net.sourceforge.cobertura.test.util.TestUtils;
 public class GithubIssue30 extends AbstractCoberturaTestCase {
 
 	Node dom;
-	
+
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();

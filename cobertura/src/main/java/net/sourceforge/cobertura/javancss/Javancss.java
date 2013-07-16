@@ -1,4 +1,4 @@
-/*
+/**
  * Cobertura - http://cobertura.sourceforge.net/
  *
  * This file was taken from JavaNCSS
@@ -19,22 +19,6 @@
  * along with Cobertura; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  * USA
- */
-
-/*
- *
- * WARNING   WARNING   WARNING   WARNING   WARNING   WARNING   WARNING   WARNING   WARNING  
- *
- * WARNING TO COBERTURA DEVELOPERS
- *
- * DO NOT MODIFY THIS FILE!
- *
- * MODIFY THE FILES UNDER THE JAVANCSS DIRECTORY LOCATED AT THE ROOT OF THE COBERTURA PROJECT.
- *
- * FOLLOW THE PROCEDURE FOR MERGING THE LATEST JAVANCSS INTO COBERTURA LOCATED AT
- * javancss/coberturaREADME.txt
- *
- * WARNING   WARNING   WARNING   WARNING   WARNING   WARNING   WARNING   WARNING   WARNING   
  */
 
 package net.sourceforge.cobertura.javancss;

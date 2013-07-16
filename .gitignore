@@ -3,6 +3,7 @@ cobertura/bin/
 cobertura/build/
 cobertura/cobertura.jar
 cobertura/cobertura.ser
+cobertura/src/main/java/net/sourceforge/cobertura/javancss/parser/
 cobertura/src/test/resources/examples/functionalconditiontest/classes/
 cobertura/src/test/resources/examples/functionalconditiontest/cobertura.ser
 cobertura/src/test/resources/examples/functionalconditiontest/instrumented/

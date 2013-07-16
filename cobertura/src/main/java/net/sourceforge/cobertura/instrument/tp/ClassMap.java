@@ -200,19 +200,23 @@ public class ClassMap {
 	//======================= data retrieval =====================================================	
 
 	public Integer getCounterIdForJumpTrue(int eventId) {
-		JumpTouchPointDescriptor jumpTouchPointDescriptor = (JumpTouchPointDescriptor) eventId2touchPointDescriptor
-				.get(eventId);
-		if (jumpTouchPointDescriptor != null) {
-			return jumpTouchPointDescriptor.getCounterIdForTrue();
+		if (eventId2touchPointDescriptor.get(eventId) instanceof JumpTouchPointDescriptor) {
+			JumpTouchPointDescriptor jumpTouchPointDescriptor = (JumpTouchPointDescriptor) eventId2touchPointDescriptor
+					.get(eventId);
+			if (jumpTouchPointDescriptor != null) {
+				return jumpTouchPointDescriptor.getCounterIdForTrue();
+			}
 		}
 		return null;
 	}
 
 	public Integer getCounterIdForJumpFalse(int eventId) {
-		JumpTouchPointDescriptor jumpTouchPointDescriptor = (JumpTouchPointDescriptor) eventId2touchPointDescriptor
-				.get(eventId);
-		if (jumpTouchPointDescriptor != null) {
-			return jumpTouchPointDescriptor.getCounterIdForFalse();
+		if (eventId2touchPointDescriptor.get(eventId) instanceof JumpTouchPointDescriptor) {
+			JumpTouchPointDescriptor jumpTouchPointDescriptor = (JumpTouchPointDescriptor) eventId2touchPointDescriptor
+					.get(eventId);
+			if (jumpTouchPointDescriptor != null) {
+				return jumpTouchPointDescriptor.getCounterIdForFalse();
+			}
 		}
 		return null;
 	}

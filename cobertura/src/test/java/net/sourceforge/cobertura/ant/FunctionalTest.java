@@ -358,6 +358,7 @@ public class FunctionalTest extends AbstractCoberturaTestCase {
 		pathElement.setPath(System.getProperty("java.class.path"));
 		classpath.add(TestUtils.getCoberturaDefaultClasspath());
 		classpath.add(pathElement);
+		System.err.println(classpath);
 		java.setClasspath(classpath);
 
 		try {

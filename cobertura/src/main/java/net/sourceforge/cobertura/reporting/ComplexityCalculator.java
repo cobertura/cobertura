@@ -30,11 +30,14 @@ import net.sourceforge.cobertura.coveragedata.ProjectData;
 import net.sourceforge.cobertura.coveragedata.SourceFileData;
 import net.sourceforge.cobertura.javancss.FunctionMetric;
 import net.sourceforge.cobertura.javancss.Javancss;
+
 import net.sourceforge.cobertura.util.FileFinder;
 import net.sourceforge.cobertura.util.Source;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;

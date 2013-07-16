@@ -7,23 +7,17 @@ import groovy.util.Node;
 import net.sourceforge.cobertura.ant.ReportTask;
 import net.sourceforge.cobertura.test.util.TestUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.tools.ant.DefaultLogger;
+import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Java;
-import org.apache.tools.ant.types.DirSet;
-import org.apache.tools.ant.types.Path;
 import org.junit.After;
 import org.junit.Before;
-import org.xml.sax.SAXException;
-
-import com.sun.corba.se.impl.oa.poa.AOMEntry;
-
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author schristou88
@@ -35,7 +29,7 @@ public class AbstractCoberturaTestCase {
 	public static File reportDir;
 	public static File instrumentDir;
 	File mainSourceFile;
-	File datafile;
+	public static File datafile;
 
 	@Before
 	public void setUp() throws Exception {
@@ -75,13 +69,13 @@ public class AbstractCoberturaTestCase {
 
 	public Node createAndExecuteMainMethod(String packageName, String fileName,
 			String fileContent, String mainMethod) throws Exception {
-		
+
 		FileUtils.write(new File(srcDir, fileName + ".java"), fileContent);
-		
 
 		TestUtils.compileSource(TestUtils.antBuilder, srcDir);
 
-		TestUtils.instrumentClasses(TestUtils.antBuilder, srcDir, datafile, instrumentDir);
+		TestUtils.instrumentClasses(TestUtils.antBuilder, srcDir, datafile,
+				instrumentDir);
 
 		/*
 		 * Kick off the Main (instrumented) class.
@@ -106,5 +100,52 @@ public class AbstractCoberturaTestCase {
 
 		return TestUtils.getXMLReportDOM(srcDir.getAbsolutePath()
 				+ "/coverage.xml");
+	}
+
+	/**
+	 * 
+	 * @param method method with the parsing issue
+	 * @throws IOException 
+	 */
+	public static void parseIssueTester(String imports, String method)
+			throws IOException {
+		String wrapper = "\n package mypackage;" + "\n " + imports
+				+ "\n public class FooMain {" + method + "\n }";
+
+		FileUtils.write(new File(srcDir, "mypackage/FooMain.java"), wrapper);
+
+		TestUtils.compileSource(TestUtils.antBuilder, srcDir);
+
+		TestUtils.instrumentClasses(TestUtils.antBuilder, srcDir, datafile,
+				instrumentDir);
+
+		DefaultLogger fileLogger = new DefaultLogger();
+		fileLogger.setErrorPrintStream(new PrintStream(new File(reportDir,
+				"error.log")));
+		fileLogger.setOutputPrintStream(new PrintStream(new File(reportDir,
+				"std.log")));
+		fileLogger.setMessageOutputLevel(Project.MSG_INFO);
+		TestUtils.project.addBuildListener(fileLogger);
+
+		ReportTask reportTask = new ReportTask();
+		reportTask.setProject(TestUtils.project);
+		reportTask.setDataFile(datafile.getAbsolutePath());
+		reportTask.setFormat("xml");
+		reportTask.setSrcDir(srcDir.getAbsolutePath());
+		reportTask.setDestDir(reportDir);
+		reportTask.setFailonerror(true);
+		reportTask.execute();
+
+		TestUtils.project.removeBuildListener(fileLogger);
+
+		if (FileUtils.readFileToString(new File(reportDir, "error.log"))
+				.contains("JavaNCSS got an error while parsing the java file"))
+			fail("JavaNCSS Error, see console output or file: "
+					+ new File(reportDir, "error.log").getAbsolutePath());
+
+		if (FileUtils.readFileToString(new File(reportDir, "std.log"))
+				.contains("JavaNCSS got an error while parsing the java file"))
+			fail("JavaNCSS Error, see console output or file: "
+					+ new File(reportDir, "std.log").getAbsolutePath());
 	}
 }

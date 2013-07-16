@@ -241,7 +241,9 @@
         <version>1.0.2</version>
         <executions>
           <execution>
-            <goals><goal>set-properties</goal></goals>
+            <goals>
+              <goal>set-properties</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
@@ -367,6 +369,38 @@
           <localCheckout>true</localCheckout>
           <pushChanges>false</pushChanges>
        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>javacc-maven-plugin</artifactId>
+        <version>2.6</version>
+        <executions>
+          <execution>
+            <id>javacc</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>javacc</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>src/main/java</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>2.5</version>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>src/main/java/net/sourceforge/cobertura/javancss/parser</directory>
+              <includes>
+                <include>**/*</include>
+              </includes>
+              <followSymlinks>false</followSymlinks>
+            </fileset>
+          </filesets>
+        </configuration>
       </plugin>
     </plugins>
   </build>
