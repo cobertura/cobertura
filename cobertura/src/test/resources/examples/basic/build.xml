@@ -15,7 +15,7 @@
 
 	<path id="cobertura.classpath">
 		<fileset dir="${cobertura.dir}">
-			<include name="cobertura.jar" />
+			<include name="cobertura*.jar" />
 			<include name="lib/**/*.jar" />
 		</fileset>
 	</path>

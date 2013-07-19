@@ -266,6 +266,24 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>${plugin.mvn.jar.version}</version>
+          <configuration>
+            <archive>
+              <index/>
+              <manifest>
+                <addDefaultImplementationEntries/>
+		<addDefaultSpecificationEntries/>
+              </manifest>
+                <manifestEntries>
+                  <Specification-Title>A code coverage analysis tool.</Specification-Title>
+                  <Specification-Version>${project.version}</Specification-Version>
+                  <Specification-Vendor>Cobertura</Specification-Vendor>
+                  <Implementation-Title>A code coverage analysis tool.</Implementation-Title>
+                  <Implementation-Version>${project.version}</Implementation-Version>
+                  <Implementation-Vendor>Cobertura</Implementation-Vendor>
+                  <Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>
+                </manifestEntries>
+          </archive>
+        </configuration>
       </plugin>
 
       <plugin>
@@ -401,6 +419,19 @@
             </fileset>
           </filesets>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>2.15</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
