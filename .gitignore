@@ -13,6 +13,14 @@ cobertura/src/test/resources/examples/functionaltest1/cobertura.ser
 cobertura/src/test/resources/examples/functionaltest1/instrumented/
 cobertura/src/test/resources/examples/functionaltest1/reports/
 cobertura/src/test/resources/examples/functionaltest1/tmp/
+cobertura/src/test/resources/ant/IgnoreTrivial/classes/
+cobertura/src/test/resources/ant/IgnoreTrivial/instrumented/
+cobertura/src/test/resources/ant/IgnoreTrivial/reports/
+cobertura/src/test/resources/ant/IgnoreTrivial/cobertura.ser
+cobertura/src/test/resources/ant/IgnoreMethodAnnotation/classes/
+cobertura/src/test/resources/ant/IgnoreMethodAnnotation/instrumented/
+cobertura/src/test/resources/ant/IgnoreMethodAnnotation/reports/
+cobertura/src/test/resources/ant/IgnoreMethodAnnotation/cobertura.ser
 *.iml
 *.project
 *.classpath

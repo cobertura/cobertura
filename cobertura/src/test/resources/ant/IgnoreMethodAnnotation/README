@@ -1,0 +1,14 @@
+This directory contains an example of using Cobertura to
+instrument an application and generate coverage reports.
+
+To run the example:
+  ant
+
+The application and its tests will be compiled, Cobertura will
+instrument the application, the instrumented application will then be
+tested, and a Cobertura report produced in HTML and XML.
+
+The Cobertura reports can be found in:
+  reports/cobertura-html/index.html
+  reports/cobertura-xml/coverage.xml
+
