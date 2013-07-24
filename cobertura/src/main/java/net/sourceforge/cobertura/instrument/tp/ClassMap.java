@@ -246,19 +246,23 @@ public class ClassMap {
 	}
 
 	public Integer getCounterIdForSwitch(int eventId) {
-		SwitchTouchPointDescriptor point = (SwitchTouchPointDescriptor) eventId2touchPointDescriptor
-				.get(eventId);
-		if (point != null) {
-			return point.getCounterId();
+		if (eventId2touchPointDescriptor.get(eventId) instanceof SwitchTouchPointDescriptor) {
+			SwitchTouchPointDescriptor point = (SwitchTouchPointDescriptor) eventId2touchPointDescriptor
+					.get(eventId);
+			if (point != null) {
+				return point.getCounterId();
+			}
 		}
 		return null;
 	}
 
 	public Integer getCounterIdForLineEventId(int eventId) {
-		LineTouchPointDescriptor point = (LineTouchPointDescriptor) eventId2touchPointDescriptor
-				.get(eventId);
-		if (point != null) {
-			return point.getCounterId();
+		if (eventId2touchPointDescriptor.get(eventId) instanceof LineTouchPointDescriptor) {
+			LineTouchPointDescriptor point = (LineTouchPointDescriptor) eventId2touchPointDescriptor
+					.get(eventId);
+			if (point != null) {
+				return point.getCounterId();
+			}
 		}
 		return null;
 	}
