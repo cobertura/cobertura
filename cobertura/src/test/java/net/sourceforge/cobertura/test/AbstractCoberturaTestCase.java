@@ -69,6 +69,13 @@ public class AbstractCoberturaTestCase {
 
 	public Node createAndExecuteMainMethod(String packageName, String fileName,
 			String fileContent, String mainMethod) throws Exception {
+		return createAndExecuteMainMethod(packageName, fileName, fileContent,
+				mainMethod, "xml");
+	}
+
+	public Node createAndExecuteMainMethod(String packageName, String fileName,
+			String fileContent, String mainMethod, String format)
+			throws Exception {
 
 		FileUtils.write(new File(srcDir, fileName + ".java"), fileContent);
 
@@ -91,15 +98,24 @@ public class AbstractCoberturaTestCase {
 		/*
 		 * Now create a cobertura xml file and make sure the correct counts are in it.
 		 */
+		new File(reportDir, "/coverage-xml").mkdirs();
+		new File(reportDir, "/coverage-html").mkdirs();
 		ReportTask reportTask = new ReportTask();
 		reportTask.setProject(TestUtils.project);
 		reportTask.setDataFile(datafile.getAbsolutePath());
 		reportTask.setFormat("xml");
-		reportTask.setDestDir(srcDir);
+		reportTask.setDestDir(new File(reportDir, "/coverage-xml"));
 		reportTask.execute();
 
-		return TestUtils.getXMLReportDOM(srcDir.getAbsolutePath()
-				+ "/coverage.xml");
+		reportTask = new ReportTask();
+		reportTask.setProject(TestUtils.project);
+		reportTask.setDataFile(datafile.getAbsolutePath());
+		reportTask.setFormat("html");
+		reportTask.setDestDir(new File(reportDir, "/coverage-html"));
+		reportTask.execute();
+
+		return TestUtils.getXMLReportDOM(reportDir.getAbsolutePath()
+				+ "/coverage-xml/coverage.xml");
 	}
 
 	/**

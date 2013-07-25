@@ -37,6 +37,10 @@ import net.sourceforge.cobertura.util.*;
 import org.apache.log4j.Logger;
 
 import java.io.*;
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -71,6 +75,8 @@ public class Main {
 
 	private final CoberturaInstrumenter coberturaInstrumenter = new CoberturaInstrumenter();
 
+	public static URLClassLoader urlClassLoader;
+
 	/**
 	 * @param entry A zip entry.
 	 *
@@ -94,6 +100,24 @@ public class Main {
 			zis = (ZipInputStream) IOUtil.closeInputStream(zis);
 			zos = (ZipOutputStream) IOUtil.closeOutputStream(zos);
 		}
+	}
+
+	private void addElementsToJVM(String classpath) {
+		List<URL> urlsArray = new ArrayList<URL>();
+		String[] classpathParsed = classpath.split(File.pathSeparator);
+
+		for (String element : classpathParsed) {
+			File f = null;
+			try {
+				f = new File(element);
+				urlsArray.add(f.toURI().toURL());
+			} catch (MalformedURLException e) {
+				logger.debug("Warning - could not convert file: " + element
+						+ " to a URL.", e);
+			}
+		}
+		urlClassLoader = new URLClassLoader(urlsArray.toArray(new URL[urlsArray
+				.size()]));
 	}
 
 	private boolean addInstrumentationToArchive(CoberturaFile file,
@@ -338,6 +362,8 @@ public class Main {
 				logger.setFailOnError(true);
 			} else if (args[i].equals("--threadsafeRigorous")) {
 				threadsafeRigorous = true;
+			} else if (args[i].equals("--auxClasspath")) {
+				addElementsToJVM(args[++i]);
 			} else {
 				filePaths.add(new CoberturaFile(baseDir, args[i]));
 			}
