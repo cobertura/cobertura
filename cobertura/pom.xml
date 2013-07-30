@@ -225,6 +225,9 @@
         <groupId>com.googlecode.maven-java-formatter-plugin</groupId>
         <artifactId>maven-java-formatter-plugin</artifactId>
         <version>${plugin.java.formatter.version}</version>
+        <configuration>
+          <lineEnding>LF</lineEnding>
+        </configuration>
         <executions>
           <execution>
             <goals>
