@@ -5,6 +5,7 @@ package net.sourceforge.cobertura.test;
 
 import groovy.util.Node;
 import net.sourceforge.cobertura.ant.ReportTask;
+import net.sourceforge.cobertura.reporting.Main;
 import net.sourceforge.cobertura.test.util.TestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.tools.ant.DefaultLogger;
@@ -13,6 +14,7 @@ import org.apache.tools.ant.taskdefs.Java;
 import org.junit.After;
 import org.junit.Before;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.List;
@@ -135,33 +137,52 @@ public class AbstractCoberturaTestCase {
 		TestUtils.instrumentClasses(TestUtils.antBuilder, srcDir, datafile,
 				instrumentDir);
 
-		DefaultLogger fileLogger = new DefaultLogger();
-		fileLogger.setErrorPrintStream(new PrintStream(new File(reportDir,
-				"error.log")));
-		fileLogger.setOutputPrintStream(new PrintStream(new File(reportDir,
-				"std.log")));
-		fileLogger.setMessageOutputLevel(Project.MSG_INFO);
-		TestUtils.project.addBuildListener(fileLogger);
+		debugReportTask();
 
-		ReportTask reportTask = new ReportTask();
-		reportTask.setProject(TestUtils.project);
-		reportTask.setDataFile(datafile.getAbsolutePath());
-		reportTask.setFormat("xml");
-		reportTask.setSrcDir(srcDir.getAbsolutePath());
-		reportTask.setDestDir(reportDir);
-		reportTask.setFailonerror(true);
-		reportTask.execute();
-
-		TestUtils.project.removeBuildListener(fileLogger);
-
-		if (FileUtils.readFileToString(new File(reportDir, "error.log"))
-				.contains("JavaNCSS got an error while parsing the java file"))
+		if (FileUtils
+				.readFileToString(new File(reportDir, "error.log"))
+				.contains(
+						"net.sourceforge.cobertura.javancss.parser.ParseException"))
 			fail("JavaNCSS Error, see console output or file: "
 					+ new File(reportDir, "error.log").getAbsolutePath());
 
-		if (FileUtils.readFileToString(new File(reportDir, "std.log"))
-				.contains("JavaNCSS got an error while parsing the java file"))
+		if (FileUtils
+				.readFileToString(new File(reportDir, "std.log"))
+				.contains(
+						"net.sourceforge.cobertura.javancss.parser.ParseException"))
 			fail("JavaNCSS Error, see console output or file: "
 					+ new File(reportDir, "std.log").getAbsolutePath());
+	}
+
+	/**
+	 *
+	 * This report task allows you to insert break points in JavaParser class for
+	 * debugging parsing issues further.
+	 * 
+	 * Standard output gets put in ${reportDir}/std.log
+	 * Standard error  gets put in ${reportDir}/error.log
+	 * 
+	 * @throws FileNotFoundException
+	 */
+	public static void debugReportTask() throws FileNotFoundException {
+		String[] args = {"--format", "xml", "--destination",
+				reportDir.getAbsolutePath(), "--datafile",
+				datafile.getAbsolutePath(), srcDir.getAbsolutePath()};
+		PrintStream err = new PrintStream(new File(reportDir, "error.log"));
+		PrintStream out = new PrintStream(new File(reportDir, "std.log"));
+
+		PrintStream dErr = System.err;
+		PrintStream dOut = System.out;
+
+		try {
+			System.setErr(err);
+			System.setOut(out);
+			Main.main(args);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			System.setErr(dErr);
+			System.setOut(dOut);
+		}
 	}
 }

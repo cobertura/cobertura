@@ -2567,6 +2567,9 @@ void PrimarySuffix() :
   "." Identifier()
 |
   Arguments()
+
+ [ "{" MethodDeclaration() "}"]
+   
 }
 
 void Literal() :
