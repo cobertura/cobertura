@@ -29,7 +29,7 @@ public class CoberturaClassWriter extends ClassWriter {
 					.getSystemClassLoader());
 		} catch (Exception e) {
 			try {
-				c = Class.forName(type1.replace('/', '.'), true,
+				c = Class.forName(type1.replace('/', '.'), false,
 						Main.urlClassLoader);
 			} catch (Exception e1) {
 				throw new RuntimeException(e1);
