@@ -37,6 +37,8 @@ import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
+import sun.misc.Signal;
+import sun.misc.SignalHandler;
 
 @CoverageIgnore
 public class ProjectData extends CoverageDataContainer {
@@ -238,6 +240,14 @@ public class ProjectData extends CoverageDataContainer {
 		// Possibly also save the coverage data every x seconds?
 		//Timer timer = new Timer(true);
 		//timer.schedule(saveTimer, 100);
+		
+		Signal.handle(new Signal("USR2"), new SignalHandler() {
+			public void handle(Signal sig) {
+				System.out.println("Trigger Code Coverage data dump");
+				ProjectData.saveGlobalProjectData();
+			}
+		});
+
 	}
 
 	public static void saveGlobalProjectData() {
