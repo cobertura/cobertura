@@ -162,8 +162,9 @@ public class ComplexityCalculator {
 	public double getCCNForProject(ProjectData projectData) {
 		// Sum complexity for all packages
 		Complexity act = new Complexity();
-		for (Iterator it = projectData.getPackages().iterator(); it.hasNext();) {
-			PackageData packageData = (PackageData) it.next();
+
+		for (Object pkg : projectData.getPackages()) {
+			PackageData packageData = (PackageData) pkg;
 			act.add(getCCNForPackageInternal(packageData));
 		}
 

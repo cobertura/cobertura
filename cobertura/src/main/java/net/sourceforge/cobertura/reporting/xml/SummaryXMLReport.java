@@ -38,8 +38,7 @@ public class SummaryXMLReport {
 	private int indent = 0;
 
 	public SummaryXMLReport(ProjectData projectData, File destinationDir,
-			FileFinder finder, ComplexityCalculator complexity)
-			throws IOException {
+			ComplexityCalculator complexity) throws IOException {
 		File file = new File(destinationDir, "coverage-summary.xml");
 		pw = IOUtil.getPrintWriter(file);
 

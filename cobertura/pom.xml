@@ -122,7 +122,6 @@
       <groupId>org.apache.ant</groupId>
       <artifactId>ant-junit</artifactId>
       <version>${antVersion}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mortbay.jetty</groupId>
@@ -173,7 +172,6 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>${junitVersion}</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 

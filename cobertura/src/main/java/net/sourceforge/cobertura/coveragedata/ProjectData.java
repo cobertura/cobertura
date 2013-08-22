@@ -31,6 +31,7 @@ package net.sourceforge.cobertura.coveragedata;
 
 import net.sourceforge.cobertura.CoverageIgnore;
 import net.sourceforge.cobertura.util.FileLocker;
+import net.sourceforge.cobertura.util.ShutdownHooks;
 
 import java.io.File;
 import java.util.*;
@@ -206,6 +207,7 @@ public class ProjectData extends CoverageDataContainer {
 
 			globalProjectData = new ProjectData();
 			initialize();
+
 			return globalProjectData;
 		} finally {
 			globalProjectDataLock.unlock();

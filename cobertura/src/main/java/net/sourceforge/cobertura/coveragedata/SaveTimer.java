@@ -22,6 +22,7 @@
 package net.sourceforge.cobertura.coveragedata;
 
 import net.sourceforge.cobertura.CoverageIgnore;
+import net.sourceforge.cobertura.util.ArchiveUtil;
 
 import java.util.TimerTask;
 
@@ -31,5 +32,4 @@ public class SaveTimer extends TimerTask {
 	public void run() {
 		ProjectData.saveGlobalProjectData();
 	}
-
 }

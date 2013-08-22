@@ -207,6 +207,4 @@ public class TouchCollector {
 			return ld;
 		}
 	}
-
-	;
 }

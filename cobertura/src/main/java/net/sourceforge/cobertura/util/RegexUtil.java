@@ -57,19 +57,18 @@ public abstract class RegexUtil {
 	 *
 	 * @return True if a match is found.
 	 */
-	public static boolean matches(Collection regexs, String str) {
-		Iterator iter = regexs.iterator();
+	public static boolean matches(Collection<Pattern> regexs, String str) {
+		Iterator<Pattern> iter = regexs.iterator();
 		while (iter.hasNext()) {
-			Pattern regex = (Pattern) iter.next();
+			Pattern regex = iter.next();
 			if (pm.matches(str, regex)) {
 				return true;
 			}
 		}
-
 		return false;
 	}
 
-	public static void addRegex(Collection list, String regex) {
+	public static void addRegex(Collection<Pattern> list, String regex) {
 		try {
 			Perl5Compiler pc = new Perl5Compiler();
 			Pattern pattern = pc.compile(regex);

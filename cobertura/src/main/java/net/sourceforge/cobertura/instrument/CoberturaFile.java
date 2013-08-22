@@ -35,14 +35,14 @@ import java.io.File;
  *
  * @author John Lewis
  */
-class CoberturaFile extends File {
+public class CoberturaFile extends File {
 
 	private static final long serialVersionUID = 0L;
 
 	private String baseDir;
 	private String pathname;
 
-	CoberturaFile(String baseDir, String pathname) {
+	public CoberturaFile(String baseDir, String pathname) {
 		super(baseDir, pathname);
 		this.baseDir = baseDir;
 		this.pathname = pathname;

@@ -25,13 +25,11 @@
 
 package net.sourceforge.cobertura.reporting;
 
-import net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler;
-import net.sourceforge.cobertura.coveragedata.ProjectData;
-import net.sourceforge.cobertura.reporting.html.HTMLReport;
-import net.sourceforge.cobertura.reporting.xml.SummaryXMLReport;
-import net.sourceforge.cobertura.reporting.xml.XMLReport;
+import net.sourceforge.cobertura.dsl.Arguments;
+import net.sourceforge.cobertura.dsl.ArgumentsBuilder;
+import net.sourceforge.cobertura.dsl.Cobertura;
+import net.sourceforge.cobertura.dsl.ReportFormat;
 import net.sourceforge.cobertura.util.CommandLineBuilder;
-import net.sourceforge.cobertura.util.FileFinder;
 import net.sourceforge.cobertura.util.Header;
 import org.apache.log4j.Logger;
 
@@ -41,90 +39,65 @@ public class Main {
 
 	private static final Logger LOGGER = Logger.getLogger(Main.class);
 
-	private String format = "html";
-	private File dataFile = null;
-	private File destinationDir = null;
-	private String encoding = "UTF-8";
+	private static void parseArgumentsAndReport(String[] args) throws Exception {
+		ArgumentsBuilder builder = new ArgumentsBuilder();
 
-	private void parseArguments(String[] args) throws Exception {
-		FileFinder finder = new FileFinder();
 		String baseDir = null;
+		String format = null;
+		boolean sourcesParam = false;
 		for (int i = 0; i < args.length; i++) {
 			if (args[i].equals("--basedir")) {
 				baseDir = args[++i];
+				builder.setBaseDirectory(baseDir);
 			} else if (args[i].equals("--datafile")) {
-				setDataFile(args[++i]);
+				String datafile = args[++i];
+				validateDataFile(datafile);
+				builder.setDataFile(datafile);
 			} else if (args[i].equals("--destination")) {
-				setDestination(args[++i]);
+				String destination = args[++i];
+				builder.setDestinationDirectory(destination);
+				validateAndCreateDestinationDirectory(destination);
 			} else if (args[i].equals("--format")) {
-				setFormat(args[++i]);
+				format = args[++i];
+				validateFormat(format);
 			} else if (args[i].equals("--encoding")) {
-				setEncoding(args[++i]);
+				builder.setEncoding(args[++i]);
 			} else {
-				if (baseDir == null) {
-					finder.addSourceDirectory(args[i]);
-				} else {
-					finder.addSourceFile(baseDir, args[i]);
-				}
+				builder.addSources(args[i], baseDir == null);
 			}
 		}
 
-		if (dataFile == null)
-			dataFile = CoverageDataFileHandler.getDefaultDataFile();
+		Arguments arguments = builder.build();
 
-		if (destinationDir == null) {
+		if (arguments.getDestinationDirectory() == null) {
 			System.err.println("Error: destination directory must be set");
 			System.exit(1);
 		}
 
-		if (format == null) {
-			System.err.println("Error: format must be set");
-			System.exit(1);
-		}
-
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("format is " + format + " encoding is " + encoding);
-			LOGGER.debug("dataFile is " + dataFile.getAbsolutePath());
+			LOGGER.debug(String.format("format is %s encoding is %s", format,
+					arguments.getEncoding()));
+			LOGGER.debug("dataFile is "
+					+ arguments.getDataFile().getAbsolutePath());
 			LOGGER.debug("destinationDir is "
-					+ destinationDir.getAbsolutePath());
+					+ arguments.getDestinationDirectory().getAbsolutePath());
 		}
 
-		ProjectData projectData = CoverageDataFileHandler
-				.loadCoverageData(dataFile);
-
-		if (projectData == null) {
-			System.err.println("Error: Unable to read from data file "
-					+ dataFile.getAbsolutePath());
-			System.exit(1);
-		}
-
-		ComplexityCalculator complexity = new ComplexityCalculator(finder);
-		if (format.equalsIgnoreCase("html")) {
-			new HTMLReport(projectData, destinationDir, finder, complexity,
-					encoding);
-		} else if (format.equalsIgnoreCase("xml")) {
-			new XMLReport(projectData, destinationDir, finder, complexity);
-		} else if (format.equalsIgnoreCase("summaryXml")) {
-			new SummaryXMLReport(projectData, destinationDir, finder,
-					complexity);
-		}
+		new Cobertura(arguments).report().export(
+				ReportFormat.getFromString(format));
 	}
 
-	private void setFormat(String value) {
-		format = value;
+	private static void validateFormat(String format) {
 		if (!format.equalsIgnoreCase("html") && !format.equalsIgnoreCase("xml")
 				&& !format.equalsIgnoreCase("summaryXml")) {
-			System.err
-					.println(""
-							+ "Error: format \""
-							+ format
-							+ "\" is invalid. Must be either html or xml or summaryXml");
+			System.err.println("" + "Error: format \"" + format
+					+ "\" is invalid. Must be either html, xml or summaryXml");
 			System.exit(1);
 		}
 	}
 
-	private void setDataFile(String value) {
-		dataFile = new File(value);
+	private static void validateDataFile(String value) {
+		File dataFile = new File(value);
 		if (!dataFile.exists()) {
 			System.err.println("Error: data file " + dataFile.getAbsolutePath()
 					+ " does not exist");
@@ -137,8 +110,8 @@ public class Main {
 		}
 	}
 
-	private void setDestination(String value) {
-		destinationDir = new File(value);
+	private static void validateAndCreateDestinationDirectory(String value) {
+		File destinationDir = new File(value);
 		if (destinationDir.exists() && !destinationDir.isDirectory()) {
 			System.err.println("Error: destination directory " + destinationDir
 					+ " already exists but is not a directory");
@@ -147,16 +120,10 @@ public class Main {
 		destinationDir.mkdirs();
 	}
 
-	private void setEncoding(String encoding) {
-		this.encoding = encoding;
-	}
-
 	public static void main(String[] args) throws Exception {
 		Header.print(System.out);
 
 		long startTime = System.currentTimeMillis();
-
-		Main main = new Main();
 
 		try {
 			args = CommandLineBuilder.preprocessCommandLineArguments(args);
@@ -166,10 +133,9 @@ public class Main {
 			System.exit(1);
 		}
 
-		main.parseArguments(args);
+		parseArgumentsAndReport(args);
 
 		long stopTime = System.currentTimeMillis();
 		System.out.println("Report time: " + (stopTime - startTime) + "ms");
 	}
-
 }

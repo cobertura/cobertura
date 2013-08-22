@@ -28,6 +28,7 @@ import net.sourceforge.cobertura.CoverageIgnore;
 import net.sourceforge.cobertura.util.ConfigurationUtil;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -84,6 +85,7 @@ public abstract class CoverageDataFileHandler {
 			ProjectData projectData = (ProjectData) objects.readObject();
 			logger.log(Level.INFO, "Cobertura: Loaded information on "
 					+ projectData.getNumberOfClasses() + " classes.");
+
 			return projectData;
 		} catch (IOException e) {
 			throw e;

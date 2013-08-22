@@ -69,7 +69,7 @@ public class FindTouchPointsMethodAdapter
 	/**
 	 * List of patterns to know that we don't want trace lines that are calls to some methods
 	 */
-	private Collection<Pattern> ignoreRegexp;
+	private Collection ignoreRegexp;
 
 	/**
 	 * See {@link AbstractFindTouchPointsClassInstrumenter#duplicatedLinesMap}

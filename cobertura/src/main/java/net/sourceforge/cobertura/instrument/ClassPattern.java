@@ -27,8 +27,10 @@ package net.sourceforge.cobertura.instrument;
 
 import net.sourceforge.cobertura.util.RegexUtil;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import org.apache.oro.text.regex.Pattern;
 
 /**
  * This class represents a collection of regular expressions that will be used to see
@@ -41,9 +43,9 @@ import java.util.Set;
  */
 public class ClassPattern {
 
-	private Set<String> includeClassesRegexes = new HashSet<String>();
+	private Set<Pattern> includeClassesRegexes = new HashSet<Pattern>();
 
-	private Set<String> excludeClassesRegexes = new HashSet<String>();
+	private Set<Pattern> excludeClassesRegexes = new HashSet<Pattern>();
 
 	private static final String WEBINF_CLASSES = "WEB-INF/classes/";
 
@@ -110,6 +112,10 @@ public class ClassPattern {
 		RegexUtil.addRegex(includeClassesRegexes, regex);
 	}
 
+	void addIncludeClassesRegex(Collection<Pattern> regexes) {
+		includeClassesRegexes.addAll(regexes);
+	}
+
 	/**
 	 * Add a regex to the list of class regexes to exclude.
 	 *
@@ -117,6 +123,10 @@ public class ClassPattern {
 	 */
 	void addExcludeClassesRegex(String regex) {
 		RegexUtil.addRegex(excludeClassesRegexes, regex);
+	}
+
+	void addExcludeClassesRegex(Collection<Pattern> regexes) {
+		excludeClassesRegexes.addAll(regexes);
 	}
 
 }

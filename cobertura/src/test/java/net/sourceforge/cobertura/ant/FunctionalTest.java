@@ -54,7 +54,6 @@ import static org.junit.Assert.*;
  */
 public class FunctionalTest extends AbstractCoberturaTestCase {
 	private static int forkedJVMDebugPort = 0;
-
 	private final static File BASEDIR = new File("src/test/resources/",
 			"examples/functionaltest1");
 
@@ -329,6 +328,8 @@ public class FunctionalTest extends AbstractCoberturaTestCase {
 	 */
 	private static void runTestAntScript(String testName, String target)
 			throws IOException {
+		new File(BASEDIR, "reports/cobertura-xml").mkdirs();
+
 		Java java = new Java();
 		java.setProject(TestUtils.project);
 		java.setTaskName("java");
