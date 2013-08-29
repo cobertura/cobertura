@@ -22,32 +22,42 @@
 
 package net.sourceforge.cobertura.coveragedata;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 
-public class PackageDataTest extends TestCase {
+import static org.junit.Assert.*;
 
+public class PackageDataTest {
+
+	private static final String COM_EXAMPLE = "com.example";
+	public static final String COM_EXAMPLE_HELLO_WORLD = "com.example.HelloWorld";
+	public static final String COM_EXAMPLE_HELLO_WORLD_JAVA = "com/example/HelloWorld.java";
+	public static final String COM_EXAMPLE_HELLO_WORLD_HELPER = "com.example.HelloWorldHelper";
+	public static final String COM_EXAMPLE_HELLO_WORLD_HELPER_JAVA = "com/example/HelloWorldHelper.java";
 	private PackageData packageData;
 
+	@Before
 	public void setUp() {
-		packageData = new PackageData("com.example");
-		assertEquals("com.example", packageData.getName());
+		packageData = new PackageData(COM_EXAMPLE);
+		assertEquals(COM_EXAMPLE, packageData.getName());
 	}
 
+	@Test
 	public void testAddClass() {
 		ClassData classData;
 
 		assertEquals(0, packageData.getNumberOfChildren());
 
-		classData = new ClassData("com.example.HelloWorld");
-		classData.setSourceFileName("com/example/HelloWorld.java");
+		classData = new ClassData(COM_EXAMPLE_HELLO_WORLD);
+		classData.setSourceFileName(COM_EXAMPLE_HELLO_WORLD_JAVA);
 		for (int i = 0; i < 10; i++)
 			classData.addLine(i, "test", "(I)B");
 		packageData.addClassData(classData);
 		assertEquals(1, packageData.getNumberOfChildren());
 		assertTrue(packageData.contains(classData.getBaseName()));
 
-		classData = new ClassData("com.example.HelloWorldHelper");
-		classData.setSourceFileName("com/example/HelloWorldHelper.java");
+		classData = new ClassData(COM_EXAMPLE_HELLO_WORLD_HELPER);
+		classData.setSourceFileName(COM_EXAMPLE_HELLO_WORLD_HELPER_JAVA);
 		for (int i = 0; i < 14; i++)
 			classData.addLine(i, "test", "(I)B");
 		packageData.addClassData(classData);
@@ -55,8 +65,8 @@ public class PackageDataTest extends TestCase {
 		assertTrue(packageData.contains(classData.getBaseName()));
 
 		// See what happens when we try to add the same class twice
-		classData = new ClassData("com.example.HelloWorld");
-		classData.setSourceFileName("com/example/HelloWorld.java");
+		classData = new ClassData(COM_EXAMPLE_HELLO_WORLD);
+		classData.setSourceFileName(COM_EXAMPLE_HELLO_WORLD_JAVA);
 		for (int i = 0; i < 19; i++)
 			classData.addLine(i, "test", "(I)B");
 		try {
@@ -70,13 +80,14 @@ public class PackageDataTest extends TestCase {
 		assertEquals(2, packageData.getNumberOfChildren());
 	}
 
+	@Test
 	public void testBranchCoverage() {
 		assertEquals(0, packageData.getNumberOfCoveredBranches());
 		assertEquals(0, packageData.getNumberOfValidBranches());
 		assertEquals(1.00d, packageData.getBranchCoverageRate(), 0d);
 
-		ClassData classData = new ClassData("com.example.HelloWorld");
-		classData.setSourceFileName("com/example/HelloWorld.java");
+		ClassData classData = new ClassData(COM_EXAMPLE_HELLO_WORLD);
+		classData.setSourceFileName(COM_EXAMPLE_HELLO_WORLD_JAVA);
 		for (int i = 0; i < 10; i++)
 			classData.addLine(i, "test", "(I)B");
 		packageData.addClassData(classData);
@@ -106,23 +117,20 @@ public class PackageDataTest extends TestCase {
 		assertEquals(4.0d / 11.0d, packageData.getBranchCoverageRate(), 0.01d);
 	}
 
+	@Test(expected = IllegalArgumentException.class)
 	public void testConstructor() {
-		try {
-			new PackageData(null);
-			fail("Expected an IllegalArgumentException but did not receive one!");
-		} catch (IllegalArgumentException e) {
-			// Good!
-		}
+		new PackageData(null);
 	}
 
+	@Test
 	public void testEquals() {
-		PackageData a = new PackageData("com.example");
-		PackageData b = new PackageData("com.example");
-		PackageData c = new PackageData("com.example");
-		ClassData classData1 = new ClassData("com.example.HelloWorld1");
-		ClassData classData2 = new ClassData("com.example.HelloWorld2");
-		ClassData classData3 = new ClassData("com.example.HelloWorld3");
-		ClassData classData4 = new ClassData("com.example.HelloWorld4");
+		PackageData a = new PackageData(COM_EXAMPLE);
+		PackageData b = new PackageData(COM_EXAMPLE);
+		PackageData c = new PackageData(COM_EXAMPLE);
+		ClassData classData1 = new ClassData(COM_EXAMPLE_HELLO_WORLD + "1");
+		ClassData classData2 = new ClassData(COM_EXAMPLE_HELLO_WORLD + "2");
+		ClassData classData3 = new ClassData(COM_EXAMPLE_HELLO_WORLD + "3");
+		ClassData classData4 = new ClassData(COM_EXAMPLE_HELLO_WORLD + "4");
 
 		classData1.setSourceFileName("com/example/HelloWorld1.java");
 		classData2.setSourceFileName("com/example/HelloWorld2.java");
@@ -159,9 +167,10 @@ public class PackageDataTest extends TestCase {
 		assertFalse(c.equals(a));
 	}
 
+	@Test
 	public void testHashCode() {
-		PackageData a = new PackageData("com.example");
-		PackageData b = new PackageData("com.example");
+		PackageData a = new PackageData(COM_EXAMPLE);
+		PackageData b = new PackageData(COM_EXAMPLE);
 		ClassData classData1 = new ClassData("com.example.HelloWorld1");
 		ClassData classData2 = new ClassData("com.example.HelloWorld2");
 		ClassData classData3 = new ClassData("com.example.HelloWorld3");

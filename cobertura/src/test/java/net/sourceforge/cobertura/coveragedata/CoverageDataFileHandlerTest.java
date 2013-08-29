@@ -21,11 +21,15 @@
 
 package net.sourceforge.cobertura.coveragedata;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
 
-public class CoverageDataFileHandlerTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+
+public class CoverageDataFileHandlerTest {
 
 	private final static String basedir = ".";
 	private final static String pathToTestOutput = basedir
@@ -34,6 +38,7 @@ public class CoverageDataFileHandlerTest extends TestCase {
 	private final ProjectData a = new ProjectData();
 	private File tmpDir = new File(pathToTestOutput);
 
+	@Before
 	public void setUp() {
 		// Create some coverage data
 		ClassData classData;
@@ -60,6 +65,7 @@ public class CoverageDataFileHandlerTest extends TestCase {
 		tmpDir.mkdirs();
 	}
 
+	@After
 	public void tearDown() {
 		tmpDir = new File(pathToTestOutput);
 		File files[] = tmpDir.listFiles();
@@ -68,6 +74,7 @@ public class CoverageDataFileHandlerTest extends TestCase {
 		tmpDir.delete();
 	}
 
+	@Test
 	public void testSaveAndRestore() {
 		File dataFile = new File(tmpDir, "cobertura.ser");
 		CoverageDataFileHandler.saveCoverageData(a, dataFile);

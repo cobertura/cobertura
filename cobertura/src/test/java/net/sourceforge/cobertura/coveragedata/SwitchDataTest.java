@@ -21,15 +21,20 @@
 
 package net.sourceforge.cobertura.coveragedata;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-public class SwitchDataTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+public class SwitchDataTest {
 
 	private final SwitchData a = new SwitchData(0, new int[]{0, 1, 2, 3},
 			Integer.MAX_VALUE);
 
 	private final SwitchData b = new SwitchData(1, 1, 9, Integer.MAX_VALUE);
 
+	@Test
 	public void testEquals() {
 		assertFalse(a.equals(null));
 		assertFalse(a.equals(Integer.valueOf(4)));
@@ -42,6 +47,7 @@ public class SwitchDataTest extends TestCase {
 		assertTrue(a.equals(aPrime));
 	}
 
+	@Test
 	public void testHashCode() {
 		assertEquals(a.hashCode(), a.hashCode());
 
@@ -50,11 +56,13 @@ public class SwitchDataTest extends TestCase {
 		assertEquals(a.hashCode(), aPrime.hashCode());
 	}
 
+	@Test
 	public void testGetSwitchNumber() {
 		assertEquals(0, a.getSwitchNumber());
 		assertEquals(1, b.getSwitchNumber());
 	}
 
+	@Test
 	public void testGetNumbers() {
 		assertEquals(0, a.getBranchCoverageRate(), 0);
 		assertEquals(5, a.getNumberOfValidBranches(), 0);
@@ -88,6 +96,7 @@ public class SwitchDataTest extends TestCase {
 		assertEquals(5, a.getNumberOfCoveredBranches(), 0);
 	}
 
+	@Test
 	public void testTouch() {
 		assertEquals(0, a.getHits(0));
 		for (int i = 0; i < 400; i++)
@@ -115,6 +124,7 @@ public class SwitchDataTest extends TestCase {
 		assertEquals(200, a.getDefaultHits());
 	}
 
+	@Test
 	public void testMerge() {
 		a.touchBranch(0, 1);
 		a.touchBranch(0, 1);

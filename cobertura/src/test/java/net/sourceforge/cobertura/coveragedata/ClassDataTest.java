@@ -23,17 +23,21 @@
 
 package net.sourceforge.cobertura.coveragedata;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.Collection;
 
-public class ClassDataTest extends TestCase {
+import static org.junit.Assert.*;
+
+public class ClassDataTest {
 
 	private final ClassData a = new ClassData("com.example.HelloWorld");
 	private final ClassData b = new ClassData("com.example.HelloWorld");
 	private final ClassData c = new ClassData("com.example.HelloWorld");
 	private final ClassData defPckg = new ClassData("DefaultPackageClass");
 
+	@Before
 	public void setUp() {
 		a.setSourceFileName("com/example/HelloWorld.java");
 		b.setSourceFileName("com/example/HelloWorld.java");
@@ -51,6 +55,7 @@ public class ClassDataTest extends TestCase {
 		b.touch(2, 1);
 	}
 
+	@Test
 	public void testBranch() {
 		// Setting an invalid line as a branch should not make the line valid
 		assertFalse(a.hasBranch(2));
@@ -78,6 +83,7 @@ public class ClassDataTest extends TestCase {
 		//assertTrue(branches.contains(new LineData(4, "test", "(I)B")));
 	}
 
+	@Test
 	public void testBranchCoverage() {
 		assertEquals(0, a.getNumberOfValidBranches());
 		assertEquals(0, b.getNumberOfValidBranches());
@@ -118,14 +124,8 @@ public class ClassDataTest extends TestCase {
 		assertEquals(0.66d, c.getBranchCoverageRate("test(I)B"), 0.01d);
 	}
 
+	@Test
 	public void testConstructor() {
-		try {
-			new ClassData(null);
-			fail("Expected an IllegalArgumentException but did not receive one!");
-		} catch (IllegalArgumentException e) {
-			// Good!
-		}
-
 		assertEquals("HelloWorld", a.getBaseName());
 		assertEquals("com.example", a.getPackageName());
 		assertEquals("com.example.HelloWorld", a.getName());
@@ -135,6 +135,12 @@ public class ClassDataTest extends TestCase {
 		assertEquals("DefaultPackageClass", defPckg.getName());
 	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void testConstructorNullArgument() {
+		new ClassData(null);
+	}
+
+	@Test
 	public void testEquals() {
 		assertFalse(a.equals(null));
 		assertFalse(a.equals(new Integer(4)));
@@ -162,6 +168,7 @@ public class ClassDataTest extends TestCase {
 		assertTrue(b.equals(c));
 	}
 
+	@Test
 	public void testLineCoverage() {
 		assertEquals(0, a.getNumberOfCoveredLines());
 		assertEquals(0, a.getNumberOfValidLines());
@@ -182,6 +189,7 @@ public class ClassDataTest extends TestCase {
 		assertEquals(1d, c.getLineCoverageRate("notReal(I)B"), 0d);
 	}
 
+	@Test
 	public void testRemoveLine() {
 		assertEquals(0, a.getNumberOfValidBranches());
 		assertEquals(0, a.getNumberOfCoveredBranches());
@@ -212,6 +220,7 @@ public class ClassDataTest extends TestCase {
 		assertEquals(4, c.getNumberOfValidLines());
 	}
 
+	@Test
 	public void testSourceFileName() {
 		a.setSourceFileName(null);
 		assertEquals("com/example/HelloWorld.java", a.getSourceFileName());
@@ -231,6 +240,7 @@ public class ClassDataTest extends TestCase {
 		assertEquals("$strangeClass.java", f.getSourceFileName());
 	}
 
+	@Test
 	public void testTouch() {
 		int line = 3;
 

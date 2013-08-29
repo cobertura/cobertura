@@ -22,11 +22,15 @@
 
 package net.sourceforge.cobertura.coveragedata;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public class LineDataTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+public class LineDataTest {
 
 	private final LineData a = new LineData(10, "test1", "(I)B");
 	private final LineData b = new LineData(11, "test1", "(I)B");
@@ -35,6 +39,7 @@ public class LineDataTest extends TestCase {
 	private final LineData e = new LineData(14);
 	private final LineData f = new LineData(15);
 
+	@Test
 	public void testEquals() {
 		assertFalse(a.equals(null));
 		assertFalse(a.equals(new Integer(4)));
@@ -50,6 +55,7 @@ public class LineDataTest extends TestCase {
 		assertTrue(a.equals(aPrime));
 	}
 
+	@Test
 	public void testHashCode() {
 		assertEquals(a.hashCode(), a.hashCode());
 
@@ -57,6 +63,7 @@ public class LineDataTest extends TestCase {
 		assertEquals(a.hashCode(), aPrime.hashCode());
 	}
 
+	@Test
 	public void testGetLineNumber() {
 		assertEquals(10, a.getLineNumber());
 		assertEquals(11, b.getLineNumber());
@@ -66,6 +73,7 @@ public class LineDataTest extends TestCase {
 		assertEquals(15, f.getLineNumber());
 	}
 
+	@Test
 	public void testGetNumbers() {
 		assertEquals(1, a.getBranchCoverageRate(), 0);
 		assertEquals(0, a.getLineCoverageRate(), 0);
@@ -126,6 +134,7 @@ public class LineDataTest extends TestCase {
 		assertEquals(1, a.getNumberOfValidLines());
 	}
 
+	@Test
 	public void testSetConditional() {
 		assertFalse(c.hasBranch());
 		c.addJump(0);
@@ -134,6 +143,7 @@ public class LineDataTest extends TestCase {
 		assertTrue(c.hasBranch());
 	}
 
+	@Test
 	public void testSetMethodNameAndDescriptor() {
 		e.setMethodNameAndDescriptor("test3", "(I)B");
 		assertEquals("test3", e.getMethodName());
@@ -144,6 +154,7 @@ public class LineDataTest extends TestCase {
 		assertEquals("(I)B", f.getMethodDescriptor());
 	}
 
+	@Test
 	public void testTouch() {
 		assertEquals(0, a.getHits());
 		for (int i = 0; i < 400; i++)
@@ -211,6 +222,7 @@ public class LineDataTest extends TestCase {
 		}
 	}
 
+	@Test
 	public void testMultiThreadedGetSwitchData() throws Throwable {
 		/*
 		 * This test will often pass with only one iteration.
@@ -282,6 +294,7 @@ public class LineDataTest extends TestCase {
 		}
 	}
 
+	@Test
 	public void testMultiThreadedGetJumpData() throws Throwable {
 		/*
 		 * This test will often pass with only one iteration.

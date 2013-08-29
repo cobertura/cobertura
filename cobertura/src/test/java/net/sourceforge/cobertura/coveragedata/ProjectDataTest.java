@@ -22,19 +22,26 @@
 
 package net.sourceforge.cobertura.coveragedata;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.Iterator;
 import java.util.SortedSet;
 
-public class ProjectDataTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+public class ProjectDataTest {
 
 	private ProjectData coverageData;
 
+	@Before
 	public void setUp() {
 		coverageData = new ProjectData();
 	}
 
+	@Test
 	public void testAddClass() {
 		ClassData classData;
 
@@ -76,6 +83,7 @@ public class ProjectDataTest extends TestCase {
 		assertEquals(2, coverageData.getClasses().size());
 	}
 
+	@Test
 	public void testEquals() {
 		ProjectData a = new ProjectData();
 		ProjectData b = new ProjectData();
@@ -120,6 +128,7 @@ public class ProjectDataTest extends TestCase {
 		assertFalse(c.equals(a));
 	}
 
+	@Test
 	public void testHashCode() {
 		ProjectData a = new ProjectData();
 		ProjectData b = new ProjectData();
@@ -144,6 +153,7 @@ public class ProjectDataTest extends TestCase {
 		assertEquals(a.hashCode(), b.hashCode());
 	}
 
+	@Test
 	public void testGetSubPackages() {
 		coverageData.addClassData(new ClassData("com.example.HelloWorld"));
 		coverageData.addClassData(new ClassData(
@@ -160,5 +170,4 @@ public class ProjectDataTest extends TestCase {
 		assertEquals("com.example.test", ((PackageData) subPackages.next())
 				.getName());
 	}
-
 }
