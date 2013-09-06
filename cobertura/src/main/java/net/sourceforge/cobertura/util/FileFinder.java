@@ -23,8 +23,6 @@
  */
 package net.sourceforge.cobertura.util;
 
-import org.apache.log4j.Logger;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
@@ -32,6 +30,9 @@ import java.io.IOException;
 import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Maps source file names to existing files. After adding description
@@ -54,7 +55,7 @@ import java.util.jar.JarFile;
  */
 public class FileFinder {
 
-	private static Logger LOGGER = Logger.getLogger(FileFinder.class);
+	private static Logger LOGGER = LoggerFactory.getLogger(FileFinder.class);
 
 	// Contains Strings with directory paths
 	private Set sourceDirectories = new HashSet();

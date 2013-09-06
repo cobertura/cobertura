@@ -27,9 +27,11 @@ package net.sourceforge.cobertura.instrument.pass3;
 
 import net.sourceforge.cobertura.instrument.TouchPointListener;
 import net.sourceforge.cobertura.instrument.tp.ClassMap;
-import org.apache.log4j.Logger;
+
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -40,7 +42,7 @@ import java.util.Map;
  * @author piotr.tabor@gmail.com
  */
 public class InjectCodeTouchPointListener implements TouchPointListener {
-	private final static Logger logger = Logger
+	private final static Logger logger = LoggerFactory
 			.getLogger(InjectCodeTouchPointListener.class);
 	/**
 	 * Component that is resposible for generation of the snipets

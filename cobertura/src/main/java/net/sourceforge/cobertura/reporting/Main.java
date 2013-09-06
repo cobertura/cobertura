@@ -31,13 +31,15 @@ import net.sourceforge.cobertura.dsl.Cobertura;
 import net.sourceforge.cobertura.dsl.ReportFormat;
 import net.sourceforge.cobertura.util.CommandLineBuilder;
 import net.sourceforge.cobertura.util.Header;
-import org.apache.log4j.Logger;
 
 import java.io.File;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Main {
 
-	private static final Logger LOGGER = Logger.getLogger(Main.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
 	private static void parseArgumentsAndReport(String[] args) throws Exception {
 		ArgumentsBuilder builder = new ArgumentsBuilder();

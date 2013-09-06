@@ -56,10 +56,10 @@
 		<cobertura-instrument datafile="${reports.dir}/basic_coverage.ser" todir="${instrumented.dir}">
 			<!--
 				The following line causes instrument to ignore any
-				source line containing a reference to log4j, for the
+				source line containing a reference to slf4j/logback, for the
 				purposes of coverage reporting.
 			-->
-			<ignore regex="org.apache.log4j.*" />
+			<ignore regex="org.slf4j.*" />
 
 			<fileset dir="${classes.dir}">
 				<!--

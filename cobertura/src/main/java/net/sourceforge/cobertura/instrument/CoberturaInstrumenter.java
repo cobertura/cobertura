@@ -31,10 +31,12 @@ import net.sourceforge.cobertura.instrument.pass1.DetectIgnoredCodeClassVisitor;
 import net.sourceforge.cobertura.instrument.pass2.BuildClassMapClassVisitor;
 import net.sourceforge.cobertura.instrument.pass3.InjectCodeClassInstrumenter;
 import net.sourceforge.cobertura.util.IOUtil;
-import org.apache.log4j.Logger;
+
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.util.CheckClassAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.*;
@@ -56,7 +58,7 @@ import java.util.regex.Pattern;
  * @author piotr.tabor@gmail.com
  */
 public class CoberturaInstrumenter {
-	private static final Logger logger = Logger
+	private static final Logger logger = LoggerFactory
 			.getLogger(CoberturaInstrumenter.class);
 
 	/**

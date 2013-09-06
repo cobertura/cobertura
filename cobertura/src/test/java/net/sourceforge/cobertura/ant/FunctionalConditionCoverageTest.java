@@ -448,11 +448,11 @@ public class FunctionalConditionCoverageTest extends TestCase {
 	}
 
 	private class ConditionCalls {
-		public static final int CALL_CONDITION_LINE_NUMBER = 17;
-		public static final int CALL_IGNORE_LINE_NUMBER = 21;
-		public static final int LOOKUP_SWITCH_LINE_NUMBER = 39;
-		public static final int TABLE_SWITCH_LINE_NUMBER = 56;
-		public static final int MULTI_CONDITION_LINE_NUMBER = 74;
-		public static final int MULTI_CONDITION2_LINE_NUMBER = 82;
+		public static final int CALL_CONDITION_LINE_NUMBER = 18;
+		public static final int CALL_IGNORE_LINE_NUMBER = 22;
+		public static final int LOOKUP_SWITCH_LINE_NUMBER = 40;
+		public static final int TABLE_SWITCH_LINE_NUMBER = 57;
+		public static final int MULTI_CONDITION_LINE_NUMBER = 75;
+		public static final int MULTI_CONDITION2_LINE_NUMBER = 83;
 	}
 }

@@ -11,8 +11,6 @@ import net.sourceforge.cobertura.ant.ReportTask;
 import net.sourceforge.cobertura.test.util.TestUtils;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.apache.tools.ant.taskdefs.Java;
 import org.junit.Test;
 
@@ -29,7 +27,6 @@ public class JDKTest {
 	static Node dom;
 
 	public static void setupAndExecuteTest(String jdkVersion) throws Exception {
-		Logger.getRootLogger().setLevel(Level.ALL);
 		FileUtils.deleteDirectory(TestUtils.getTempDir());
 
 		/*

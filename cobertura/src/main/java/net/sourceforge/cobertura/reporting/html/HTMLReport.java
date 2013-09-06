@@ -30,16 +30,19 @@ import net.sourceforge.cobertura.coveragedata.*;
 import net.sourceforge.cobertura.reporting.ComplexityCalculator;
 import net.sourceforge.cobertura.reporting.html.files.CopyFiles;
 import net.sourceforge.cobertura.util.*;
-import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.util.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class HTMLReport {
 
-	private static final Logger LOGGER = Logger.getLogger(HTMLReport.class);
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(HTMLReport.class);
 
 	private File destinationDir;
 

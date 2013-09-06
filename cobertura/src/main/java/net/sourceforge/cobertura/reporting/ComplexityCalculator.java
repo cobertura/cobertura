@@ -30,10 +30,8 @@ import net.sourceforge.cobertura.coveragedata.ProjectData;
 import net.sourceforge.cobertura.coveragedata.SourceFileData;
 import net.sourceforge.cobertura.javancss.FunctionMetric;
 import net.sourceforge.cobertura.javancss.Javancss;
-
 import net.sourceforge.cobertura.util.FileFinder;
 import net.sourceforge.cobertura.util.Source;
-import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -42,6 +40,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Allows complexity computing for source files, packages and a whole project. Average
@@ -54,7 +55,7 @@ import java.util.Map;
  * @author Grzegorz Lukasik
  */
 public class ComplexityCalculator {
-	private static final Logger logger = Logger
+	private static final Logger logger = LoggerFactory
 			.getLogger(ComplexityCalculator.class);
 
 	public static final Complexity ZERO_COMPLEXITY = new Complexity();

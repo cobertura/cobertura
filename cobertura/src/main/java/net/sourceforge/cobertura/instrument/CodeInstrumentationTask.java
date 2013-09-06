@@ -4,13 +4,15 @@ import net.sourceforge.cobertura.dsl.Arguments;
 import net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler;
 import net.sourceforge.cobertura.coveragedata.ProjectData;
 import net.sourceforge.cobertura.util.*;
-import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>
@@ -317,7 +319,7 @@ public class CodeInstrumentationTask {
 
 	// TODO: Preserved current behaviour, but this code is failing on WARN, not error
 	private static class LoggerWrapper {
-		private final Logger logger = Logger.getLogger(Main.class);
+		private final Logger logger = LoggerFactory.getLogger(Main.class);
 		private boolean failOnError = false;
 
 		public void setFailOnError(boolean failOnError) {

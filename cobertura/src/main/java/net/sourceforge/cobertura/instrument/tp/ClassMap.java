@@ -28,8 +28,10 @@ package net.sourceforge.cobertura.instrument.tp;
 import net.sourceforge.cobertura.coveragedata.ClassData;
 import net.sourceforge.cobertura.coveragedata.ProjectData;
 import net.sourceforge.cobertura.instrument.pass2.BuildClassMapClassVisitor;
-import org.apache.log4j.Logger;
+
 import org.objectweb.asm.Label;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -40,7 +42,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author piotr.tabor@gmail.com
  */
 public class ClassMap {
-	private static final Logger logger = Logger.getLogger(ClassMap.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(ClassMap.class);
 	/**
 	 * Simple name of source-file that was used to generate that value
 	 */

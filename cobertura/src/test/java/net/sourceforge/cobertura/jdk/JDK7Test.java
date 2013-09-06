@@ -5,8 +5,6 @@ import groovy.util.Node;
 import net.sourceforge.cobertura.ant.ReportTask;
 import net.sourceforge.cobertura.test.util.TestUtils;
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.apache.tools.ant.taskdefs.Java;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -26,7 +24,6 @@ public class JDK7Test {
 	@BeforeClass
 	public static void setUpBeforeClass() throws IOException,
 			ParserConfigurationException, SAXException {
-		Logger.getRootLogger().setLevel(Level.ALL);
 		FileUtils.deleteDirectory(TestUtils.getTempDir());
 
 		/*

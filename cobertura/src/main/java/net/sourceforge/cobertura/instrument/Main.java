@@ -34,7 +34,6 @@ import net.sourceforge.cobertura.dsl.Arguments;
 import net.sourceforge.cobertura.dsl.ArgumentsBuilder;
 import net.sourceforge.cobertura.dsl.Cobertura;
 import net.sourceforge.cobertura.util.*;
-import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.lang.reflect.Method;
@@ -43,6 +42,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.*;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>
@@ -149,7 +151,7 @@ public class Main {
 
 	// TODO: Preserved current behaviour, but this code is failing on WARN, not error
 	private static class LoggerWrapper {
-		private final Logger logger = Logger.getLogger(Main.class);
+		private final Logger logger = LoggerFactory.getLogger(Main.class);
 		private boolean failOnError = false;
 
 		public void setFailOnError(boolean failOnError) {

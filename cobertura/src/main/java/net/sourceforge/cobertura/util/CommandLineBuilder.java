@@ -25,11 +25,12 @@
 
 package net.sourceforge.cobertura.util;
 
-import org.apache.log4j.Logger;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Helper class for storing long command lines inside temporary file.
@@ -69,7 +70,7 @@ import java.util.List;
  * @author Grzegorz Lukasik
  */
 public class CommandLineBuilder {
-	private static final Logger logger = Logger
+	private static final Logger logger = LoggerFactory
 			.getLogger(CommandLineBuilder.class);
 
 	private static final String LINESEP = System.getProperty("line.separator");

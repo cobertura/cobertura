@@ -26,9 +26,11 @@
 package net.sourceforge.cobertura.instrument.pass1;
 
 import net.sourceforge.cobertura.instrument.ContextMethodAwareMethodAdapter;
-import org.apache.log4j.Logger;
+
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -44,7 +46,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class DetectDuplicatedCodeMethodVisitor
 		extends
 			ContextMethodAwareMethodAdapter {
-	private final Logger logger = Logger
+	private final Logger logger = LoggerFactory
 			.getLogger(DetectDuplicatedCodeClassVisitor.class);
 	/**
 	 * Map of (lineNumber -> (list of pairs: lineId,{@link CodeFootstamp} for the lineId))).

@@ -39,7 +39,7 @@
 	<target name="instrument-condition-coverage" depends="compile">
 		<mkdir dir="${instrumented.dir}" />
 		<cobertura-instrument datafile="${basedir}/cobertura.ser" todir="${instrumented.dir}" ignoreTrivial="true">
-			<ignore regex="org.apache.log4j.*" />
+			<ignore regex="org.slf4j.*" />
 			<fileset dir="${classes.dir}">
 				<include name="**/*.class" />
 				<exclude name="**/*Test*" />

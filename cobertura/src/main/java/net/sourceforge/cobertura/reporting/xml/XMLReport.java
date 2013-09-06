@@ -31,16 +31,19 @@ import net.sourceforge.cobertura.util.FileFinder;
 import net.sourceforge.cobertura.util.Header;
 import net.sourceforge.cobertura.util.IOUtil;
 import net.sourceforge.cobertura.util.StringUtil;
-import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class XMLReport {
 
-	private static final Logger logger = Logger.getLogger(XMLReport.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(XMLReport.class);
 
 	protected final static String coverageDTD = "coverage-04.dtd";
 

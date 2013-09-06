@@ -26,11 +26,12 @@
 
 package net.sourceforge.cobertura.util;
 
-import org.apache.log4j.Logger;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -42,7 +43,8 @@ import java.util.Iterator;
  */
 public abstract class RegexUtil {
 
-	private static final Logger logger = Logger.getLogger(RegexUtil.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(RegexUtil.class);
 
 	private final static Perl5Matcher pm = new Perl5Matcher();
 

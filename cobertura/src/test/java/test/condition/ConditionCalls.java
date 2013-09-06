@@ -1,6 +1,7 @@
 package test.condition;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ConditionCalls {
 
@@ -10,7 +11,8 @@ public class ConditionCalls {
 	 * is intended to cover that condition.
 	 */
 	public static String whatEver = null;
-	private static final Logger logger = Logger.getLogger(ConditionCalls.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(ConditionCalls.class);
 
 	public void call(int i) {
 		if (i >= 5) //set CALL_CONDITION_LINE_NUMBER to this line number

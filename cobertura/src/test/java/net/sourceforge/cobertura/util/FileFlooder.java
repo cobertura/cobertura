@@ -21,7 +21,8 @@
 
 package net.sourceforge.cobertura.util;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -36,7 +37,8 @@ import java.io.IOException;
  */
 public class FileFlooder {
 
-	private static final Logger LOGGER = Logger.getLogger(FileFlooder.class);
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(FileFlooder.class);
 
 	public static void flood(String directory, String fileName, String fileExt,
 			int numOfFiles, int linesPerFile) {

@@ -22,12 +22,13 @@
 
 package com.example.simple;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Simple
 {
 
-	private static final Logger logger = Logger.getLogger(Simple.class)
+	private static final Logger logger = LoggerFactory.getLogger(Simple.class)
 
 	public int square(int x)
 	{

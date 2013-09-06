@@ -24,11 +24,12 @@
  */
 package net.sourceforge.cobertura.util;
 
-import org.apache.log4j.Logger;
-
 import java.io.File;
 import java.io.InputStream;
 import java.util.zip.ZipFile;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Source {
 	private InputStream is;
@@ -36,7 +37,7 @@ public class Source {
 	//streamOrigin is either a File or a ZipFile
 	private Object streamOrigin;
 
-	private static Logger LOGGER = Logger.getLogger(Source.class);
+	private static Logger LOGGER = LoggerFactory.getLogger(Source.class);
 
 	public Source(InputStream is, Object streamOrigin) {
 		this.is = is;
