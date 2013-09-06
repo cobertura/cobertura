@@ -185,34 +185,22 @@
 
   <profiles>
     <profile>
-      <id>WindowsProfile</id>
+      <id>ClassesJar</id>
       <activation>
-        <os>
-          <family>Windows</family>
-        </os>
+        <file>
+          <exists>${java.home}/../Classes/classes.jar</exists>
+        </file>
       </activation>
       <properties>
-        <toolsjar>${java.home}/../lib/tools.jar</toolsjar>
+        <toolsjar>${java.home}/../Classes/classes.jar</toolsjar>
       </properties>
     </profile>
     <profile>
-      <id>UnixProfile</id>
+      <id>ToolsJar</id>
       <activation>
-        <os>
-          <family>unix</family>
-          <name>Linux</name>
-        </os>
-      </activation>
-      <properties>
-        <toolsjar>${java.home}/../lib/tools.jar</toolsjar>
-      </properties>
-    </profile>
-    <profile>
-      <id>OSXProfile</id>
-      <activation>
-        <os>
-          <family>mac</family>
-        </os>
+        <file>
+          <exists>${java.home}/../lib/tools.jar</exists>
+        </file>
       </activation>
       <properties>
         <toolsjar>${java.home}/../lib/tools.jar</toolsjar>
