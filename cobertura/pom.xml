@@ -215,7 +215,7 @@
         </os>
       </activation>
       <properties>
-        <toolsjar>${java.home}/../lib/tools.jar</toolsjar>
+        <toolsjar>${java.home}/../Classes/classes.jar</toolsjar>
       </properties>
     </profile>
   </profiles>
