@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--
+    ################################################
+    # Section 1:  Project information
+    ################################################
+    -->
+    <parent>
+        <groupId>net.sourceforge.cobertura</groupId>
+        <artifactId>cobertura-reactor</artifactId>
+        <version>3.0.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>net.sourceforge.cobertura.metrics</groupId>
+    <artifactId>cobertura-metrics-reactor</artifactId>
+    <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
+    <url>${url.prefix}/${path.in.reactor}</url>
+
+    <properties>
+        <path.in.reactor>metrics</path.in.reactor>
+    </properties>
+
+    <!--
+    ################################################
+    # Section 2:  Modules
+    ################################################
+    -->
+    <modules>
+        <module>metrics-model</module>
+        <module>metrics-api</module>
+    </modules>
+
+    <!--
+    ################################################
+    # Section 3:  Build settings
+    ################################################
+    -->
+
+    <!--
+    ################################################
+    # Section 4:  External systems
+    ################################################
+    -->
+
+    <!--
+        Define settings for Maven's site plugin.
+    -->
+    <distributionManagement>
+        <site>
+            <id>coberturaSite</id>
+            <name>coberturaSite</name>
+            <url>${distro.url.prefix}/${path.in.reactor}</url>
+        </site>
+    </distributionManagement>
+
+    <!--
+       Define Maven's Git integration.
+    -->
+    <scm>
+        <connection>${scm.conn}</connection>
+        <developerConnection>${scm.devConnection}</developerConnection>
+        <url>${reactor.url.remote.prefix}/${reactor.name}</url>
+        <tag>HEAD</tag>
+    </scm>
+</project>

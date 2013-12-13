@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+        "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+
+<module name="Checker">
+    <property name="severity" value="warning"/>
+
+    <module name="TreeWalker">
+        <module name="JavadocMethod">
+            <property name="scope" value="public"/>
+            <property name="allowMissingPropertyJavadoc" value="true"/>
+            <property name="tokens" value="METHOD_DEF"/>
+            <property name="allowUndeclaredRTE" value="true"/>
+        </module>
+        <module name="LineLength">
+            <property name="max" value="120"/>
+        </module>
+
+        <module name="JavadocStyle">
+            <property name="checkFirstSentence" value="false"/>
+            <property name="checkHtml" value="false"/>
+        </module>
+
+        <module name="ConstantName">
+            <property name="format" value="(^[A-Z][A-Z0-9_]*$)|log"/>
+        </module>
+        <module name="LocalFinalVariableName">
+            <property name="format" value="(^[a-z][a-zA-Z0-9]*$)|(^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$)"/>
+        </module>
+        <module name="LocalVariableName"/>
+        <module name="MemberName"/>
+        <module name="MethodName"/>
+        <module name="PackageName"/>
+        <module name="ParameterName"/>
+        <module name="StaticVariableName"/>
+        <module name="TypeName"/>
+        <module name="AvoidStarImport">
+            <property name="severity" value="error"/>
+        </module>
+        <module name="JavaNCSS"/>
+
+        <!--
+            Enforce correct logging mechanics in release artifacts.
+        -->
+        <module name="IllegalImport">
+            <property name="severity" value="error"/>
+            <property name="illegalPkgs"
+                      value="java.util.logging, org.jboss.logging, org.apache.log4j, org.apache.commons.logging"/>
+        </module>
+
+        <!--
+            We should not use Calendar or Date types in any public method.
+            They could be used internally - and only within model classes to cope with JPA time types -
+            but not within parameters or return types.
+        -->
+        <module name="IllegalType">
+            <property name="severity" value="error"/>
+            <property name="tokens" value="PARAMETER_DEF, METHOD_DEF"/>
+            <property name="illegalClassNames"
+                      value="java.util.GregorianCalendar, java.util.Calendar, java.util.Date, java.util.Vector, java.util.Properties"/>
+        </module>
+
+        <!--
+            Validate that we don't use the System.exit, out or err in the code.
+            Use proper logging instead.
+        -->
+        <module name="Regexp">
+            <property name="message" value="System.exit"/>
+            <property name="severity" value="error"/>
+            <property name="format" value="System\.exit"/>
+            <property name="illegalPattern" value="true"/>
+        </module>
+        <module name="Regexp">
+            <property name="message" value="System.out"/>
+            <property name="severity" value="error"/>
+            <property name="format" value="System\.out."/>
+            <property name="illegalPattern" value="true"/>
+        </module>
+        <module name="Regexp">
+            <property name="message" value="System.err"/>
+            <property name="severity" value="error"/>
+            <property name="format" value="System\.err."/>
+            <property name="illegalPattern" value="true"/>
+        </module>
+
+        <module name="RedundantImport"/>
+        <module name="UnusedImports"/>
+        <module name="MethodLength"/>
+        <module name="ParameterNumber">
+            <property name="max" value="5"/>
+            <property name="tokens" value="METHOD_DEF"/>
+        </module>
+
+        <module name="EmptyForIteratorPad"/>
+        <module name="MethodParamPad"/>
+        <module name="OperatorWrap"/>
+        <module name="ParenPad"/>
+        <module name="TypecastParenPad"/>
+        <module name="WhitespaceAfter"/>
+        <module name="ModifierOrder"/>
+        <module name="AvoidNestedBlocks"/>
+        <module name="EmptyBlock">
+            <property name="option" value="text"/>
+        </module>
+        <module name="LeftCurly"/>
+        <module name="NeedBraces"/>
+        <module name="RightCurly"/>
+        <module name="EmptyStatement"/>
+        <module name="EqualsHashCode"/>
+        <module name="IllegalInstantiation"/>
+        <module name="InnerAssignment"/>
+        <module name="MagicNumber"/>
+        <module name="MissingSwitchDefault"/>
+        <module name="RedundantThrows">
+            <property name="allowUnchecked" value="true"/>
+            <property name="allowSubclasses" value="true"/>
+        </module>
+        <module name="SimplifyBooleanExpression"/>
+        <module name="SimplifyBooleanReturn"/>
+        <module name="FinalClass"/>
+        <module name="HideUtilityClassConstructor"/>
+        <module name="InterfaceIsType"/>
+        <module name="VisibilityModifier">
+            <property name="packageAllowed" value="true"/>
+            <property name="protectedAllowed" value="true"/>
+        </module>
+        <module name="ArrayTypeStyle"/>
+        <module name="FinalParameters"/>
+        <module name="UpperEll"/>
+        <module name="JavadocType">
+            <property name="excludeScope" value="private"/>
+            <property name="scope" value="public"/>
+            <property name="authorFormat" value="\S"/>
+            <property name="tokens" value="INTERFACE_DEF"/>
+        </module>
+        <module name="FallThrough"/>
+        <module name="DefaultComesLast"/>
+        <module name="ReturnCount">
+            <property name="format" value="^equals$|^compareTo$"/>
+            <property name="max" value="3"/>
+        </module>
+    </module>
+    <module name="FileLength"/>
+    <module name="FileTabCharacter"/>
+    <module name="Translation"/>
+</module>

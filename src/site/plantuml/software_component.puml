@@ -1,0 +1,11 @@
+@startuml
+
+[client]
+foo_model -- [Foo]
+foo_api -- [Foo]
+
+foo_model <. foo_api : depends on
+
+client --> foo_api : depends on, invokes
+
+@enduml

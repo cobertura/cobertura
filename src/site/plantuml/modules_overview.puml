@@ -1,0 +1,37 @@
+@startuml
+
+skinparam component {
+  BackgroundColor<<Private>> #EEEEFF
+  BorderColor<<Private>> black
+}
+
+node "cobertura poms" {
+    component "cobertura-parent"
+    component "cobertura-api-parent"
+    component "cobertura-model-parent"
+
+    [cobertura-api-parent] <|-- [cobertura-model-parent] : has parent
+    [cobertura-parent] <|-- [cobertura-api-parent] : has parent
+}
+
+node "Software Component [foo]" {
+
+    component "cobertura-foo-impl-bar"<<Private>>
+    component "cobertura-foo-impl-baz"<<Private>>
+    component "cobertura-foo-impl-gnat"<<Private>>
+
+    [cobertura-foo-model] *-- [cobertura-foo-api] : depends on
+    [cobertura-foo-api] *--- [cobertura-foo-impl-bar] : depends on
+    [cobertura-foo-api] *-- [cobertura-foo-spi-baz] : depends on
+    [cobertura-foo-spi-baz] *-- [cobertura-foo-impl-baz] : depends on
+    [cobertura-foo-spi-baz] *-- [cobertura-foo-impl-gnat] : depends on
+
+    [cobertura-model-parent] <|-- [cobertura-foo-model] : has parent
+    [cobertura-api-parent] <|-- [cobertura-foo-api] : has parent
+    [cobertura-api-parent] <|-- [cobertura-foo-spi-baz] : has parent
+    [cobertura-parent] <|-- [cobertura-foo-impl-baz] : has parent
+    [cobertura-parent] <|-- [cobertura-foo-impl-gnat] : has parent
+    [cobertura-parent] <|-- [cobertura-foo-impl-bar] : has parent
+}
+
+@enduml

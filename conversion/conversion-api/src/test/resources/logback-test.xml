@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+  #%L
+  cobertura-conversion-api
+  %%
+  Copyright (C) 2013 Cobertura
+  %%
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  #L%
+  -->
+
+<configuration>
+
+    <appender name="Stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%c{1}::%M]: %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- By default, make the logging keep quiet -->
+    <root level="DEBUG">
+        <appender-ref ref="Stdout"/>
+    </root>
+
+    <!-- Lower the logging level for relevant classes -->
+    <logger name="net.sourceforge.cobertura" level="WARN"/>
+    <logger name="net.sourceforge.cobertura.conversion.api" level="DEBUG"/>
+
+    <!-- Make the frameworks shut up. -->
+    <logger name="org.springframework" level="WARN"/>
+
+</configuration>

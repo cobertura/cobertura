@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--
+    ################################################
+    # Section 1:  Project information
+    ################################################
+    -->
+    <parent>
+        <groupId>net.sourceforge.cobertura.poms</groupId>
+        <artifactId>cobertura-parent</artifactId>
+        <version>3.0.0-SNAPSHOT</version>
+        <relativePath>../cobertura-parent</relativePath>
+    </parent>
+
+    <groupId>net.sourceforge.cobertura.poms</groupId>
+    <artifactId>cobertura-api-parent</artifactId>
+    <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
+    <url>${url.prefix}/${path.in.reactor}</url>
+
+    <properties>
+        <path.in.reactor>poms/cobertura-api-parent</path.in.reactor>
+    </properties>
+
+    <!--
+    ################################################
+    # Section 2:  Dependency (management) settings
+    ################################################
+    -->
+
+    <!--
+    ################################################
+    # Section 3:  Build settings
+    ################################################
+    -->
+    <build>
+        <plugins>
+
+            <!--
+                Ensure that all packages are exported; this is an API project.
+            -->
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Export-Package>{local-packages}</Export-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+    <!--
+    ################################################
+    # Section 4:  External systems
+    ################################################
+    -->
+
+    <!--
+       Define Maven's Git integration.
+    -->
+    <scm>
+        <connection>${scm.conn}</connection>
+        <developerConnection>${scm.devConnection}</developerConnection>
+        <url>${reactor.url.remote.prefix}/${reactor.name}</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <!--
+        Define repository settings for Maven's deploy and release plugins.
+        To comply with Maven standards, the repository definitions should
+        go in the settings.xml file, rather than into the POM.
+
+        This leaves the site URL mechanics in the POM to cater for staging
+        and deploying sites.
+    -->
+    <distributionManagement>
+        <site>
+            <id>coberturaSite</id>
+            <name>coberturaSite</name>
+            <url>${distro.url.prefix}/${path.in.reactor}</url>
+        </site>
+    </distributionManagement>
+</project>

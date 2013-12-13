@@ -1,0 +1,16 @@
+@startuml
+
+(*) -right-> "Instrument Bytecode"
+	-right-> "Run unit tests"
+	note top: Delegated to Test Framework
+	-right-> "Collect Coverage Metrics"
+
+if "use metrics" then
+	--> [check] "Verify Coverage Reqs."
+	--> (*)
+else
+	--> [cobertura] "Compile Coverage Report"
+	--> (*)
+endif
+
+@enduml
