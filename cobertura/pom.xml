@@ -203,11 +203,23 @@
       </properties>
     </profile>
     <profile>
-      <id>UnixProfile</id>
+      <id>LinuxProfile</id>
       <activation>
         <os>
           <family>unix</family>
           <name>Linux</name>
+        </os>
+      </activation>
+      <properties>
+        <toolsjar>${java.home}/../lib/tools.jar</toolsjar>
+      </properties>
+    </profile>
+    <profile>
+      <id>FreeBSDProfile</id>
+      <activation>
+        <os>
+          <family>unix</family>
+          <name>freebsd</name>
         </os>
       </activation>
       <properties>
