@@ -127,7 +127,7 @@ public class InjectCodeClassInstrumenter
 		if (ignoredMethods.contains(name + desc)) {
 			return mv;
 		}
-		if ((access & Opcodes.ACC_STATIC) != 0) {
+		if ((access & Opcodes.ACC_STATIC) != 0 || "<init>".equals(name)) {
 			mv = new GenerateCallCoberturaInitMethodVisitor(mv, classMap
 					.getClassName());
 			if ("<clinit>".equals(name)) {
