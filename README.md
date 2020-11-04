@@ -4,13 +4,13 @@
 
 ## ABOUT
 Cobertura is a free Java code coverage reporting tool.  It is
-based on jcoverage 1.0.5.  See the [Cobertura web page](http://cobertura.sourceforge.net/)
+based on jcoverage 1.0.5.  See the [Cobertura web page](https://cobertura.sourceforge.net/)
 and [wiki](https://github.com/cobertura/cobertura/wiki) for more details.
 
-Since 2.0.0, Cobertura versions follow the [Semantic versioning](http://semver.org/) guidelines.
+Since 2.0.0, Cobertura versions follow the [Semantic versioning](https://semver.org/) guidelines.
 
 ## DOWNLOAD
-You can download Cobertura from [The Central Repository](http://repo1.maven.org/maven2/net/sourceforge/cobertura/cobertura/).
+You can download Cobertura from [The Central Repository](https://repo1.maven.org/maven2/net/sourceforge/cobertura/cobertura/).
 That includes the distributions for stand-alone command line usage.
 
 To use it as Maven dependency, you can use the following snippet:
